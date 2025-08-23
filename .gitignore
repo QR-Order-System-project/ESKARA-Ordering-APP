@@ -1,0 +1,15 @@
+# Node.js
+node_modules/
+.env
+firebase-service.json
+
+# React build
+build/
+dist/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
