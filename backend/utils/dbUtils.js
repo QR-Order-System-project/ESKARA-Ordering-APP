@@ -57,4 +57,45 @@ const finalizeAndClearOrder = async (tableNumber) => {
   await orderRef.delete();
 };
 
-module.exports = { addOrderToDB, finalizeAndClearOrder, getTimeSlot };
+const removeTableFromMenu = async (menu, tableNumber) => {
+  const menuRef = db.collection('menuQueue').doc(menu);
+  const doc = await menuRef.get();
+  if (doc.exists) {
+    let queue = doc.data().queue || [];
+    const index = queue.indexOf(tableNumber);
+    if (index !== -1) {
+      queue.splice(index, 1);
+      await menuRef.set({ queue });
+    }
+  }
+};
+
+const deleteTableMenuWithoutRecord = async (tableNumber, menu) => {
+  const timeSlot = getTimeSlot();
+  const orderRef = db.collection('orders')
+    .doc(timeSlot)
+    .collection('tables')
+    .doc(`table-${tableNumber}`);
+
+  const snapshot = await orderRef.get();
+  if (!snapshot.exists) return;
+
+  const data = snapshot.data();
+  const filteredItems = data.items.filter(item => item.menu !== menu);
+
+  await orderRef.set({
+    ...data,
+    items: filteredItems,
+    updatedAt: new Date().toISOString(),
+  });
+
+  await removeTableFromMenu(menu, tableNumber);
+};
+
+module.exports = {
+  addOrderToDB,
+  finalizeAndClearOrder,
+  getTimeSlot,
+  removeTableFromMenu,
+  deleteTableMenuWithoutRecord
+};
