@@ -1,5 +1,14 @@
+const getTimeSlot = () => {
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  return `${yyyy}${mm}${dd}`;
+};
+
 const addOrderToDB = async ({ tableNumber, items }) => {
-  const timeSlot = '20250911';
+  const timeSlot = getTimeSlot();
+  const now = new Date().toISOString();
 
   const orderRef = db.collection('orders')
     .doc(timeSlot)
@@ -10,8 +19,11 @@ const addOrderToDB = async ({ tableNumber, items }) => {
   let prev = existing.exists ? existing.data().items : [];
 
   await orderRef.set({
+    tableNumber,
+    date: timeSlot,
+    createdAt: now,
     items: [...prev, ...items],
-    updatedAt: new Date().toISOString(),
+    updatedAt: now,
   });
 
   const queueRef = db.collection('menuQueue');
@@ -19,13 +31,13 @@ const addOrderToDB = async ({ tableNumber, items }) => {
     const menuRef = queueRef.doc(item.menu);
     const doc = await menuRef.get();
     let queue = doc.exists ? doc.data().queue : [];
-    queue.push(tableNumber);
+    if (!queue.includes(tableNumber)) queue.push(tableNumber);
     await menuRef.set({ queue });
   }
 };
 
 const finalizeAndClearOrder = async (tableNumber) => {
-  const timeSlot = '20250911';
+  const timeSlot = getTimeSlot();
   const orderRef = db.collection('orders')
     .doc(timeSlot)
     .collection('tables')
@@ -45,4 +57,4 @@ const finalizeAndClearOrder = async (tableNumber) => {
   await orderRef.delete();
 };
 
-module.exports = { addOrderToDB, finalizeAndClearOrder };
+module.exports = { addOrderToDB, finalizeAndClearOrder, getTimeSlot };
