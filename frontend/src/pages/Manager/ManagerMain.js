@@ -10,7 +10,7 @@ export const ManagerMain = () => {
           <HomeButton to="/manager" />
           <div className={styles.logo}></div>
         </div>
-        <TotalPriceLabel />
+        <TotalPriceLabel label="주문" price="99999999" />
       </div>
     </div>
   );
