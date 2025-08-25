@@ -1,0 +1,113 @@
+.Wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.MainPanel {
+  display: flex;
+  flex-direction: column;
+  width: 360px;
+  font-family: Inter;
+  font-weight: 600;
+  font-style: Semi Bold;
+  font-size: 16px;
+  background-color: #edce7a;
+  gap: 5px;
+}
+
+.TopBar {
+  display: flex;
+  margin: 10px;
+  justify-content: space-between;
+}
+
+.ButtonGroup {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.HomeButton {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border-width: 1.5px;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  font-family: Inter;
+  font-weight: 600;
+  font-style: Semi Bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.TabelLabel {
+  display: flex;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border-width: 1.5px;
+  width: 88px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1.5px solid #000000;
+  padding-right: 1px;
+  padding-left: 1px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.CallManagerButton {
+  display: flex;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border-width: 1.5px;
+  width: 88px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1.5px solid #000000;
+  padding-right: 1px;
+  padding-left: 1px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-family: Inter;
+  font-weight: 600;
+  font-style: Semi Bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.OrderListButton {
+  display: flex;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border-width: 1.5px;
+  width: 88px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1.5px solid #000000;
+  padding-right: 1px;
+  padding-left: 1px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-family: Inter;
+  font-weight: 600;
+  font-style: Semi Bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.Banner {
+  display: flex;
+  height: 180px;
+  align-items: center;
+  justify-content: center;
+  background-color: #d7ab36;
+}
