@@ -4,7 +4,7 @@ const TABS = ["TABLE", "ORDER", "CALL"];
 
 export const ButtonBar = ({ value, onChange }) => {
   return (
-    <div className={styles.mainPanel} role="tablist" aria-label="mode switch">
+    <div className={styles.mainPanel} role="tablist">
       {TABS.map((label) => (
         <button
           key={label}
