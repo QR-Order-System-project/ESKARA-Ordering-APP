@@ -2,6 +2,7 @@ import { useState } from "react";
 import { HomeButton } from "../../components/HomeButton";
 import { ButtonBar } from "./ButtonBar";
 import styles from "./ManagerMain.module.scss";
+import { ManagerTableTab } from "./ManagerTableTab";
 
 export const ManagerMain = () => {
   const [tab, setTab] = useState("TABLE");
@@ -23,7 +24,7 @@ export const ManagerMain = () => {
 
         <ButtonBar value={tab} onChange={setTab} />
 
-        {tab === "TABLE" && <div>테이블 화면</div>}
+        {tab === "TABLE" && <ManagerTableTab />}
         {tab === "ORDER" && <div>주문 화면</div>}
         {tab === "CALL" && <div>콜 화면</div>}
       </div>
