@@ -1,6 +1,8 @@
 import { HomeButton } from "../../components/HomeButton";
 import { OrderList } from "../../components/OrderList";
+import { PageTitle } from "../../components/PageTitle";
 import { TotalPriceLabel } from "../../components/TotalPriceLabel";
+import { FaMoneyBillWave } from "react-icons/fa";
 import styles from "./ManagerMain.module.scss";
 
 export const ManagerMain = () => {
@@ -24,6 +26,7 @@ export const ManagerMain = () => {
           <HomeButton to="/manager" />
           <div className={styles.logo}></div>
         </div>
+        <PageTitle title="테이블 03" Icon={FaMoneyBillWave} />
         <OrderList orders={dummyOrders} />
         <TotalPriceLabel label="주문" price="99999999" />
       </div>
