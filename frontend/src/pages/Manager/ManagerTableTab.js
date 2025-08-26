@@ -81,7 +81,7 @@ export const ManagerTableTab = () => {
     }
   };
 
-  const confirmTitle = "해당 테이블을 결제완료로 처리하시겠습니까?";
+  const confirmTitle = "해당 테이블을 결제완료 처리하시겠습니까?";
 
   const confirmBody = (() => {
     const t = tableMap.get(confirmId);
@@ -89,9 +89,8 @@ export const ManagerTableTab = () => {
     const total = getTotal(t.orders).toLocaleString();
     return (
       <div>
-        <p style={{ marginBottom: 8 }}>총 주문금액을 확인해주세요.</p>
-        <p>
-          <b>{t.name}</b> · <b>{total}원</b>
+        <p className={styles.confirmBody}>
+          총 주문금액과 이체금액을 확인해주세요.
         </p>
       </div>
     );
