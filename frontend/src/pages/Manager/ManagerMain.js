@@ -4,6 +4,7 @@ import { ButtonBar } from "./ButtonBar";
 import styles from "./ManagerMain.module.scss";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { ManagerTableTab } from "./ManagerTableTab";
+import { ManagerOrderTab } from "./ManagerOrderTab";
 
 export const ManagerMain = () => {
   const [tab, setTab] = useState("TABLE");
@@ -41,7 +42,7 @@ export const ManagerMain = () => {
         <ButtonBar value={tab} onChange={setTab} />
 
         {tab === "TABLE" && <ManagerTableTab />}
-        {tab === "ORDER" && <div>주문 화면</div>}
+        {tab === "ORDER" && <ManagerOrderTab />}
         {tab === "CALL" && <div>콜 화면</div>}
       </div>
       <button onClick={showSuccess}>성공 토스트</button>
