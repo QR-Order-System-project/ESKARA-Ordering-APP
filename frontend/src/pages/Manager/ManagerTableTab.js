@@ -3,12 +3,12 @@ import { useMemo, useState } from "react";
 import styles from "./ManagerTableTab.module.scss";
 import { Table } from "./Table";
 import { ManagerTableDetail } from "./ManagerTableDetail";
-import ConfirmDialog from "../../components/ui/ConfirmDialog";
-import { useToast } from "../../components/ui/ToastProvider";
+
+import { Modal } from "../../components/ui/Modal";
+import ToastModal from "../../components/ui/ToastModal";
 
 export const ManagerTableTab = () => {
-  const toast = useToast();
-
+  const [toast, setToast] = useState({ open: false, tone: "info", msg: "" });
   const [tables, setTables] = useState([
     {
       id: 1,
@@ -24,6 +24,7 @@ export const ManagerTableTab = () => {
 
   const [selectedId, setSelectedId] = useState(null);
   const [confirmId, setConfirmId] = useState(null); // 결제 확인 모달용
+  const [infoMessage, setInfoMessage] = useState(null); // 안내 모달용 (토스트 대체)
 
   const getTotal = (orders) =>
     orders?.reduce((sum, o) => sum + o.price * o.amount, 0) ?? 0;
@@ -44,13 +45,16 @@ export const ManagerTableTab = () => {
   const handlePayComplete = (tableId) => {
     const t = tableMap.get(tableId);
     if (!t || (t.orders?.length ?? 0) === 0) {
-      toast.error({ message: "주문내역이 존재하지 않습니다." });
+      setToast({
+        open: true,
+        tone: "error",
+        msg: "주문내역이 존재하지 않습니다.",
+      });
       return;
     }
-    setConfirmId(tableId); // 확인 모달 오픈
+    setConfirmId(tableId);
   };
 
-  // 실제 결제 처리 (모달에서 확인)
   const doPay = async (tableId) => {
     const t = tableMap.get(tableId);
     if (!t) return;
@@ -70,20 +74,27 @@ export const ManagerTableTab = () => {
       );
     } catch (e) {
       console.error(e);
-      toast.error({ message: "결제 처리 중 오류가 발생했습니다." });
+      // ✅ 토스트 제거 → 에러도 안내 모달로
+      setInfoMessage("결제 처리 중 오류가 발생했습니다.");
     } finally {
       setConfirmId(null); // 모달 닫기
     }
   };
 
-  // 모달 텍스트
   const confirmTitle = "해당 테이블을 결제완료로 처리하시겠습니까?";
-  const confirmDesc = (() => {
+
+  const confirmBody = (() => {
     const t = tableMap.get(confirmId);
-    if (!t) return "";
+    if (!t) return null;
     const total = getTotal(t.orders).toLocaleString();
-    // ConfirmDialog가 description을 HTML로 렌더하도록 만들어뒀음
-    return `총 주문금액을 확인해주세요.<br/><b>${t.name}</b> · <b>${total}원</b>`;
+    return (
+      <div>
+        <p style={{ marginBottom: 8 }}>총 주문금액을 확인해주세요.</p>
+        <p>
+          <b>{t.name}</b> · <b>{total}원</b>
+        </p>
+      </div>
+    );
   })();
 
   return (
@@ -107,19 +118,42 @@ export const ManagerTableTab = () => {
             totalPrice: getTotal(selectedTable.orders),
           }}
           onClose={() => setSelectedId(null)}
-          onPayComplete={handlePayComplete} // 빈 주문이면 토스트, 있으면 모달
+          onPayComplete={handlePayComplete} // 빈 주문이면 안내 모달, 있으면 컨펌 모달
         />
       )}
 
-      {/* 결제 확인 모달 */}
-      <ConfirmDialog
+      {/* ✅ 안내 모달 (토스트 대체) */}
+      <Modal
+        open={!!infoMessage}
+        onClose={() => setInfoMessage(null)}
+        // onConfirm 없음 → 확인 버튼 숨김
+        title="알림"
+        closeText="닫기"
+        dimmed
+      >
+        {infoMessage}
+      </Modal>
+
+      {/* ✅ 결제 확인 모달 */}
+      <Modal
         open={confirmId != null}
         onClose={() => setConfirmId(null)}
         onConfirm={() => doPay(confirmId)}
         title={confirmTitle}
-        description={confirmDesc}
-        cancelText="닫기"
+        closeText="닫기"
         confirmText="확인"
+        dimmed
+      >
+        {confirmBody}
+      </Modal>
+
+      <ToastModal
+        open={toast.open}
+        onClose={() => setToast((s) => ({ ...s, open: false }))}
+        message={toast.msg}
+        tone={toast.tone}
+        duration={1500}
+        dimmed={false} // 배경 어둡게 원하면 true
       />
     </div>
   );

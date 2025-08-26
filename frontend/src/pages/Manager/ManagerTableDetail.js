@@ -22,7 +22,6 @@ export const ManagerTableDetail = ({
         <button
           className={styles.payCompleteButton}
           onClick={() => onPayComplete?.(id)}
-          disabled={isPaying || !orders.length}
         >
           {isPaying ? "처리 중..." : "결제완료"}
         </button>
