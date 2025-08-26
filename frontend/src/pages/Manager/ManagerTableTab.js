@@ -18,16 +18,161 @@ export const ManagerTableTab = () => {
         { id: 2, name: "카페라떼", amount: 1, price: 5000 },
       ],
     },
-    { id: 2, name: "테이블 02", orders: [] },
+    {
+      id: 2,
+      name: "테이블 02",
+      orders: [
+        { id: 1, name: "카라멜마키아토", amount: 3, price: 5500 },
+        { id: 2, name: "에스프레소", amount: 2, price: 3500 },
+      ],
+    },
     { id: 3, name: "테이블 03", orders: [] },
+    {
+      id: 4,
+      name: "테이블 04",
+      orders: [
+        { id: 1, name: "초코라떼", amount: 1, price: 6000 },
+        { id: 2, name: "아메리카노", amount: 4, price: 4500 },
+        { id: 3, name: "허브티", amount: 2, price: 4000 },
+      ],
+    },
+    {
+      id: 5,
+      name: "테이블 05",
+      orders: [
+        { id: 1, name: "카푸치노", amount: 2, price: 5000 },
+        { id: 2, name: "녹차라떼", amount: 1, price: 5500 },
+      ],
+    },
+    { id: 6, name: "테이블 06", orders: [] },
+    {
+      id: 7,
+      name: "테이블 07",
+      orders: [
+        { id: 1, name: "바닐라라떼", amount: 2, price: 5300 },
+        { id: 2, name: "레몬에이드", amount: 1, price: 6000 },
+      ],
+    },
+    {
+      id: 8,
+      name: "테이블 08",
+      orders: [{ id: 1, name: "아메리카노", amount: 1, price: 4500 }],
+    },
+    { id: 9, name: "테이블 09", orders: [] },
+    {
+      id: 10,
+      name: "테이블 10",
+      orders: [
+        { id: 1, name: "카페모카", amount: 2, price: 5500 },
+        { id: 2, name: "홍차", amount: 1, price: 4000 },
+        { id: 3, name: "에이드", amount: 2, price: 6500 },
+      ],
+    },
+    { id: 11, name: "테이블 11", orders: [] },
+    {
+      id: 12,
+      name: "테이블 12",
+      orders: [
+        { id: 1, name: "카라멜마키아토", amount: 1, price: 5500 },
+        { id: 2, name: "그린티프라푸치노", amount: 1, price: 6500 },
+        { id: 3, name: "딸기스무디", amount: 2, price: 7000 },
+      ],
+    },
+    {
+      id: 13,
+      name: "테이블 13",
+      orders: [
+        { id: 1, name: "아메리카노", amount: 3, price: 4500 },
+        { id: 2, name: "카페라떼", amount: 2, price: 5000 },
+      ],
+    },
+    { id: 14, name: "테이블 14", orders: [] },
+    {
+      id: 15,
+      name: "테이블 15",
+      orders: [
+        { id: 1, name: "콜드브루", amount: 2, price: 6000 },
+        { id: 2, name: "민트초코라떼", amount: 1, price: 6500 },
+      ],
+    },
+    {
+      id: 16,
+      name: "테이블 16",
+      orders: [
+        { id: 1, name: "레몬차", amount: 1, price: 4500 },
+        { id: 2, name: "아이스티", amount: 2, price: 5000 },
+      ],
+    },
+    { id: 17, name: "테이블 17", orders: [] },
+    {
+      id: 18,
+      name: "테이블 18",
+      orders: [
+        { id: 1, name: "아메리카노", amount: 5, price: 4500 },
+        { id: 2, name: "허브티", amount: 1, price: 4000 },
+      ],
+    },
+    { id: 19, name: "테이블 19", orders: [] },
+    {
+      id: 20,
+      name: "테이블 20",
+      orders: [
+        { id: 1, name: "콜드브루", amount: 1, price: 6000 },
+        { id: 2, name: "카페라떼", amount: 1, price: 5000 },
+        { id: 3, name: "에스프레소", amount: 2, price: 3500 },
+      ],
+    },
   ]);
 
   const [selectedId, setSelectedId] = useState(null);
   const [confirmId, setConfirmId] = useState(null); // 결제 확인 모달용
   const [infoMessage, setInfoMessage] = useState(null); // 안내 모달용 (토스트 대체)
+  const [isPaymentActive, setIsPaymentActive] = useState(true); // 결제 활성/비활성 상태
+  const [toggleOpen, setToggleOpen] = useState(false); // 토글 모달 열림
+
+  // 상태별 문구/라벨
+  const toggleTexts = useMemo(
+    () =>
+      isPaymentActive
+        ? {
+            button: "결제 비활성화",
+            title: "결제 버튼을 비활성화 하시겠습니까?",
+            confirm: "확인",
+          }
+        : {
+            button: "결제 활성화",
+            title: (
+              <>
+                결제 버튼을 활성화
+                <br />
+                하시겠습니까?
+              </>
+            ),
+            confirm: "확인",
+          },
+    [isPaymentActive]
+  );
 
   const getTotal = (orders) =>
     orders?.reduce((sum, o) => sum + o.price * o.amount, 0) ?? 0;
+
+  const handleToggleConfirm = () => {
+    setIsPaymentActive((v) => !v);
+    setToggleOpen(false);
+  };
+
+  const renderToggleBody = () =>
+    isPaymentActive ? (
+      <>
+        <p className={styles.payOnOffBody}>
+          고객의 결제 버튼이 비활성화됩니다.
+        </p>
+      </>
+    ) : (
+      <>
+        <p className={styles.payOnOffBody}>고객의 결제 버튼이 활성화됩니다.</p>
+      </>
+    );
 
   const selectedTable = useMemo(
     () => tables.find((t) => t.id === selectedId) ?? null,
@@ -99,17 +244,27 @@ export const ManagerTableTab = () => {
   return (
     <div className={styles.wrapper}>
       {selectedTable === null ? (
-        <div className={styles.mainPanel}>
-          <div className={styles.tablePanel}>
-            {tables.map((t) => (
-              <Table
-                key={t.id}
-                table={{ ...t, totalPrice: getTotal(t.orders) }}
-                onClick={() => setSelectedId(t.id)}
-              />
-            ))}
+        <>
+          <div className={styles.mainPanel}>
+            <div className={styles.tablePanel}>
+              {tables.map((t) => (
+                <Table
+                  key={t.id}
+                  table={{ ...t, totalPrice: getTotal(t.orders) }}
+                  onClick={() => setSelectedId(t.id)}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+
+          {/* 메인 패널 바깥 하단 버튼 */}
+          <button
+            className={styles.payOnOffButton}
+            onClick={() => setToggleOpen(true)}
+          >
+            {toggleTexts.button}
+          </button>
+        </>
       ) : (
         <ManagerTableDetail
           table={{
@@ -144,6 +299,19 @@ export const ManagerTableTab = () => {
         dimmed
       >
         {confirmBody}
+      </Modal>
+
+      {/* ✅ 결제 활성/비활성 토글 모달 */}
+      <Modal
+        open={toggleOpen}
+        onClose={() => setToggleOpen(false)}
+        onConfirm={handleToggleConfirm}
+        title={toggleTexts.title}
+        closeText="취소"
+        confirmText={toggleTexts.confirm}
+        dimmed
+      >
+        <div className={styles.toggleModalBody}>{renderToggleBody()}</div>
       </Modal>
 
       <ToastModal
