@@ -1,0 +1,39 @@
+/* ToastModal.module.scss */
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 240px;
+  max-width: min(80vw, 560px);
+  margin: 0 auto;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #eee;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  font-weight: 600;
+}
+
+.icon {
+  display: inline-flex;
+}
+.msg {
+  line-height: 1.35;
+}
+
+/* 톤 */
+.info {
+  color: #0b5ed7;
+  border-color: #dce9ff;
+  background: #f7fbff;
+}
+.success {
+  color: #157f3b;
+  border-color: #d8f0e0;
+  background: #f4fbf7;
+}
+.error {
+  color: #b42318;
+  border-color: #f5d2cf;
+  background: #fff6f5;
+}

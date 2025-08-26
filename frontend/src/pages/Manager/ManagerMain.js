@@ -13,11 +13,15 @@ export const ManagerMain = () => {
         <div className={styles.topBar}>
           <HomeButton to="/manager" />
           <div className={styles.logoPanel}>
-            <img src="" alt="유학대학로고" className={styles.Icon} />
+            <img
+              src="/icons/YuSeong_Icon.png"
+              alt="유학대학로고"
+              className={styles.yuseongIcon}
+            />
             <img
               src="/icons/Sowlmate_Icon.png"
               alt="솦꿉친구로고"
-              className={styles.Icon}
+              className={styles.sowlmateIcon}
             />
           </div>
         </div>
