@@ -1,17 +1,22 @@
 import styles from "./Modal.module.scss";
 import { IoCloseSharp } from "react-icons/io5";
+
 /**
  * Props
- * - open: boolean (required) — 팝업 열림 여부
- * - title?: string — 헤더 제목 (선택)
- * - children: ReactNode — 본문 컨텐츠
- * - onClose: () => void (required) — 닫기 버튼 클릭 시
- * - onConfirm?: () => void — 확인 버튼 클릭 시 (없으면 확인 버튼 숨김)
- * - confirmText?: string — 기본 "확인"
- * - closeText?: string — 기본 "닫기"
- * - dimmed?: boolean — 배경 어둡게 (기본 true)
+ * - open: boolean
+ * - title?: string
+ * - children: ReactNode
+ * - onClose: () => void
+ * - onConfirm?: () => void
+ * - confirmText?: string
+ * - closeText?: string
+ * - dimmed?: boolean
+ * - showHeader?: boolean
+ * - showFooter?: boolean
+ * - showCloseIcon?: boolean
+ * - variant?: "default" | "bare"  // ★ 추가: 내용만 보여줄 때 'bare'
+ * - overlayVariant?: "dim" | "clear" | "none" // ★ 선택: 오버레이 스타일
  */
-// Modal.jsx (기존 SimpleModal.jsx)
 export function Modal({
   open,
   title,
@@ -24,19 +29,29 @@ export function Modal({
   showHeader = true,
   showFooter = true,
   showCloseIcon = true,
+  variant = "default", // ★ 추가
+  overlayVariant = "dim", // ★ 추가
 }) {
   if (!open) return null;
 
-  return (
-    <div className={styles.container}>
-      {dimmed && <div className={styles.overlay} />}
+  const modalClass = [styles.modal, variant === "bare" ? styles.bare : ""].join(
+    " "
+  );
 
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+  const overlayClass =
+    overlayVariant === "clear" ? styles.overlayClear : styles.overlay;
+
+  return (
+    <div className={styles.container} onClick={onClose}>
+      {dimmed && overlayVariant !== "none" && <div className={overlayClass} />}
+
+      <div className={modalClass} onClick={(e) => e.stopPropagation()}>
         {showCloseIcon && onClose && (
           <button type="button" className={styles.iconClose} onClick={onClose}>
             <IoCloseSharp size={16} />
           </button>
         )}
+
         {showHeader && (title || (showCloseIcon && onClose)) && (
           <div className={styles.header}>
             <div className={styles.title}>{title}</div>

@@ -25,15 +25,20 @@ export default function ToastModal({
       showHeader={false} // 헤더 숨김
       showFooter={false} // 버튼/푸터 숨김
       showCloseIcon={false} // X 버튼 숨김
+      variant="bare" // ★ 포인트
+      overlayVariant="clear" // 선택
     >
       <div className={`${styles.toast} ${styles[tone] || styles.info}`}>
         <span className={styles.icon}>
           {tone === "success" && (
-            <svg viewBox="0 0 24 24" width="20" height="20">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              {/* 채워진 초록 원 */}
+              <circle cx="12" cy="12" r="10" fill="currentColor" />
+              {/* 흰색 체크 */}
               <path
-                d="M20 6L9 17l-5-5"
+                d="M16.2 9l-5.2 5.2L7.8 11"
                 fill="none"
-                stroke="currentColor"
+                stroke="#ffffff"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -41,11 +46,14 @@ export default function ToastModal({
             </svg>
           )}
           {tone === "error" && (
-            <svg viewBox="0 0 24 24" width="20" height="20">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              {/* 채워진 빨강 원 */}
+              <circle cx="12" cy="12" r="10" fill="currentColor" />
+              {/* 흰색 X */}
               <path
-                d="M18 6L6 18M6 6l12 12"
+                d="M15.5 8.5L8.5 15.5M8.5 8.5l7 7"
                 fill="none"
-                stroke="currentColor"
+                stroke="#fff"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -53,16 +61,12 @@ export default function ToastModal({
             </svg>
           )}
           {tone === "info" && (
-            <svg viewBox="0 0 24 24" width="20" height="20">
-              <circle
-                cx="12"
-                cy="12"
-                r="9"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-              <path d="M12 8h.01M11 11h2v5h-2z" fill="currentColor" />
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              {/* 채워진 파랑 원 */}
+              <circle cx="12" cy="12" r="10" fill="currentColor" />
+              {/* 흰색 i */}
+              <path d="M11 10.5h2V17h-2z" fill="#ffffff" />
+              <circle cx="12" cy="8" r="1" fill="#ffffff" />
             </svg>
           )}
         </span>
