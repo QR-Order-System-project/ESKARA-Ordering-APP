@@ -16,9 +16,8 @@
   position: relative;
   width: min(92vw, 520px);
   max-height: min(86vh, 720px);
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  background: #a57a0f;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -28,11 +27,53 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 16px;
-  border-bottom: 1px solid #eee;
+  padding: 30px;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .title {
-  font-size: 16px;
+  font-family: Inter;
   font-weight: 600;
+  font-style: Semi Bold;
+  font-size: 30px;
+  color: white;
+  text-align: center;
+}
+
+.iconClose {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  width: auto;
+  height: auto;
+  margin: 10px;
+  margin-bottom: 0px;
+  color: #ffffff;
+  svg {
+    display: block;
+  }
+}
+
+.footer {
+  display: flex;
+  gap: 19px;
+  margin: 10px 20px 20px 20px;
+  justify-content: center;
+}
+
+.btn {
+  display: flex;
+  font-family: Inter;
+  font-weight: 600;
+  font-style: Semi Bold;
+  font-size: 26px;
+  border-radius: 10px;
+  border: none;
+  background-color: #edce7a;
+  padding: 13px 30px 15px 30px;
 }

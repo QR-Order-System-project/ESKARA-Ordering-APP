@@ -1,5 +1,5 @@
 import styles from "./Modal.module.scss";
-
+import { IoCloseSharp } from "react-icons/io5";
 /**
  * Props
  * - open: boolean (required) — 팝업 열림 여부
@@ -32,18 +32,14 @@ export function Modal({
       {dimmed && <div className={styles.overlay} />}
 
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        {showCloseIcon && onClose && (
+          <button type="button" className={styles.iconClose} onClick={onClose}>
+            <IoCloseSharp size={16} />
+          </button>
+        )}
         {showHeader && (title || (showCloseIcon && onClose)) && (
           <div className={styles.header}>
             <div className={styles.title}>{title}</div>
-            {showCloseIcon && onClose && (
-              <button
-                type="button"
-                className={styles.iconClose}
-                onClick={onClose}
-              >
-                ×
-              </button>
-            )}
           </div>
         )}
 
@@ -51,19 +47,11 @@ export function Modal({
 
         {showFooter && (
           <div className={styles.footer}>
-            <button
-              type="button"
-              className={styles.btnSecondary}
-              onClick={onClose}
-            >
+            <button type="button" className={styles.btn} onClick={onClose}>
               {closeText}
             </button>
             {onConfirm && (
-              <button
-                type="button"
-                className={styles.btnPrimary}
-                onClick={onConfirm}
-              >
+              <button type="button" className={styles.btn} onClick={onConfirm}>
                 {confirmText}
               </button>
             )}
