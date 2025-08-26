@@ -12,6 +12,12 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
+.overlayClear {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2); /* 필요하면 transparent */
+}
+
 .modal {
   position: relative;
   width: min(92vw, 520px);
@@ -23,11 +29,20 @@
   overflow: hidden;
 }
 
+.bare {
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: visible; /* 내부 그림자 안 잘리게 */
+  width: auto; /* 내용만큼 */
+  max-height: none;
+}
+
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 30px;
+  padding: 20px;
   padding-top: 0px;
   padding-bottom: 0px;
 }
