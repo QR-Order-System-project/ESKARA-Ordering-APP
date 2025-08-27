@@ -4,6 +4,8 @@ import { PageTitle } from "../../components/PageTitle";
 import { TotalPriceLabel } from "../../components/TotalPriceLabel";
 import { FaMoneyBillWave } from "react-icons/fa";
 import styles from "./ManagerMain.module.scss";
+import { CompactToastModal } from "../../components/popups/CompactToastModal";
+import { useState } from "react";
 
 export const ManagerMain = () => {
   const dummyOrders = [
@@ -19,6 +21,17 @@ export const ManagerMain = () => {
     { id: 10, name: "허니 레몬티", amount: 1, price: 5700 },
   ];
 
+  const [toast, setToast] = useState(null);
+  // toast: { message, variant } | null
+
+  const showSuccess = () =>
+    setToast({
+      message: "계좌번호가 성공적으로 복사되었습니다!",
+      variant: "success",
+    });
+  const showError = () =>
+    setToast({ message: "실패했습니다.", variant: "error" });
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.mainPanel}>
@@ -30,6 +43,16 @@ export const ManagerMain = () => {
         <OrderList orders={dummyOrders} />
         <TotalPriceLabel label="주문" price="99999999" />
       </div>
+      <button onClick={showSuccess}>성공 토스트</button>
+      <button onClick={showError}>실패 토스트</button>
+      {toast && (
+        <CompactToastModal
+          message={toast.message}
+          variant={toast.variant}
+          duration={1800}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 };
