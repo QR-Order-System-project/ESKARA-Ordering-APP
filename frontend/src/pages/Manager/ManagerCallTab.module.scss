@@ -1,0 +1,109 @@
+/* pages/Manager/ManagerCallTab.module.scss */
+.wrapper {
+  min-height: 100vh; /* 화면 전체 높이 */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 가로 중앙 */
+  justify-content: flex-start; /* ⬅️ 세로 위에서부터 시작하도록 변경 */
+  background: #edce7a;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 12px;
+
+  h2 {
+    font-weight: 700;
+    font-size: 18px;
+  }
+}
+
+.addBtn {
+  padding: 6px 10px;
+  border: 1px solid #222;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 600px;
+  padding: 0;
+}
+
+.item {
+  display: flex; /* 왼쪽(테이블) + 오른쪽(요청사항) */
+  align-items: stretch; /* 같은 높이 */
+  border: 1.5px solid #000;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #fff;
+  margin: 0 16px;
+}
+
+/* 왼쪽 박스 */
+.tableBox {
+  display: flex;
+  flex-direction: column; /* 위: 테이블, 아래: 번호 */
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+  padding: 10px 0;
+  background: #fff;
+  border-right: 1.5px solid #000;
+
+  font-family: Inter, sans-serif;
+  font-weight: 600; /* Semi Bold 대신 weight 사용 */
+  font-size: 20px;
+  text-align: center;
+}
+
+.number {
+  font-size: 32px; /* 번호 크기 강조 */
+  font-weight: 700;
+}
+
+/* 오른쪽 요청사항 */
+.requests {
+  flex: 1; /* 남은 공간 꽉 채움 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 세로 중앙 */
+  padding: 12px;
+  gap: 6px;
+}
+
+.reqLine {
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+  font-size: 18px; /* 요청 글씨 크기 조금 키움 */
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.empty {
+  text-align: center;
+  padding: 24px 0;
+  color: #666;
+}
+
+.modalList {
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 16px;
+  text-align: center;
+  padding: 0;
+  color: #ffffff;
+}
