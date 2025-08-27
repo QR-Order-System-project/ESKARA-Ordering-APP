@@ -1,7 +1,9 @@
 import { useState } from "react";
 import styles from "./ManagerOrderTab.module.scss";
 import { Modal } from "../../components/ui/Modal";
-
+import { PageTitle } from "../../components/PageTitle";
+import { FaClipboardList } from "react-icons/fa";
+import { HiOutlineClipboardList } from "react-icons/hi";
 const initialData = {
   아메리카노: [
     { id: 1, label: "테이블 01" },
@@ -74,6 +76,7 @@ export const ManagerOrderTab = () => {
   return (
     <>
       <div className={styles.boardWrap}>
+        <PageTitle title="주문 관리" Icon={HiOutlineClipboardList} />
         <div className={styles.board} role="list">
           {/* ✅ 항상 state(data)를 기준으로 렌더링 */}
           {Object.entries(data).map(([menu, tables]) => (

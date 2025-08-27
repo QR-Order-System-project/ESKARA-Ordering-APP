@@ -4,6 +4,7 @@ import { ButtonBar } from "./ButtonBar";
 import styles from "./ManagerMain.module.scss";
 import { ManagerTableTab } from "./ManagerTableTab";
 import { ManagerOrderTab } from "./ManagerOrderTab";
+import { ManagerCallTab } from "./ManagerCallTab";
 
 export const ManagerMain = () => {
   const [tab, setTab] = useState("TABLE");
@@ -31,7 +32,7 @@ export const ManagerMain = () => {
 
         {tab === "TABLE" && <ManagerTableTab />}
         {tab === "ORDER" && <ManagerOrderTab />}
-        {tab === "CALL" && <div>콜 화면</div>}
+        {tab === "CALL" && <ManagerCallTab />}
       </div>
     </div>
   );

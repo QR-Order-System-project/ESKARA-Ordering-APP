@@ -6,6 +6,8 @@ import { ManagerTableDetail } from "./ManagerTableDetail";
 
 import { Modal } from "../../components/ui/Modal";
 import ToastModal from "../../components/ui/ToastModal";
+import { FaMoneyBillWave } from "react-icons/fa";
+import { PageTitle } from "../../components/PageTitle";
 
 export const ManagerTableTab = () => {
   const [toast, setToast] = useState({ open: false, tone: "info", msg: "" });
@@ -245,6 +247,7 @@ export const ManagerTableTab = () => {
     <div className={styles.wrapper}>
       {selectedTable === null ? (
         <>
+          <PageTitle title="테이블 관리" Icon={FaMoneyBillWave} />
           <div className={styles.mainPanel}>
             <div className={styles.tablePanel}>
               {tables.map((t) => (
