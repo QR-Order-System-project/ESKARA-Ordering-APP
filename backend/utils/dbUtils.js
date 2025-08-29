@@ -92,10 +92,69 @@ const deleteTableMenuWithoutRecord = async (tableNumber, menu) => {
   await removeTableFromMenu(menu, tableNumber);
 };
 
+const addOrderToArchive = async ({ timeSlot, tableNumber, data, totalAmount }) => {
+  const archiveRef = db
+    .collection("archives")
+    .doc(timeSlot)
+    .collection("tables")
+    .doc(`table-${tableNumber}-${Date.now()}`);
+
+  await archiveRef.set({
+    ...data,
+    totalAmount
+  });
+};
+
+const deleteOrderFromActiveOrders = async ({ timeSlot, tableNumber }) => {
+  const orderRef = db
+    .collection("orders")
+    .doc(timeSlot)
+    .collection("tables")
+    .doc(`table-${tableNumber}`);
+
+  await orderRef.delete();
+};
+
+const getArchivedOrders = async (timeSlot = getTimeSlot()) => {
+  try {
+    const archive = db
+      .collection("archives")
+      .doc(timeSlot)
+      .collection("tables");
+
+    const snapshot = await archive.get();
+
+    const archivedOrders = [];
+
+    snapshot.forEach(doc => {
+      const data = doc.data();
+
+      archivedOrders.push({
+        tableNumber: data.tableNumber,
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
+        items: data.items || {},
+        totalAmount: data.totalAmount ?? 0,
+        paymentEnabled: data.paymentEnabled ?? false,
+        archiveId: doc.id
+      });
+    });
+
+    return archivedOrders;
+  } catch (err) {
+    console.error("아카이브 주문 조회 실패:", err);
+    throw err;
+  }
+};
+
+
 module.exports = {
   addOrderToDB,
   finalizeAndClearOrder,
   getTimeSlot,
   removeTableFromMenu,
-  deleteTableMenuWithoutRecord
+  deleteTableMenuWithoutRecord,
+  addOrderToArchive,
+  deleteOrderFromActiveOrders,
+  getArchivedOrders
 };
