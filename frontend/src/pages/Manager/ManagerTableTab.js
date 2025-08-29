@@ -249,18 +249,21 @@ export const ManagerTableTab = () => {
         <>
           <PageTitle title="테이블 관리" Icon={FaMoneyBillWave} />
           <div className={styles.mainPanel}>
-            <div className={styles.tablePanel}>
-              {tables.map((t) => (
-                <Table
-                  key={t.id}
-                  table={{ ...t, totalPrice: getTotal(t.orders) }}
-                  onClick={() => setSelectedId(t.id)}
-                />
-              ))}
+            {/* ✅ 스크롤 컨테이너 */}
+            <div className={styles.content}>
+              <div className={styles.tablePanel}>
+                {tables.map((t) => (
+                  <Table
+                    key={t.id}
+                    table={{ ...t, totalPrice: getTotal(t.orders) }}
+                    onClick={() => setSelectedId(t.id)}
+                  />
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* 메인 패널 바깥 하단 버튼 */}
+          {/* ✅ 스크롤 컨테이너 안의 sticky footer */}
           <div className={styles.footer}>
             <button
               className={styles.payOnOffButton}

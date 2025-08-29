@@ -55,9 +55,9 @@
   /* 필요시: word-break: keep-all; overflow-wrap: anywhere; */
 }
 
-@media (max-width: 360px) {
+@media (max-width: 300px) {
   .tablePanel {
-    grid-template-columns: 1fr; /* ✅ 1열 전환 */
+    grid-template-columns: 1fr;
     gap: 12px;
     padding-right: 10px;
   }
