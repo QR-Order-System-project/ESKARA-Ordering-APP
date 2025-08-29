@@ -261,12 +261,14 @@ export const ManagerTableTab = () => {
           </div>
 
           {/* 메인 패널 바깥 하단 버튼 */}
-          <button
-            className={styles.payOnOffButton}
-            onClick={() => setToggleOpen(true)}
-          >
-            {toggleTexts.button}
-          </button>
+          <div className={styles.footer}>
+            <button
+              className={styles.payOnOffButton}
+              onClick={() => setToggleOpen(true)}
+            >
+              {toggleTexts.button}
+            </button>
+          </div>
         </>
       ) : (
         <ManagerTableDetail

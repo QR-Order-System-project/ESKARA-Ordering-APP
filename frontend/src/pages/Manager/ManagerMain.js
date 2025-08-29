@@ -13,9 +13,7 @@ export const ManagerMain = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === "/manager") {
-      setTab("TABLE");
-    }
+    if (location.pathname === "/manager") setTab("TABLE");
   }, [location]);
 
   const [toast, setToast] = useState(null);
@@ -50,9 +48,12 @@ export const ManagerMain = () => {
 
         <ButtonBar value={tab} onChange={setTab} />
 
-        {tab === "TABLE" && <ManagerTableTab />}
-        {tab === "ORDER" && <ManagerOrderTab />}
-        {tab === "CALL" && <ManagerCallTab />}
+        {/* 🔹 콘텐츠 영역만 스크롤 (상하바 고정) */}
+        <div className={styles.content}>
+          {tab === "TABLE" && <ManagerTableTab />}
+          {tab === "ORDER" && <ManagerOrderTab />}
+          {tab === "CALL" && <ManagerCallTab />}
+        </div>
       </div>
       <button onClick={showSuccess}>성공 토스트</button>
       <button onClick={showError}>실패 토스트</button>

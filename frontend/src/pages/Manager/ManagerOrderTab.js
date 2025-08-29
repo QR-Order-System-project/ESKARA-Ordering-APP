@@ -9,6 +9,15 @@ const initialData = {
     { id: 1, label: "테이블 01" },
     { id: 2, label: "테이블 07" },
     { id: 3, label: "테이블 12" },
+    { id: 4, label: "테이블 12" },
+    { id: 5, label: "테이블 12" },
+    { id: 6, label: "테이블 12" },
+    { id: 7, label: "테이블 12" },
+    { id: 8, label: "테이블 12" },
+    { id: 9, label: "테이블 12" },
+    { id: 10, label: "테이블 12" },
+    { id: 11, label: "테이블 12" },
+    { id: 12, label: "테이블 12" },
   ],
   카페라떼: [
     { id: 4, label: "테이블 03" },
@@ -76,32 +85,35 @@ export const ManagerOrderTab = () => {
   return (
     <>
       <div className={styles.boardWrap}>
-        <PageTitle title="주문 관리" Icon={HiOutlineClipboardList} />
-        <div className={styles.board} role="list">
-          {/* ✅ 항상 state(data)를 기준으로 렌더링 */}
-          {Object.entries(data).map(([menu, tables]) => (
-            <section className={styles.column} key={menu} role="listitem">
-              <header className={styles.columnHeader}>
-                <span className={styles.columnTitle}>{menu}</span>
-              </header>
+        <div className={styles.titleBar}>
+          <PageTitle title="주문 관리" Icon={HiOutlineClipboardList} />
+        </div>
 
-              <div className={styles.stack}>
-                {tables.map((t) => (
-                  <button
-                    key={t.id}
-                    className={styles.card}
-                    onClick={() => handleCardClick(menu, t)}
-                  >
-                    {t.label}
-                  </button>
-                ))}
-                {/* 비어 있을 때 안내 (선택) */}
-                {tables.length === 0 && (
-                  <div className={styles.empty}>대기중인 테이블 없음</div>
-                )}
-              </div>
-            </section>
-          ))}
+        <div className={styles.hScroller}>
+          <div className={styles.board} role="list">
+            {Object.entries(data).map(([menu, tables]) => (
+              <section className={styles.column} key={menu} role="listitem">
+                <header className={styles.columnHeader}>
+                  <span className={styles.columnTitle}>{menu}</span>
+                </header>
+
+                <div className={styles.stack}>
+                  {tables.map((t) => (
+                    <button
+                      key={t.id}
+                      className={styles.card}
+                      onClick={() => handleCardClick(menu, t)}
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                  {tables.length === 0 && (
+                    <div className={styles.empty}>대기중인 테이블 없음</div>
+                  )}
+                </div>
+              </section>
+            ))}
+          </div>
         </div>
       </div>
 
