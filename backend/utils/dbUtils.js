@@ -6,35 +6,67 @@ const getTimeSlot = () => {
   return `${yyyy}${mm}${dd}`;
 };
 
-const addOrderToDB = async ({ tableNumber, items }) => {
+// orders 에 추가 
+const addOrderToOrdersDB = async ({ tableNumber, items }) => {
   const timeSlot = getTimeSlot();
   const now = new Date().toISOString();
 
+  // 주문 참조 
   const orderRef = db.collection('orders')
     .doc(timeSlot)
     .collection('tables')
     .doc(`table-${tableNumber}`);
 
-  const existing = await orderRef.get();
-  let prev = existing.exists ? existing.data().items : [];
-
-  await orderRef.set({
-    tableNumber,
-    date: timeSlot,
-    createdAt: now,
-    items: [...prev, ...items],
-    updatedAt: now,
-  });
-
-  const queueRef = db.collection('menuQueue');
-  for (const item of items) {
-    const menuRef = queueRef.doc(item.menu);
-    const doc = await menuRef.get();
-    let queue = doc.exists ? doc.data().queue : [];
-    if (!queue.includes(tableNumber)) queue.push(tableNumber);
-    await menuRef.set({ queue });
+  // 기존 주문을 가져와서 count 반영 
+  const snapshot = await orderRef.get();
+  let newOrderItems = snapshot.exists ? snapshot.data().items : {};
+  for (const [menu, count] of Object.entries(items)) {
+      newOrderItems[menu] = (newOrderItems[menu] || 0) + count;
   }
+
+  // 수정한 정보를 DB 에 반영
+  await orderRef.set({
+    tableNumber: tableNumber,
+    items: newOrderItems,
+    updatedAt: now
+  }, { merge: true }); // merge : 명시한 정보만 업데이트, 나머지는 기존값 유지
+
 };
+
+
+//  menuQueue 에 추가 
+const addMenuToMenuQueueDB = async ({ tableNumber, items }) => {
+  // 메뉴 큐 참조 
+  const menuQueueRef = db.collection('menuQueue');
+  let newMenuQueue = menuQueueRef.exists ? menuQueueRef : [];
+  for (const [menu, count] of Object.entries(items)) {
+    let targetMenu = menuQueueRef.exists ? menuQueueRef.doc('menu') : [];
+    for (let i = 0; i < count; i++) {
+      targetMenu.push(tableNumber);
+    }
+  }
+  // 수정한 정보를 DB 에 반영 (의견 필요)
+  await menuQueueRef.set({
+
+  });
+    
+
+};
+
+// menuQueue 에서 삭제  
+const deleteOrdersFromMenuQueueDB = async ({ menu, count }) => {
+  
+};
+
+
+
+
+
+// orders 에서 count 변경
+const discountCountFromOrders = async({menu, count}) => {
+
+};
+
 
 const finalizeAndClearOrder = async (tableNumber) => {
   const timeSlot = getTimeSlot();
@@ -57,40 +89,7 @@ const finalizeAndClearOrder = async (tableNumber) => {
   await orderRef.delete();
 };
 
-const removeTableFromMenu = async (menu, tableNumber) => {
-  const menuRef = db.collection('menuQueue').doc(menu);
-  const doc = await menuRef.get();
-  if (doc.exists) {
-    let queue = doc.data().queue || [];
-    const index = queue.indexOf(tableNumber);
-    if (index !== -1) {
-      queue.splice(index, 1);
-      await menuRef.set({ queue });
-    }
-  }
-};
 
-const deleteTableMenuWithoutRecord = async (tableNumber, menu) => {
-  const timeSlot = getTimeSlot();
-  const orderRef = db.collection('orders')
-    .doc(timeSlot)
-    .collection('tables')
-    .doc(`table-${tableNumber}`);
-
-  const snapshot = await orderRef.get();
-  if (!snapshot.exists) return;
-
-  const data = snapshot.data();
-  const filteredItems = data.items.filter(item => item.menu !== menu);
-
-  await orderRef.set({
-    ...data,
-    items: filteredItems,
-    updatedAt: new Date().toISOString(),
-  });
-
-  await removeTableFromMenu(menu, tableNumber);
-};
 
 module.exports = {
   addOrderToDB,
