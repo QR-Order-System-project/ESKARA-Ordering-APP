@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HomeButton } from "../../components/HomeButton";
 import { ButtonBar } from "./ButtonBar";
 import styles from "./ManagerMain.module.scss";
@@ -6,9 +6,17 @@ import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { ManagerTableTab } from "./ManagerTableTab";
 import { ManagerOrderTab } from "./ManagerOrderTab";
 import { ManagerCallTab } from "./ManagerCallTab";
+import { useLocation } from "react-router";
 
 export const ManagerMain = () => {
   const [tab, setTab] = useState("TABLE");
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/manager") {
+      setTab("TABLE");
+    }
+  }, [location]);
 
   const [toast, setToast] = useState(null);
   // toast: { message, variant } | null
