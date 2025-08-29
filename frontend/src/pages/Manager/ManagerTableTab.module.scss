@@ -1,3 +1,4 @@
+/* === 기존 그대로 유지 === */
 .mainPanel {
   display: flex;
   margin: 10px;
@@ -7,21 +8,33 @@
   border-width: 1.5px;
   background-color: #ffffff;
   flex-direction: column;
+
+  /* 🔹 가로 넘침 가드 (flex 핵심) */
+  min-width: 0;
 }
 
+/* === 기존 + 반응형/스크롤 안전화 === */
 .tablePanel {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* ✅ 항상 2열 */
   gap: 16px;
-  height: 484px;
+
+  max-height: min(484px, 60vh);
+  flex: 1 1 auto;
+  min-height: 0;
+
   margin: 19px 10px 19px 19px;
   padding-right: 15px;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  align-items: flex-start;
-  align-content: flex-start;
+
+  /* 내용이 위에서부터 촘촘히 쌓이도록 */
+  align-content: start;
+  /* 그리드 자식이 셀 너비를 꽉 채우게 */
+  align-items: stretch;
+
+  scrollbar-gutter: stable both-edges;
 
   &::-webkit-scrollbar {
     width: 7px;
@@ -36,44 +49,83 @@
 }
 
 .tablePanel > * {
-  flex: 0 0 calc(50% - 8px);
-  box-sizing: border-box;
-  max-width: calc(50% - 8px);
+  width: 100%;
+  min-width: 0; /* 긴 텍스트로 셀 넘침 방지 */
+  box-sizing: border-box; /* 테두리/패딩 포함 계산 */
+  /* 필요시: word-break: keep-all; overflow-wrap: anywhere; */
 }
 
-.confirmBody {
+@media (max-width: 360px) {
+  .tablePanel {
+    grid-template-columns: 1fr; /* ✅ 1열 전환 */
+    gap: 12px;
+    padding-right: 10px;
+  }
+}
+
+/* 🔹 중간 폭(작은 태블릿)에서 카드 간격 살짝 키움 */
+@media (min-width: 481px) and (max-width: 768px) {
+  .tablePanel {
+    gap: 18px;
+  }
+}
+
+/* 텍스트/버튼 가독성 향상: clamp로 유동 폰트 */
+.confirmBody,
+.payOnOffBody {
   font-family: Inter;
   font-weight: 300;
   font-style: Medium;
-  font-size: 18px;
+  font-size: clamp(14px, 3.8vw, 18px); /* ← 가변 글꼴 */
   text-align: center;
   color: #ffffff;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
+/* 하단 토글 버튼: 터치 타깃 보장 + 작은 폰에서 높이 살짝 축소 */
 .payOnOffButton {
   display: flex;
   width: 100%;
-  height: 58px;
+  height: clamp(48px, 7.2vh, 58px); /* ← 가변 높이 */
   background-color: #a57a0f;
   color: #ffffff;
   border: none;
   font-family: Inter;
   font-weight: 600;
   font-style: Semi Bold;
-  font-size: 20px;
+  font-size: clamp(16px, 4.5vw, 20px); /* ← 가변 글꼴 */
   justify-content: center;
   align-items: center;
+  margin: 0px;
 }
 
-.payOnOffBody {
-  font-family: Inter;
-  font-weight: 300;
-  font-style: Medium;
-  font-size: 18px;
-  text-align: center;
-  color: #ffffff;
-  margin-top: 10px;
-  margin-bottom: 10px;
+/* 상단/좌우 여백 약간 타이트하게 (작은 화면) */
+@media (max-width: 480px) {
+  .mainPanel {
+    margin: 8px;
+  }
+  .tablePanel {
+    margin: 14px 8px 14px 14px;
+    padding-right: 10px;
+    max-height: min(420px, 58vh); /* 폰에서 조금 더 낮춤 */
+  }
+}
+
+/* 극소폭 기기 대응 (아이콘/폰트가 너무 커지지 않게) */
+@media (max-width: 320px) {
+  .tablePanel {
+    gap: 10px;
+  }
+  .payOnOffButton {
+    font-size: 15px;
+  }
+}
+
+.footer {
+  /* 새 래퍼: 버튼을 감싸세요 */
+  position: sticky;
+  bottom: 0;
+  background: #a57a0f; /* 스크롤 시 카드와 겹침 방지 */
+  padding: 0; /* 여백 제거 */
+  margin: 0;
 }

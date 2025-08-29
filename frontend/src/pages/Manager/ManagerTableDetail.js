@@ -14,10 +14,18 @@ export const ManagerTableDetail = ({
 
   return (
     <div className={styles.mainPanel}>
-      <PageTitle title={name ?? "테이블"} Icon={FaMoneyBillWave} />
-      <OrderList orders={orders} />
-      <TotalPriceLabel label="주문" price={totalPrice} />
+      {/* 🔝 타이틀 고정될 영역 */}
+      <div className={styles.titleBar}>
+        <PageTitle title={name ?? "테이블"} Icon={FaMoneyBillWave} />
+      </div>
 
+      {/* 📜 주문 목록 + 합계만 스크롤 */}
+      <div className={styles.content}>
+        <OrderList orders={orders} />
+        <TotalPriceLabel label="주문" price={totalPrice} />
+      </div>
+
+      {/* ✔ 결제 버튼 */}
       <div className={styles.buttonRow}>
         <button
           className={styles.payCompleteButton}
@@ -26,7 +34,9 @@ export const ManagerTableDetail = ({
           {isPaying ? "처리 중..." : "결제완료"}
         </button>
       </div>
-      <div className={styles.backButton}>
+
+      {/* ◀ 뒤로 버튼 */}
+      <div className={styles.backRow}>
         <button className={styles.backButton} onClick={onClose}>
           뒤로
         </button>

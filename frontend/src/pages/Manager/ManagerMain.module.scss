@@ -1,18 +1,41 @@
+/* ✅ Wrapper는 뷰포트에 딱 맞게 */
 .wrapper {
+  position: fixed;
+  inset: 0; /* top/right/bottom/left 모두 0 */
   display: flex;
   justify-content: center;
+  width: 100%; /* 가로 안전 가드 */
+  background: #edce7a;
+  overflow: hidden; /* wrapper 자체 스크롤 차단 */
+  isolation: isolate;
+  /* ⚠️ padding/보더는 넣지 말고 안쪽으로 */
 }
 
+/* ✅ 메인 패널: 패딩·여백 등은 여기서 처리 */
 .mainPanel {
   display: flex;
   flex-direction: column;
-  width: 360px;
-  font-family: Inter;
-  font-weight: 600;
-  font-style: Semi Bold;
-  font-size: 16px;
-  background-color: #edce7a;
-  gap: 5px;
+
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+
+  /* 좌/우 완충 및 safe-area 대응 */
+  padding: calc(env(safe-area-inset-top, 0px) + 0px)
+    calc(env(safe-area-inset-right, 0px) + 10px)
+    calc(env(safe-area-inset-bottom, 0px) + 0px)
+    calc(env(safe-area-inset-left, 0px) + 10px);
+
+  height: 100%; /* wrapper(뷰포트) 꽉 채움 */
+  min-width: 0; /* ← 가로 넘침 방지 (flex 핵심) */
+  overflow: hidden; /* 스크롤은 content만 */
+
+  font: 600 16px/1.4 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+    sans-serif;
+  gap: 0px;
+
+  /* (선택) 상단 sticky 툴바 있을 때 스크롤 여유 */
+  /* scroll-padding-top: 56px; */
 }
 
 .topBar {
@@ -24,7 +47,20 @@
   display: flex;
 }
 
+/* 아이콘 고정 크기 */
 .yuseongIcon {
   width: 47px;
   height: 47px;
+  image-rendering: auto;
+}
+
+/* ✅ 콘텐츠 영역만 스크롤 허용 */
+.content {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0; /* ← 가로 넘침 방지 추가 */
+  overflow: auto; /* 오직 여기만 스크롤 */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable both-edges;
 }

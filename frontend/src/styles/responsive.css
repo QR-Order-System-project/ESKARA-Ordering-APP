@@ -1,0 +1,99 @@
+:root {
+  /* 📱 320~430px 범위에서 폰트가 과대/과소되지 않도록 보정 */
+  --fs-body: clamp(14px, 3.6vw, 16px);
+  --fs-title: clamp(18px, 5vw, 22px);
+
+  /* spacing scale */
+  --space-1: 8px;
+  --space-2: 12px;
+  --space-3: 16px;
+}
+
+/* 🔹 reset & base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+
+  /* 전체 흔들림/바운스 방지 */
+  overflow: hidden; /* 전역 스크롤 차단 (내부 컨테이너만 스크롤 허용) */
+  overflow-x: hidden;
+  overscroll-behavior: none; /* iOS/Android 바운스 방지 */
+  -webkit-text-size-adjust: 100%; /* iOS 자동 확대 방지 */
+}
+
+#root {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-size: var(--fs-body);
+  line-height: 1.4;
+}
+
+/* 🔹 기본 미디어 */
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 🔹 모바일 컨테이너(폰 전용 max-width 래퍼) */
+.container {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* 🔹 flex 내부에서 스크롤/넘침 방지 */
+.min0 {
+  min-width: 0;
+  min-height: 0;
+}
+.flex-1 {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* 🔹 페이지 래퍼: safe-area 대응 */
+.page {
+  /* 주소창 변동 대응 */
+  height: 100dvh;
+  min-height: 100svh;
+
+  padding: calc(env(safe-area-inset-top, 0px) + var(--space-2))
+    calc(env(safe-area-inset-right, 0px) + var(--space-2))
+    calc(env(safe-area-inset-bottom, 0px) + var(--space-2))
+    calc(env(safe-area-inset-left, 0px) + var(--space-2));
+}
+
+/* 🔹 텍스트 처리 */
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wrap {
+  overflow-wrap: anywhere;
+}
+
+/* 🔹 자동 맞춤 그리드 (카드/버튼 목록 등에 사용) */
+.grid-auto {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+/* 🔹 터치 타깃 영역 (접근성 최소 높이 44px) */
+.touch {
+  min-height: 44px;
+}
