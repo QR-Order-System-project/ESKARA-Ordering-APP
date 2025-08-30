@@ -3,6 +3,14 @@ import styles from "./ManagerOrderTab.module.scss";
 import { Modal } from "../../components/ui/Modal";
 import { PageTitle } from "../../components/PageTitle";
 import { HiOutlineClipboardList } from "react-icons/hi";
+
+/**
+ * ManagerOrderTab
+ * - 메뉴별로 대기 중인 테이블을 칼럼/카드 형태로 표시
+ * - 카드 클릭 시 완료 확인 모달을 띄우고, 확인하면 해당 항목을 제거
+ */
+
+// 초기 더미 데이터 (API 연동 전 사용)
 const initialData = {
   아메리카노: [
     { id: 1, label: "테이블 01" },
@@ -52,20 +60,24 @@ const initialData = {
 };
 
 export const ManagerOrderTab = () => {
+  /* 상태: 데이터, 모달 열림, 선택 항목 */
   const [data, setData] = useState(initialData);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null); // { menu, table }
 
+  /* 카드 클릭 → 선택/모달 오픈 */
   const handleCardClick = useCallback((menu, table) => {
     setSelected({ menu, table });
     setOpen(true);
   }, []);
 
+  /* 모달 닫기 */
   const closeModal = useCallback(() => {
     setOpen(false);
     setSelected(null);
   }, []);
 
+  /* 모달 확인 → 선택 항목 제거 */
   const removeTable = useCallback(() => {
     if (!selected) return;
     const { menu, table } = selected;
@@ -78,22 +90,25 @@ export const ManagerOrderTab = () => {
 
   return (
     <>
+      {/* 상단 타이틀 */}
       <div className={styles.boardWrap}>
         <div className={styles.titleBar}>
           <PageTitle title="주문 관리" Icon={HiOutlineClipboardList} />
         </div>
 
-        {/* ✅ PageTitle을 제외한 영역만 세로 스크롤 */}
+        {/* 세로 스크롤 영역 (타이틀 제외) */}
         <div className={styles.vScroller}>
-          {/* 가로 스크롤은 기존대로 여기서만 */}
+          {/* 가로 스크롤 영역 (칼럼 보드) */}
           <div className={styles.hScroller}>
             <div className={styles.board} role="list">
               {Object.entries(data).map(([menu, tables]) => (
                 <section className={styles.column} key={menu} role="listitem">
+                  {/* 칼럼 헤더 */}
                   <header className={styles.columnHeader}>
                     <span className={styles.columnTitle}>{menu}</span>
                   </header>
 
+                  {/* 카드 스택 */}
                   <div className={styles.stack}>
                     {tables.map((t) => (
                       <button
@@ -104,6 +119,8 @@ export const ManagerOrderTab = () => {
                         {t.label}
                       </button>
                     ))}
+
+                    {/* 비었을 때 */}
                     {tables.length === 0 && (
                       <div className={styles.empty}>대기중인 테이블 없음</div>
                     )}
@@ -115,7 +132,7 @@ export const ManagerOrderTab = () => {
         </div>
       </div>
 
-      {/* ✅ Modal: title을 div/span 두 줄로 고정 */}
+      {/* 완료 확인 모달 (제목 두 줄 고정) */}
       <Modal
         open={open}
         title={

@@ -19,7 +19,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr)); /* 항상 2열 */
   row-gap: 16px; /* 위아래 간격 */
-  column-gap: 8px; /* 좌우 간격 */
+  column-gap: 16px; /* 좌우 간격 */
 
   max-height: min(484px, 60vh);
   flex: 1 1 auto;

@@ -1,3 +1,6 @@
+/* pages/Manager/ManagerTableDetail.module.scss */
+
+/* === 메인 패널 (상세 화면 컨테이너) === */
 .mainPanel {
   display: flex;
   flex-direction: column;
@@ -16,16 +19,16 @@
   font-size: clamp(14px, 3.8vw, 16px);
 }
 
-/* 타이틀 고정 */
+/* === 상단 타이틀 (고정) === */
 .titleBar {
   position: sticky;
   top: 0;
   z-index: 10;
   background: #edce7a;
-  /* 경계선 필요시 사용: border-bottom: 1.5px solid #000; */
+  /* 필요 시 경계선: border-bottom: 1.5px solid #000; */
 }
 
-/* 주문목록 + 합계 스크롤 영역 */
+/* === 주문 목록 + 합계 (세로 스크롤 허용) === */
 .content {
   display: flex;
   flex-direction: column;
@@ -33,12 +36,12 @@
 
   flex: 1 1 auto;
   min-height: 0;
-  overflow: auto; /* 이 영역만 세로 스크롤 */
+  overflow: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable both-edges;
 }
 
-/* 하단 버튼 행 */
+/* === 결제 버튼 행 === */
 .buttonRow {
   margin-top: 4px;
 }
@@ -61,7 +64,7 @@
   font-size: clamp(16px, 4.5vw, 20px);
 }
 
-/* 뒤로 버튼 */
+/* === 뒤로 버튼 행 === */
 .backRow {
   margin-top: 6px;
 }
@@ -84,7 +87,7 @@
   color: #000;
 }
 
-/* 작은 기기 미세 조정 */
+/* === 작은 기기 대응 === */
 @media (max-width: 360px) {
   .content {
     gap: 6px;
