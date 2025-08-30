@@ -1,34 +1,29 @@
 .tablePanel {
   display: flex;
-  font-family: Inter;
-  font-weight: 600;
-  font-style: Semi Bold;
-  font-size: 20px;
   flex-direction: column;
-  width: 139px;
-  height: 90px;
-  border-radius: 10px;
-  border-width: 1.5px;
-  padding-top: 14px;
-  padding-right: 6px;
-  padding-bottom: 14px;
-  padding-left: 6px;
-  border: 1.5px solid #000000;
-  background-color: #ffffff;
   align-items: center;
   justify-content: center;
+
+  width: 139px;
+  height: 90px;
+  padding: 14px 6px;
+  border: 1.5px solid #000;
+  border-radius: 10px;
   box-sizing: border-box;
+
+  background-color: #fff;
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+  font-size: 20px;
 }
 
-.tableName {
-  display: flex;
-}
-
+.tableName,
 .tablePrice {
-  display: flex;
+  /* 따로 스타일 없으면 flex 불필요 → text block만 */
+  display: block;
 }
 
 .active {
   background-color: #a57a0f;
-  color: #ffffff;
+  color: #fff;
 }
