@@ -1,78 +1,81 @@
-import styles from "./Modal.module.scss";
+// components/ui/ConfirmModal.jsx
+import { useEffect, useId } from "react";
 import { IoCloseSharp } from "react-icons/io5";
+import styles from "./Modal.module.scss";
 
 /**
- * Props
- * - open: boolean
- * - title?: string
- * - children: ReactNode
- * - onClose: () => void
- * - onConfirm?: () => void
- * - confirmText?: string
- * - closeText?: string
- * - dimmed?: boolean
- * - showHeader?: boolean
- * - showFooter?: boolean
- * - showCloseIcon?: boolean
- * - variant?: "default" | "bare"  // ★ 추가: 내용만 보여줄 때 'bare'
- * - overlayVariant?: "dim" | "clear" | "none" // ★ 선택: 오버레이 스타일
+ * 최소 확인 모달
+ * - open: 열림 여부
+ * - title: 제목
+ * - children: 내용
+ * - onClose: 닫기
+ * - onConfirm: 확인 (없으면 확인 버튼 숨김)
+ * - lockScroll: body 스크롤 잠금 (기본 true)
+ * - dimmed: 배경 흐림 (기본 true)
  */
-export function Modal({
+export const Modal = ({
   open,
   title,
   children,
   onClose,
   onConfirm,
-  confirmText = "확인",
-  closeText = "닫기",
+  lockScroll = true,
   dimmed = true,
-  showHeader = true,
-  showFooter = true,
-  showCloseIcon = true,
-  variant = "default", // ★ 추가
-  overlayVariant = "dim", // ★ 추가
-}) {
+}) => {
+  const titleId = useId();
+
+  // 스크롤 막기
+  useEffect(() => {
+    if (!lockScroll) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [lockScroll]);
+
   if (!open) return null;
 
-  const modalClass = [styles.modal, variant === "bare" ? styles.bare : ""].join(
-    " "
-  );
-
-  const overlayClass =
-    overlayVariant === "clear" ? styles.overlayClear : styles.overlay;
-
   return (
-    <div className={styles.container} onClick={onClose}>
-      {dimmed && overlayVariant !== "none" && <div className={overlayClass} />}
+    <div className={styles.container}>
+      {dimmed && <div className={styles.overlay} />}
 
-      <div className={modalClass} onClick={(e) => e.stopPropagation()}>
-        {showCloseIcon && onClose && (
-          <button type="button" className={styles.iconClose} onClick={onClose}>
-            <IoCloseSharp size={16} />
-          </button>
-        )}
+      <div
+        className={styles.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={title ? titleId : undefined}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* X 버튼 */}
+        <button type="button" className={styles.iconClose} onClick={onClose}>
+          <IoCloseSharp size={16} />
+        </button>
 
-        {showHeader && (title || (showCloseIcon && onClose)) && (
+        {/* 제목 */}
+        {title && (
           <div className={styles.header}>
-            <div className={styles.title}>{title}</div>
+            <div id={titleId} className={styles.title}>
+              {title}
+            </div>
           </div>
         )}
 
+        {/* 내용 */}
         <div className={styles.body}>{children}</div>
 
-        {showFooter && (
-          <div className={styles.footer}>
-            <button type="button" className={styles.btn} onClick={onClose}>
-              {closeText}
+        {/* 하단 버튼 */}
+        <div className={styles.footer}>
+          <button type="button" className={styles.btn} onClick={onClose}>
+            닫기
+          </button>
+          {onConfirm && (
+            <button type="button" className={styles.btn} onClick={onConfirm}>
+              확인
             </button>
-            {onConfirm && (
-              <button type="button" className={styles.btn} onClick={onConfirm}>
-                {confirmText}
-              </button>
-            )}
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
-}
+};

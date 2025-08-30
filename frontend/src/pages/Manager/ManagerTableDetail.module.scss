@@ -1,33 +1,31 @@
 .mainPanel {
   display: flex;
   flex-direction: column;
-  /* 반응형 폭 */
   width: 100%;
-  max-width: 420px; /* 상위 레이아웃 기준으로 조정 가능 */
+  max-width: 420px;
   margin: 0 auto;
 
   background-color: #edce7a;
   gap: 6px;
 
-  /* 내부 스크롤을 위한 핵심 */
+  /* 내부 스크롤 안전 */
   height: 100%;
-  min-height: 0; /* flex 내부 스크롤 안전장치 */
-  font-family: Inter;
+  min-height: 0;
+  font-family: Inter, sans-serif;
   font-weight: 600;
   font-size: clamp(14px, 3.8vw, 16px);
 }
 
-/* 타이틀을 스크롤 상단에 고정 */
+/* 타이틀 고정 */
 .titleBar {
   position: sticky;
   top: 0;
   z-index: 10;
   background: #edce7a;
-  /* 타이틀과 본문 경계 */
-  /* border-bottom: 1.5px solid #000;  // 원하면 사용 */
+  /* 경계선 필요시 사용: border-bottom: 1.5px solid #000; */
 }
 
-/* 주문목록+합계가 들어가는 스크롤 영역 */
+/* 주문목록 + 합계 스크롤 영역 */
 .content {
   display: flex;
   flex-direction: column;
@@ -35,7 +33,7 @@
 
   flex: 1 1 auto;
   min-height: 0;
-  overflow: auto; /* ✅ 이 영역만 스크롤 */
+  overflow: auto; /* 이 영역만 세로 스크롤 */
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable both-edges;
 }
@@ -45,25 +43,25 @@
   margin-top: 4px;
 }
 
-/* 결제 버튼: 터치 타깃/폰트 반응형 */
 .payCompleteButton {
   display: flex;
-  width: 100%;
-  height: clamp(48px, 7.2vh, 58px);
-  background-color: #a57a0f;
-  color: #ffffff;
-  border: none;
-
-  font-family: Inter;
-  font-weight: 600;
-  font-size: clamp(16px, 4.5vw, 20px);
-
   justify-content: center;
   align-items: center;
-  border-radius: 8px; /* 필요 없으면 제거 */
+
+  width: 100%;
+  height: clamp(48px, 7.2vh, 58px);
+
+  background-color: #a57a0f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+  font-size: clamp(16px, 4.5vw, 20px);
 }
 
-/* 뒤로 버튼 래퍼 + 버튼 */
+/* 뒤로 버튼 */
 .backRow {
   margin-top: 6px;
 }
@@ -75,11 +73,12 @@
 
   width: 100%;
   height: clamp(40px, 6.2vh, 50px);
-  background: #ffffff;
+
+  background: #fff;
   border: 1.5px solid #000;
   border-radius: 8px;
 
-  font-family: Inter;
+  font-family: Inter, sans-serif;
   font-weight: 600;
   font-size: clamp(14px, 4vw, 18px);
   color: #000;

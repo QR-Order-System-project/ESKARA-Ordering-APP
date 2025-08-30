@@ -4,40 +4,50 @@ import { TotalPriceLabel } from "../../components/TotalPriceLabel";
 import { FaMoneyBillWave } from "react-icons/fa";
 import styles from "./ManagerTableDetail.module.scss";
 
-export const ManagerTableDetail = ({
-  table,
-  onClose,
-  onPayComplete,
-  isPaying,
-}) => {
-  const { id, name, totalPrice, orders = [] } = table ?? {};
+export const ManagerTableDetail = ({ table, onClose, onPayComplete }) => {
+  // 안전한 디폴트
+  const {
+    id = null,
+    name = "테이블",
+    totalPrice = 0,
+    orders = [],
+  } = table ?? {};
+
+  const safeOrders = Array.isArray(orders) ? orders : [];
+
+  const handlePay = () => {
+    if (id == null) return;
+    onPayComplete?.(id);
+  };
 
   return (
     <div className={styles.mainPanel}>
-      {/* 🔝 타이틀 고정될 영역 */}
+      {/* 🔝 타이틀 고정 */}
       <div className={styles.titleBar}>
-        <PageTitle title={name ?? "테이블"} Icon={FaMoneyBillWave} />
+        <PageTitle title={name} Icon={FaMoneyBillWave} />
       </div>
 
-      {/* 📜 주문 목록 + 합계만 스크롤 */}
+      {/* 📜 주문 목록 + 합계 */}
       <div className={styles.content}>
-        <OrderList orders={orders} />
+        <OrderList orders={safeOrders} />
         <TotalPriceLabel label="주문" price={totalPrice} />
       </div>
 
       {/* ✔ 결제 버튼 */}
       <div className={styles.buttonRow}>
         <button
+          type="button"
           className={styles.payCompleteButton}
-          onClick={() => onPayComplete?.(id)}
+          onClick={handlePay}
+          disabled={id == null}
         >
-          {isPaying ? "처리 중..." : "결제완료"}
+          결제완료
         </button>
       </div>
 
       {/* ◀ 뒤로 버튼 */}
       <div className={styles.backRow}>
-        <button className={styles.backButton} onClick={onClose}>
+        <button type="button" className={styles.backButton} onClick={onClose}>
           뒤로
         </button>
       </div>

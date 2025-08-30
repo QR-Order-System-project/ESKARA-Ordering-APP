@@ -1,31 +1,38 @@
-/* 전체 래퍼: 세로 레이아웃 + 자체 스크롤 방지(자식에 위임) */
+/* 전체 래퍼: 뷰포트 고정 + 바깥 스크롤 차단 */
 .boardWrap {
-  height: 100%;
-  min-height: 0;
+  height: 100dvh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   background: #edce7a;
-  /* 여기서는 overflow 주지 않음 (헤더 고정 위해) */
+  overflow: hidden; /* 바디 스크롤 방지 */
 }
 
-/* 상단 제목을 고정 (세로 스크롤에도 붙어 있게) */
+/* 상단 제목 고정 (스크롤 영역 밖) */
 .titleBar {
   position: sticky;
   top: 0;
   z-index: 3;
-  background: #edce7a; /* 배경과 동일 */
+  background: #edce7a;
 }
 
-/* 가로 스크롤 전용 래퍼: 헤더는 이 밖에 둠 */
-.hScroller {
+/* ✅ PageTitle 아래, 이 컨테이너가 '세로 스크롤' 담당 */
+.vScroller {
   flex: 1 1 auto;
   min-height: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 
-/* 가로로 칼럼이 흐르는 영역 (디자인 값 유지) */
+/* 가로 스크롤 전용 래퍼 */
+.hScroller {
+  overflow-x: auto;
+  overflow-y: visible; /* ✅ 세로 스크롤은 vScroller가 담당 */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 가로로 칼럼이 흐르는 영역 (디자인 유지) */
 .board {
   display: grid;
   grid-auto-flow: column;
@@ -33,12 +40,9 @@
   padding: 12px;
   min-height: 100%;
   min-width: 0;
-
-  /* 한 화면에 정확히 2칼럼 보이게 (gap 10px 반영) */
   grid-auto-columns: calc((100% - 10px) / 2);
 }
 
-/* 이하 기존 디자인 그대로 */
 .column {
   display: flex;
   flex-direction: column;
@@ -66,16 +70,15 @@
   text-align: center;
 }
 
+/* ✅ 컬럼 내부는 자체 세로 스크롤 제거 → 바깥(vScroller)로 위임 */
 .stack {
   display: grid;
   grid-auto-rows: min-content;
   gap: 10px;
   padding: 10px;
-  max-height: 100%;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
   min-height: 0;
+  /* overflow-y: auto;  ← 제거 */
+  /* overscroll-behavior: contain;  ← 필요없으면 제거 */
 }
 
 .card {
@@ -95,12 +98,24 @@
 }
 
 .orderBody {
-  font-family: Inter;
+  font-family: Inter, sans-serif;
   font-weight: 300;
-  font-style: Medium;
+  /* font-style: Medium; ← 잘못된 속성 제거 */
   font-size: 18px;
   text-align: center;
   color: #ffffff;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+/* 제목 두 줄 고정 (div + span 두 개) - 필요 시 공용으로 빼도 됨 */
+.titleLines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.titleLines > span {
+  display: block;
+  white-space: nowrap;
 }

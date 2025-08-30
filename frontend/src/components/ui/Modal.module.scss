@@ -42,17 +42,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  padding-top: 0px;
-  padding-bottom: 0px;
+  padding: 0 20px; /* 기존: 위/아래 0, 좌/우 20 */
 }
 
 .title {
-  font-family: Inter;
-  font-weight: 600;
-  font-style: Semi Bold;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600; /* 기존 시각적 굵기 유지 */
   font-size: 30px;
-  color: white;
+  color: #ffffff;
   text-align: center;
 }
 
@@ -60,15 +58,12 @@
   background: none;
   border: none;
   padding: 0;
-  margin: 0;
+  margin: 10px 10px 0 10px; /* 기존 margin 합침 */
   display: inline-flex;
   align-items: center;
   cursor: pointer;
-  width: auto;
-  height: auto;
-  margin: 10px;
-  margin-bottom: 0px;
   color: #ffffff;
+
   svg {
     display: block;
   }
@@ -83,12 +78,27 @@
 
 .btn {
   display: flex;
-  font-family: Inter;
-  font-weight: 600;
-  font-style: Semi Bold;
+  align-items: center;
+  justify-content: center;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600; /* 기존 시각적 굵기 유지 */
   font-size: 26px;
   border-radius: 10px;
   border: none;
   background-color: #edce7a;
   padding: 13px 30px 15px 30px;
+  cursor: pointer;
+}
+
+/* 기존 상위에서 내려주던 본문 스타일 */
+.orderBody {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-weight: 300; /* 시각적 'Medium'은 weight가 아니라서 유지값은 300 */
+  font-size: 18px;
+  text-align: center;
+  color: #ffffff;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
