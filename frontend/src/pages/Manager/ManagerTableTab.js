@@ -1,16 +1,18 @@
 // ManagerTableTab.jsx
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback } from "react";
 import styles from "./ManagerTableTab.module.scss";
 import { Table } from "./Table";
 import { ManagerTableDetail } from "./ManagerTableDetail";
 
 import { Modal } from "../../components/ui/Modal";
-import ToastModal from "../../components/ui/ToastModal";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { PageTitle } from "../../components/PageTitle";
 
+// --- Mock API ---
+const fakeSaveBill = (payload) =>
+  new Promise((resolve) => setTimeout(() => resolve(payload), 300));
+
 export const ManagerTableTab = () => {
-  const [toast, setToast] = useState({ open: false, tone: "info", msg: "" });
   const [tables, setTables] = useState([
     {
       id: 1,
@@ -127,129 +129,129 @@ export const ManagerTableTab = () => {
   ]);
 
   const [selectedId, setSelectedId] = useState(null);
-  const [confirmId, setConfirmId] = useState(null); // 결제 확인 모달용
-  const [infoMessage, setInfoMessage] = useState(null); // 안내 모달용 (토스트 대체)
-  const [isPaymentActive, setIsPaymentActive] = useState(true); // 결제 활성/비활성 상태
-  const [toggleOpen, setToggleOpen] = useState(false); // 토글 모달 열림
 
-  // 상태별 문구/라벨
-  const toggleTexts = useMemo(
-    () =>
-      isPaymentActive
-        ? {
-            button: "결제 비활성화",
-            title: "결제 버튼을 비활성화 하시겠습니까?",
-            confirm: "확인",
-          }
-        : {
-            button: "결제 활성화",
-            title: (
-              <>
-                결제 버튼을 활성화
-                <br />
-                하시겠습니까?
-              </>
-            ),
-            confirm: "확인",
-          },
-    [isPaymentActive]
+  // 단일 모달 상태: 이 페이지 전용
+  const [dialog, setDialog] = useState({
+    open: false,
+    title: null,
+    body: null,
+    onConfirm: null, // 없으면 Modal이 확인 버튼 숨김
+  });
+
+  const getTotal = useCallback(
+    (orders) =>
+      Array.isArray(orders)
+        ? orders.reduce((s, o) => s + o.price * o.amount, 0)
+        : 0,
+    []
   );
-
-  const getTotal = (orders) =>
-    orders?.reduce((sum, o) => sum + o.price * o.amount, 0) ?? 0;
-
-  const handleToggleConfirm = () => {
-    setIsPaymentActive((v) => !v);
-    setToggleOpen(false);
-  };
-
-  const renderToggleBody = () =>
-    isPaymentActive ? (
-      <>
-        <p className={styles.payOnOffBody}>
-          고객의 결제 버튼이 비활성화됩니다.
-        </p>
-      </>
-    ) : (
-      <>
-        <p className={styles.payOnOffBody}>고객의 결제 버튼이 활성화됩니다.</p>
-      </>
-    );
 
   const selectedTable = useMemo(
     () => tables.find((t) => t.id === selectedId) ?? null,
     [tables, selectedId]
   );
 
-  // id -> table 빠른 조회용
   const tableMap = useMemo(() => {
     const m = new Map();
-    tables.forEach((t) => m.set(t.id, t));
+    for (const t of tables) m.set(t.id, t);
     return m;
   }, [tables]);
 
-  // 상세에서 "결제완료" 클릭
-  const handlePayComplete = (tableId) => {
-    const t = tableMap.get(tableId);
-    if (!t || (t.orders?.length ?? 0) === 0) {
-      setToast({
-        open: true,
-        tone: "error",
-        msg: "주문내역이 존재하지 않습니다.",
-      });
-      return;
-    }
-    setConfirmId(tableId);
-  };
+  // 모달 열기/닫기 헬퍼
+  const openDialog = useCallback(
+    (cfg) => setDialog({ open: true, ...cfg }),
+    []
+  );
+  const closeDialog = useCallback(
+    () => setDialog((d) => ({ ...d, open: false })),
+    []
+  );
 
-  const doPay = async (tableId) => {
-    const t = tableMap.get(tableId);
-    if (!t) return;
-
-    try {
-      await fakeSaveBill({
-        tableId,
-        name: t.name,
-        orders: t.orders,
-        totalPrice: getTotal(t.orders),
-        paidAt: new Date().toISOString(),
-      });
-
-      // ✅ 주문만 비우기 (상세 화면 유지)
-      setTables((prev) =>
-        prev.map((row) => (row.id === tableId ? { ...row, orders: [] } : row))
-      );
-    } catch (e) {
-      console.error(e);
-      // ✅ 토스트 제거 → 에러도 안내 모달로
-      setInfoMessage("결제 처리 중 오류가 발생했습니다.");
-    } finally {
-      setConfirmId(null); // 모달 닫기
-    }
-  };
-
-  const confirmTitle = "해당 테이블을 결제완료 처리하시겠습니까?";
-
-  const confirmBody = (() => {
-    const t = tableMap.get(confirmId);
-    if (!t) return null;
-    const total = getTotal(t.orders).toLocaleString();
-    return (
-      <div>
-        <p className={styles.confirmBody}>
-          총 주문금액과 이체금액을 확인해주세요.
-        </p>
+  // 결제 비/활성 토글 모달
+  const [isPaymentActive, setIsPaymentActive] = useState(true);
+  const showToggleDialog = useCallback(() => {
+    const title = isPaymentActive ? (
+      <div className={styles.titleLines}>
+        <span>결제 버튼을 비활성화</span>
+        <span>하시겠습니까?</span>
+      </div>
+    ) : (
+      <div className={styles.titleLines}>
+        <span>결제 버튼을 활성화</span>
+        <span>하시겠습니까?</span>
       </div>
     );
-  })();
+    const body = (
+      <p className={styles.payOnOffBody}>
+        {isPaymentActive
+          ? "고객의 결제 버튼이 비활성화됩니다."
+          : "고객의 결제 버튼이 활성화됩니다."}
+      </p>
+    );
+    const onConfirm = () => {
+      setIsPaymentActive((v) => !v);
+      closeDialog();
+    };
+    openDialog({ title, body, onConfirm });
+  }, [
+    isPaymentActive,
+    openDialog,
+    closeDialog,
+    styles.titleLines,
+    styles.payOnOffBody,
+  ]);
+
+  // 상세에서 "결제완료" 클릭 시: 주문 없으면 무시, 있으면 컨펌 모달
+  const handlePayComplete = useCallback(
+    (tableId) => {
+      const t = tableMap.get(tableId);
+      if (!t || (t.orders?.length ?? 0) === 0) {
+        // 안내/토스트 제거 요청 → 조용히 리턴
+        return;
+      }
+      openDialog({
+        title: (
+          <div className={styles.titleLines}>
+            <span>해당 테이블을 결제완료</span>
+            <span>처리하시겠습니까?</span>
+          </div>
+        ),
+        body: (
+          <p className={styles.confirmBody}>
+            총 주문금액과 이체금액을 확인해주세요.
+          </p>
+        ),
+        onConfirm: async () => {
+          try {
+            await fakeSaveBill({
+              tableId,
+              name: t.name,
+              orders: t.orders,
+              totalPrice: getTotal(t.orders),
+              paidAt: new Date().toISOString(),
+            });
+            setTables((prev) =>
+              prev.map((row) =>
+                row.id === tableId ? { ...row, orders: [] } : row
+              )
+            );
+          } finally {
+            closeDialog();
+          }
+        },
+      });
+    },
+    [tableMap, getTotal, openDialog, closeDialog, styles.confirmBody]
+  );
 
   return (
     <div className={styles.wrapper}>
       {selectedTable === null ? (
         <>
           <PageTitle title="테이블 관리" Icon={FaMoneyBillWave} />
+
           <div className={styles.mainPanel}>
-            {/* ✅ 스크롤 컨테이너 */}
+            {/* 스크롤 컨테이너 */}
             <div className={styles.content}>
               <div className={styles.tablePanel}>
                 {tables.map((t) => (
@@ -263,13 +265,14 @@ export const ManagerTableTab = () => {
             </div>
           </div>
 
-          {/* ✅ 스크롤 컨테이너 안의 sticky footer */}
+          {/* 스크롤 컨테이너 밖의 하단 버튼(고정) */}
           <div className={styles.footer}>
             <button
+              type="button"
               className={styles.payOnOffButton}
-              onClick={() => setToggleOpen(true)}
+              onClick={showToggleDialog}
             >
-              {toggleTexts.button}
+              {isPaymentActive ? "결제 비활성화" : "결제 활성화"}
             </button>
           </div>
         </>
@@ -280,60 +283,20 @@ export const ManagerTableTab = () => {
             totalPrice: getTotal(selectedTable.orders),
           }}
           onClose={() => setSelectedId(null)}
-          onPayComplete={handlePayComplete} // 빈 주문이면 안내 모달, 있으면 컨펌 모달
+          onPayComplete={handlePayComplete}
         />
       )}
 
-      {/* ✅ 안내 모달 (토스트 대체) */}
+      {/* 단일 모달: 설정(state)로 멘트/동작 주입 */}
       <Modal
-        open={!!infoMessage}
-        onClose={() => setInfoMessage(null)}
-        // onConfirm 없음 → 확인 버튼 숨김
-        title="알림"
-        closeText="닫기"
+        open={dialog.open}
+        onClose={closeDialog}
+        onConfirm={dialog.onConfirm}
+        title={dialog.title}
         dimmed
       >
-        {infoMessage}
+        {dialog.body}
       </Modal>
-
-      {/* ✅ 결제 확인 모달 */}
-      <Modal
-        open={confirmId != null}
-        onClose={() => setConfirmId(null)}
-        onConfirm={() => doPay(confirmId)}
-        title={confirmTitle}
-        closeText="닫기"
-        confirmText="확인"
-        dimmed
-      >
-        {confirmBody}
-      </Modal>
-
-      {/* ✅ 결제 활성/비활성 토글 모달 */}
-      <Modal
-        open={toggleOpen}
-        onClose={() => setToggleOpen(false)}
-        onConfirm={handleToggleConfirm}
-        title={toggleTexts.title}
-        closeText="취소"
-        confirmText={toggleTexts.confirm}
-        dimmed
-      >
-        <div className={styles.toggleModalBody}>{renderToggleBody()}</div>
-      </Modal>
-
-      <ToastModal
-        open={toast.open}
-        onClose={() => setToast((s) => ({ ...s, open: false }))}
-        message={toast.msg}
-        tone={toast.tone}
-        duration={1500}
-        dimmed={false} // 배경 어둡게 원하면 true
-      />
     </div>
   );
 };
-
-// --- Mock API ---
-const fakeSaveBill = (payload) =>
-  new Promise((resolve) => setTimeout(() => resolve(payload), 300));
