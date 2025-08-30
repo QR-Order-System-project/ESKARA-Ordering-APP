@@ -8,11 +8,18 @@ import { Modal } from "../../components/ui/Modal";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { PageTitle } from "../../components/PageTitle";
 
-// --- Mock API ---
+/**
+ * ManagerTableTab
+ * - 테이블 목록을 보여주고, 선택 시 상세 화면으로 전환
+ * - 결제 활성/비활성 토글 및 결제완료 확인 모달 제공
+ */
+
+// --- Mock API (결제 데이터 저장 시뮬레이션) ---
 const fakeSaveBill = (payload) =>
   new Promise((resolve) => setTimeout(() => resolve(payload), 300));
 
 export const ManagerTableTab = () => {
+  /* 테이블 목록 상태 */
   const [tables, setTables] = useState([
     {
       id: 1,
@@ -128,9 +135,10 @@ export const ManagerTableTab = () => {
     },
   ]);
 
+  /* 선택된 테이블 ID */
   const [selectedId, setSelectedId] = useState(null);
 
-  // 단일 모달 상태: 이 페이지 전용
+  /* 페이지 전용 모달 상태 */
   const [dialog, setDialog] = useState({
     open: false,
     title: null,
@@ -138,6 +146,7 @@ export const ManagerTableTab = () => {
     onConfirm: null, // 없으면 Modal이 확인 버튼 숨김
   });
 
+  /* 합계 계산 */
   const getTotal = useCallback(
     (orders) =>
       Array.isArray(orders)
@@ -146,18 +155,20 @@ export const ManagerTableTab = () => {
     []
   );
 
+  /* 선택된 테이블 */
   const selectedTable = useMemo(
     () => tables.find((t) => t.id === selectedId) ?? null,
     [tables, selectedId]
   );
 
+  /* id → 테이블 매핑 */
   const tableMap = useMemo(() => {
     const m = new Map();
     for (const t of tables) m.set(t.id, t);
     return m;
   }, [tables]);
 
-  // 모달 열기/닫기 헬퍼
+  /* 모달 열기/닫기 */
   const openDialog = useCallback(
     (cfg) => setDialog({ open: true, ...cfg }),
     []
@@ -167,7 +178,7 @@ export const ManagerTableTab = () => {
     []
   );
 
-  // 결제 비/활성 토글 모달
+  /* 결제 버튼 비/활성 토글 */
   const [isPaymentActive, setIsPaymentActive] = useState(true);
   const showToggleDialog = useCallback(() => {
     const title = isPaymentActive ? (
@@ -201,12 +212,12 @@ export const ManagerTableTab = () => {
     styles.payOnOffBody,
   ]);
 
-  // 상세에서 "결제완료" 클릭 시: 주문 없으면 무시, 있으면 컨펌 모달
+  /* 상세에서 '결제완료' 클릭 → 확인 모달 후 처리 */
   const handlePayComplete = useCallback(
     (tableId) => {
       const t = tableMap.get(tableId);
       if (!t || (t.orders?.length ?? 0) === 0) {
-        // 안내/토스트 제거 요청 → 조용히 리턴
+        // 주문이 없으면 아무 동작 없음
         return;
       }
       openDialog({
@@ -248,10 +259,11 @@ export const ManagerTableTab = () => {
     <div className={styles.wrapper}>
       {selectedTable === null ? (
         <>
+          {/* 상단 타이틀 */}
           <PageTitle title="테이블 관리" Icon={FaMoneyBillWave} />
 
+          {/* 테이블 목록 (스크롤 컨테이너 포함) */}
           <div className={styles.mainPanel}>
-            {/* 스크롤 컨테이너 */}
             <div className={styles.content}>
               <div className={styles.tablePanel}>
                 {tables.map((t) => (
@@ -265,7 +277,7 @@ export const ManagerTableTab = () => {
             </div>
           </div>
 
-          {/* 스크롤 컨테이너 밖의 하단 버튼(고정) */}
+          {/* 하단 토글 버튼 (고정) */}
           <div className={styles.footer}>
             <button
               type="button"
@@ -277,6 +289,7 @@ export const ManagerTableTab = () => {
           </div>
         </>
       ) : (
+        /* 상세 화면 */
         <ManagerTableDetail
           table={{
             ...selectedTable,
@@ -287,7 +300,7 @@ export const ManagerTableTab = () => {
         />
       )}
 
-      {/* 단일 모달: 설정(state)로 멘트/동작 주입 */}
+      {/* 단일 모달 (동적으로 타이틀/본문/확인 주입) */}
       <Modal
         open={dialog.open}
         onClose={closeDialog}

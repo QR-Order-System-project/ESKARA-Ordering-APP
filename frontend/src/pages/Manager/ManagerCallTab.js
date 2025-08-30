@@ -5,7 +5,13 @@ import { Modal } from "../../components/ui/Modal";
 import { PageTitle } from "../../components/PageTitle";
 import { AiOutlineUser } from "react-icons/ai";
 
-// 더미 큐 데이터 (API 붙기 전까지 사용)
+/**
+ * ManagerCallTab
+ * - 직원 호출 큐를 시간순으로 보여주고, 항목 선택 시 완료 확인 모달을 띄움
+ * - 모달 확인 시 해당 호출을 큐에서 제거
+ */
+
+// 더미 큐 데이터 (API 연동 전 임시)
 const initialCalls = [
   {
     id: 1,
@@ -58,14 +64,17 @@ const initialCalls = [
 ];
 
 export const ManagerCallTab = () => {
+  /* 상태 */
   const [calls, setCalls] = useState(initialCalls);
   const [selected, setSelected] = useState(null);
 
+  /* 정렬된 큐 (오래된 순) */
   const sorted = useMemo(
     () => [...calls].sort((a, b) => a.createdAt - b.createdAt),
     [calls]
   );
 
+  /* 이벤트 핸들러 */
   const openModal = (call) => setSelected(call);
   const closeModal = () => setSelected(null);
   const confirmAndRemove = () => {
@@ -76,11 +85,13 @@ export const ManagerCallTab = () => {
 
   return (
     <>
+      {/* 상단 타이틀 */}
       <div className={styles.root}>
         <div className={styles.titleBar}>
           <PageTitle title="직원 호출" Icon={AiOutlineUser} />
         </div>
 
+        {/* 호출 리스트 */}
         <ul className={styles.list}>
           {sorted.map((call) => (
             <li
@@ -103,13 +114,15 @@ export const ManagerCallTab = () => {
               </div>
             </li>
           ))}
+
+          {/* 비어있을 때 */}
           {sorted.length === 0 && (
             <div className={styles.empty}>현재 대기 중인 요청이 없습니다.</div>
           )}
         </ul>
       </div>
 
-      {/* 모달은 페이지 바깥/위치 그대로 사용 */}
+      {/* 완료 확인 모달 */}
       <Modal
         open={!!selected}
         title={

@@ -1,25 +1,25 @@
 /* pages/Manager/ManagerCallTab.module.scss */
 
-/* 🔒 바디 스크롤을 막고, 페이지 내부에서만 스크롤 */
+/* === 페이지 레이아웃: 내부 스크롤 전용 === */
 .page {
   height: 100dvh;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   overflow: hidden; /* 바깥 스크롤 차단 */
-  background: #edce7a; /* 배경은 페이지에 둠 */
+  background: #edce7a;
 }
 
-/* 🧷 타이틀 고정 */
+/* === 상단 타이틀 고정 === */
 .titleBar {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: #edce7a; /* 붙어 있을 때 깔끔하게 */
-  padding-top: 8px; /* 필요 시 미세 여백 */
+  background: #edce7a;
+  padding-top: 8px;
 }
 
-/* 리스트 영역 래퍼: 남은 공간 차지 + 내부 스크롤만 허용 */
+/* === 리스트 영역 래퍼 === */
 .wrapper {
   flex: 1;
   min-height: 0; /* flex 내부 스크롤 핵심 */
@@ -27,10 +27,10 @@
   flex-direction: column;
   align-items: center;
   padding: 0 0 16px;
-  overflow: hidden; /* 여기서는 숨기고 */
+  overflow: hidden;
 }
 
-/* ✅ 리스트만 스크롤 */
+/* === 리스트: 내부 스크롤 === */
 .list {
   display: flex;
   flex-direction: column;
@@ -42,10 +42,11 @@
 
   flex: 1;
   min-height: 0; /* flex 자식 스크롤 핵심 */
-  overflow: auto; /* 내부 스크롤 실제 적용 */
+  overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
 
+/* === 리스트 아이템 === */
 .item {
   display: flex;
   align-items: stretch;
@@ -57,7 +58,7 @@
   margin: 0;
 }
 
-/* 이하 기존 그대로 */
+/* === 테이블 번호 박스 === */
 .tableBox {
   display: flex;
   flex-direction: column;
@@ -79,6 +80,7 @@
   font-weight: 700;
 }
 
+/* === 요청 내용 === */
 .requests {
   flex: 1;
   display: flex;
@@ -98,13 +100,14 @@
   text-overflow: ellipsis;
 }
 
+/* === 비어있을 때 === */
 .empty {
   text-align: center;
   padding: 24px 0;
   color: #666;
 }
 
-/* 모달 본문 텍스트(흰 배경 대비 주의) */
+/* === 모달 본문 텍스트 === */
 .modalList {
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -114,7 +117,7 @@
   color: #ffffff;
 }
 
-/* 제목 두 줄 고정 (div + span 두 개) */
+/* === 모달 제목(두 줄) === */
 .titleLines {
   display: flex;
   flex-direction: column;
@@ -123,10 +126,10 @@
 }
 .titleLines > span {
   display: block;
-  white-space: nowrap; /* 줄 내부 무줄바꿈 */
+  white-space: nowrap;
 }
 
-/* 📱 모바일 반응형 */
+/* === 모바일 반응형 === */
 @media (max-width: 480px) {
   .list {
     max-width: 100%;

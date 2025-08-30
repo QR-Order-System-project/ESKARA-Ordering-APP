@@ -1,14 +1,16 @@
-/* 전체 래퍼: 뷰포트 고정 + 바깥 스크롤 차단 */
+/* pages/Manager/ManagerOrderTab.module.scss */
+
+/* === 페이지 래퍼 (뷰포트 고정, 바깥 스크롤 차단) === */
 .boardWrap {
   height: 100dvh;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   background: #edce7a;
-  overflow: hidden; /* 바디 스크롤 방지 */
+  overflow: hidden;
 }
 
-/* 상단 제목 고정 (스크롤 영역 밖) */
+/* === 상단 제목 (고정) === */
 .titleBar {
   position: sticky;
   top: 0;
@@ -16,7 +18,7 @@
   background: #edce7a;
 }
 
-/* ✅ PageTitle 아래, 이 컨테이너가 '세로 스크롤' 담당 */
+/* === 세로 스크롤 컨테이너 (PageTitle 아래 영역) === */
 .vScroller {
   flex: 1 1 auto;
   min-height: 0;
@@ -25,14 +27,14 @@
   -webkit-overflow-scrolling: touch;
 }
 
-/* 가로 스크롤 전용 래퍼 */
+/* === 가로 스크롤 래퍼 === */
 .hScroller {
   overflow-x: auto;
-  overflow-y: visible; /* ✅ 세로 스크롤은 vScroller가 담당 */
+  overflow-y: visible;
   -webkit-overflow-scrolling: touch;
 }
 
-/* 가로로 칼럼이 흐르는 영역 (디자인 유지) */
+/* === 칼럼 보드 (가로 흐름) === */
 .board {
   display: grid;
   grid-auto-flow: column;
@@ -43,6 +45,7 @@
   grid-auto-columns: calc((100% - 10px) / 2);
 }
 
+/* === 칼럼 === */
 .column {
   display: flex;
   flex-direction: column;
@@ -53,6 +56,7 @@
   min-width: 0;
 }
 
+/* === 칼럼 헤더 (고정) === */
 .columnHeader {
   position: sticky;
   top: 0;
@@ -70,17 +74,16 @@
   text-align: center;
 }
 
-/* ✅ 컬럼 내부는 자체 세로 스크롤 제거 → 바깥(vScroller)로 위임 */
+/* === 카드 스택 (세로 목록) === */
 .stack {
   display: grid;
   grid-auto-rows: min-content;
   gap: 10px;
   padding: 10px;
   min-height: 0;
-  /* overflow-y: auto;  ← 제거 */
-  /* overscroll-behavior: contain;  ← 필요없으면 제거 */
 }
 
+/* === 카드 === */
 .card {
   display: flex;
   align-items: center;
@@ -97,10 +100,10 @@
   text-overflow: ellipsis;
 }
 
+/* === 모달 본문 텍스트 === */
 .orderBody {
   font-family: Inter, sans-serif;
   font-weight: 300;
-  /* font-style: Medium; ← 잘못된 속성 제거 */
   font-size: 18px;
   text-align: center;
   color: #ffffff;
@@ -108,7 +111,7 @@
   margin-bottom: 10px;
 }
 
-/* 제목 두 줄 고정 (div + span 두 개) - 필요 시 공용으로 빼도 됨 */
+/* === 모달 제목(두 줄) === */
 .titleLines {
   display: flex;
   flex-direction: column;

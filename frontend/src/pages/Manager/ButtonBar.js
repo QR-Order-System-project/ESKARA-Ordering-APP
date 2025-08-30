@@ -1,6 +1,11 @@
 import styles from "./ButtonBar.module.scss";
 
-// 맨 위 테이블, 오더, 콜 탭 전환 버튼
+/**
+ * ButtonBar
+ * - 상단 탭 전환 바 (TABLE / ORDER / CALL)
+ * - value: 현재 선택된 탭
+ * - onChange: 탭 클릭 시 호출
+ */
 
 const TABS = ["TABLE", "ORDER", "CALL"];
 
