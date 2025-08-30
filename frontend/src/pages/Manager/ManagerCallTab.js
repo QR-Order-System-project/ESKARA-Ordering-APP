@@ -113,26 +113,21 @@ export const ManagerCallTab = () => {
       <Modal
         open={!!selected}
         title={
-          selected && (
-            <>
-              직원호출을 완료
-              <br />
-              처리하시겠습니까?
-            </>
-          )
+          <div className={styles.titleLines}>
+            <span>직원호출을 완료</span>
+            <span>처리하시겠습니까?</span>
+          </div>
         }
         onClose={closeModal}
         onConfirm={confirmAndRemove}
-        confirmText="확인"
-        closeText="닫기"
       >
-        {selected && (
-          <div className={styles.modalBody}>
-            <ul className={styles.modalList}>
-              {selected.tableNo}번 테이블 요청을 완료했는지 확인해주세요.
-            </ul>
+        <div className={styles.modalBody}>
+          <div className={styles.modalList}>
+            <span>
+              {selected?.tableNo}번 테이블 요청을 완료했는지 확인해주세요.
+            </span>
           </div>
-        )}
+        </div>
       </Modal>
     </>
   );
