@@ -37,6 +37,24 @@ const initialCalls = [
     requests: ["밑반찬 리필", "숟가락 1개"],
     createdAt: Date.now() - 1000 * 60 * 22,
   },
+  {
+    id: 6,
+    tableNo: 24,
+    requests: ["밑반찬 리필", "숟가락 1개"],
+    createdAt: Date.now() - 1000 * 60 * 22,
+  },
+  {
+    id: 7,
+    tableNo: 24,
+    requests: ["밑반찬 리필", "숟가락 1개"],
+    createdAt: Date.now() - 1000 * 60 * 22,
+  },
+  {
+    id: 8,
+    tableNo: 24,
+    requests: ["밑반찬 리필", "숟가락 1개"],
+    createdAt: Date.now() - 1000 * 60 * 22,
+  },
 ];
 
 export const ManagerCallTab = () => {

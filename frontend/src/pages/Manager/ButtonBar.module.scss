@@ -7,19 +7,14 @@
 .button {
   display: flex;
   flex: 1;
+  border: 1.5px solid #000000;
   border-radius: 0;
   gap: 10px;
-  padding-top: 8px;
-  padding-right: 23px;
-  padding-bottom: 8px;
-  padding-left: 23px;
-  border: 1.5px solid #000000;
+  padding: 8px 23px;
   background-color: white;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin: 5px 0;
   font-family: Inter;
   font-weight: 600;
-  font-style: Semi Bold;
   font-size: 16px;
   align-items: center;
   justify-content: center;
@@ -27,18 +22,16 @@
 
 /* 왼쪽 버튼 */
 .button:first-child {
-  border-width: 1.5px;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  border-right-width: 0px;
+  border-right-width: 0;
 }
 
 /* 오른쪽 버튼 */
 .button:last-child {
-  border-width: 1.5px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-  border-left-width: 0px;
+  border-left-width: 0;
 }
 
 .active {
