@@ -232,6 +232,8 @@ export const ManagerTableTab = () => {
             총 주문금액과 이체금액을 확인해주세요.
           </p>
         ),
+
+        //임시 API
         onConfirm: async () => {
           try {
             await fakeSaveBill({
