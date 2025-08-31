@@ -56,8 +56,6 @@ export const ManagerMain = () => {
           {tab === "CALL" && <ManagerCallTab />}
         </div>
       </div>
-      <button onClick={showSuccess}>성공 토스트</button>
-      <button onClick={showError}>실패 토스트</button>
       {toast && (
         <CompactToastModal
           message={toast.message}

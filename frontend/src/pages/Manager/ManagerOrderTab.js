@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import styles from "./ManagerOrderTab.module.scss";
-import { Modal } from "../../components/ui/Modal";
+import { Modal } from "../../components/popups/Modal";
 import { PageTitle } from "../../components/PageTitle";
 import { HiOutlineClipboardList } from "react-icons/hi";
 

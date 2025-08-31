@@ -4,7 +4,7 @@ import styles from "./ManagerTableTab.module.scss";
 import { Table } from "./Table";
 import { ManagerTableDetail } from "./ManagerTableDetail";
 
-import { Modal } from "../../components/ui/Modal";
+import { Modal } from "../../components/popups/Modal";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { PageTitle } from "../../components/PageTitle";
 

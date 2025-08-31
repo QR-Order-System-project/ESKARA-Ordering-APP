@@ -1,7 +1,7 @@
 // pages/Manager/ManagerCallTab.jsx
 import { useMemo, useState } from "react";
 import styles from "./ManagerCallTab.module.scss";
-import { Modal } from "../../components/ui/Modal";
+import { Modal } from "../../components/popups/Modal";
 import { PageTitle } from "../../components/PageTitle";
 import { AiOutlineUser } from "react-icons/ai";
 
