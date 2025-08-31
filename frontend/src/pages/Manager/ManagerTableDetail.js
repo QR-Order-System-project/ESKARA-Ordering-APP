@@ -55,13 +55,6 @@ export const ManagerTableDetail = ({ table, onClose, onPayComplete }) => {
           결제완료
         </button>
       </div>
-
-      {/* 개발용 임시 뒤로가기 버튼 */}
-      <div className={styles.backRow}>
-        <button type="button" className={styles.backButton} onClick={onClose}>
-          뒤로
-        </button>
-      </div>
     </div>
   );
 };

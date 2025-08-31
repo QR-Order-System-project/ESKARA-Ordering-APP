@@ -6,7 +6,8 @@ import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { ManagerTableTab } from "./ManagerTableTab";
 import { ManagerOrderTab } from "./ManagerOrderTab";
 import { ManagerCallTab } from "./ManagerCallTab";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
+import { CompactToastModal } from "../../components/popups/CompactToastModal";
 
 /**
  * ManagerMain
@@ -27,20 +28,13 @@ export const ManagerMain = () => {
   const [toast, setToast] = useState(null);
   // toast: { message, variant } | null
 
-  const showSuccess = () =>
-    setToast({
-      message: "계좌번호가 성공적으로 복사되었습니다!",
-      variant: "success",
-    });
-  const showError = () =>
-    setToast({ message: "실패했습니다.", variant: "error" });
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.mainPanel}>
         {/* 상단 홈 버튼 + 로고 영역 */}
         <div className={styles.topBar}>
-          <HomeButton to="/manager" />
+          {/* 현재 경로로 링크 걸어두고 클릭 시 새로고침만 수행 */}
+          <HomeButton reload />
           <div className={styles.logoPanel}>
             <img src="/icons/logo.svg" alt="로고" className={styles.logo} />
           </div>
