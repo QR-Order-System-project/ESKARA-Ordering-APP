@@ -18,31 +18,24 @@
   background: #ffffff;
 }
 
-/* === 세로 스크롤 컨테이너 (PageTitle 아래 영역) === */
-.vScroller {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* === 가로 스크롤 래퍼 === */
-.hScroller {
-  overflow-x: auto;
-  overflow-y: visible;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* === 칼럼 보드 (가로 흐름) === */
+/* 보드가 세로 스크롤 주체 */
 .board {
   display: grid;
   grid-auto-flow: column;
   gap: 10px;
   padding: 12px;
-  min-height: 100%;
-  min-width: 0;
+
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+
   grid-auto-columns: calc((100% - 10px) / 2);
+
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 
 /* === 칼럼 === */
@@ -52,8 +45,11 @@
   background: #ffffff;
   border: 1.5px solid #000000;
   border-radius: 10px;
-  overflow: hidden;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
   min-width: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 /* === 칼럼 헤더 (고정) === */

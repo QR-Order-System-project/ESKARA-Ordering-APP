@@ -24,18 +24,19 @@
   position: relative;
   width: min(92vw, 520px);
   max-height: min(86vh, 720px);
-  background: #a57a0f;
+  background: #d5a68b;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  border: 1.5px solid #000000;
 }
 
 .bare {
   background: transparent !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  overflow: visible; // 내부 그림자 안 잘리도록
+  overflow: visible;
   width: auto;
   max-height: none;
 }
@@ -84,10 +85,10 @@
   font-weight: 600;
   font-size: 26px;
   border-radius: 10px;
-  border: none;
-  background-color: #edce7a;
+  background-color: #ffffff;
   padding: 13px 30px 15px 30px;
   cursor: pointer;
+  border: 1.5px solid #000000;
 }
 
 /* === 본문 === */
