@@ -10,11 +10,11 @@
   width: 139px;
   height: 90px;
   padding: 14px 6px;
-  border: 1.5px solid #000;
+  border: 1.5px solid #000000;
   border-radius: 10px;
   box-sizing: border-box;
 
-  background-color: #fff;
+  background-color: #ffffff;
   font-family: Inter, sans-serif;
   font-weight: 600;
   font-size: 20px;
@@ -28,6 +28,6 @@
 
 /* === 활성 상태 (선택 강조) === */
 .active {
-  background-color: #a57a0f;
-  color: #fff;
+  background-color: #d5a68b;
+  color: #ffffff;
 }
