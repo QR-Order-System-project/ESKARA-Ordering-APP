@@ -1,112 +1,72 @@
-/* pages/Manager/ManagerCallTab.module.scss */
-
-/* === 페이지 루트 (flex) === */
 .page {
-  height: 100dvh;
-  min-height: 0;
   display: flex;
+  height: auto;
+  gap: 10px;
   flex-direction: column;
-  background: #ffffff;
-  overflow: hidden;
 }
 
-/* === 타이틀 고정 === */
-.titleBar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: #ffffff;
-  padding-top: 8px;
-}
-
-/* === 유일한 세로 스크롤 컨테이너 (flex) === */
-.wrapper {
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 0 16px;
-}
-
-/* === 리스트: grid 사용 (1열 세로 스택) === */
 .list {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-auto-rows: min-content;
-  row-gap: 10px;
-  column-gap: 0;
-
-  width: 100%;
-  max-width: 600px;
-  padding: 0 16px;
-  margin: 8px 0 0;
-
-  /* 스크롤은 wrapper가 담당 */
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* === 카드 아이템 (flex) === */
-.item {
   display: flex;
-  align-items: stretch;
-  flex: 0 0 auto;
-  border: 1.5px solid #000;
-  border-radius: 10px;
-  background: #ffffff;
-  cursor: pointer;
-  overflow: hidden;
+  gap: 10px;
+  flex-direction: column;
+  overflow: auto;
+  max-height: 450px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+  padding-right: 8px;
+
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #d5a68b;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
 }
 
-/* === 왼쪽 테이블 번호 박스 (flex) === */
-.tableBox {
+.card {
+  display: flex;
+}
+
+.table {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  align-self: stretch;
-  min-width: 100px;
-  padding: 10px 10px;
-  background: #d5a68b;
-  color: #ffffff;
-  border-right: 1.5px solid #000;
+  padding: 10px 20px;
+  border: 1.5px solid #000000;
+  border-radius: 10px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  background-color: #d5a68b;
+  color: white;
+  font-size: 24px;
+}
 
-  font-family: Inter, sans-serif;
+.tableNo {
+  display: flex;
+  justify-content: center;
+  font-family: Inter;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.requests {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  border: 1.5px solid #000000;
+  border-left: none;
+  border-radius: 10px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  font-family: Inter;
   font-weight: 600;
   font-size: 20px;
-  text-align: center;
-}
-.number {
-  font-size: 32px;
-  font-weight: 700;
-}
-
-/* === 오른쪽 요청 내용 (flex) === */
-.requests {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px;
-}
-.reqLine {
-  font-family: Inter, sans-serif;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 1.4;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* === 비어있을 때 === */
-.empty {
-  text-align: center;
-  padding: 24px 0;
-  color: #7f7f7f;
+  padding: 10px;
 }
 
 /* === 모달 텍스트 === */
