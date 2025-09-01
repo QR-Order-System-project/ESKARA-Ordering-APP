@@ -2,12 +2,10 @@
 .mainPanel {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  margin: 10px;
-  max-width: 100%; /* 상위에서 폭 제어 시 안전 */
   border: 1.5px solid #000;
   border-radius: 10px;
   background-color: #ffffff;
+  align-items: center;
 
   /* 스크롤/레이아웃 안전장치 */
   min-width: 0;
@@ -18,22 +16,13 @@
 .tablePanel {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr)); /* 항상 2열 */
-  row-gap: 16px; /* 위아래 간격 */
-  column-gap: 16px; /* 좌우 간격 */
-
-  max-height: min(484px, 60vh);
-  flex: 1 1 auto;
+  row-gap: 16px; /* 세로 간격 */
+  column-gap: 24px; /* 가로 간격 */
+  max-height: min(484px, 70vh);
   min-height: 0;
 
-  margin: 19px 10px 19px 19px;
   overflow-y: auto;
-  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-
-  align-content: start; /* 위에서부터 촘촘히 */
-  align-items: stretch; /* 셀 너비 꽉 채움 */
-
-  scrollbar-gutter: stable;
 
   &::-webkit-scrollbar {
     width: 7px;
