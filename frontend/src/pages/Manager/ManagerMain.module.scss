@@ -7,7 +7,7 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  background: #edce7a;
+  background: #ffffff;
   overflow: hidden; /* wrapper 자체 스크롤 차단 */
   isolation: isolate;
 }
@@ -52,8 +52,4 @@
   flex: 1 1 auto;
   min-height: 0;
   min-width: 0;
-  overflow: auto; /* 오직 여기만 스크롤 허용 */
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-  scrollbar-gutter: stable both-edges;
 }

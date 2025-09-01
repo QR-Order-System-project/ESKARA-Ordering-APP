@@ -8,7 +8,7 @@
   max-width: 420px;
   margin: 0 auto;
 
-  background-color: #edce7a;
+  background-color: #ffffff;
   gap: 6px;
 
   /* 내부 스크롤 안전 */
@@ -24,7 +24,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  background: #edce7a;
+  background: #ffffff;
   /* 필요 시 경계선: border-bottom: 1.5px solid #000; */
 }
 
@@ -54,7 +54,7 @@
   width: 100%;
   height: clamp(48px, 7.2vh, 58px);
 
-  background-color: #a57a0f;
+  background-color: #d5a68b;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -77,7 +77,7 @@
   width: 100%;
   height: clamp(40px, 6.2vh, 50px);
 
-  background: #fff;
+  background: #ffffff;
   border: 1.5px solid #000;
   border-radius: 8px;
 

@@ -7,7 +7,7 @@
   max-width: 100%; /* 상위에서 폭 제어 시 안전 */
   border: 1.5px solid #000;
   border-radius: 10px;
-  background-color: #fff;
+  background-color: #ffffff;
 
   /* 스크롤/레이아웃 안전장치 */
   min-width: 0;
@@ -39,7 +39,7 @@
     width: 7px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #d9d9d9;
+    background-color: #d5a68b;
     border-radius: 10px;
   }
   &::-webkit-scrollbar-track {
@@ -76,7 +76,7 @@
   font-weight: 300;
   font-size: clamp(14px, 3.8vw, 18px);
   text-align: center;
-  color: #fff;
+  color: #ffffff;
   margin: 10px 0;
 }
 
@@ -90,8 +90,8 @@
   height: clamp(48px, 7.2vh, 58px);
   margin: 0;
 
-  background-color: #a57a0f;
-  color: #fff;
+  background-color: #d5a68b;
+  color: #ffffff;
   border: none;
 
   font-family: Inter, sans-serif;
@@ -126,7 +126,7 @@
 .footer {
   position: sticky;
   bottom: 0;
-  background: #a57a0f; /* 스크롤 시 겹침 방지 */
+  background: #d5a68b; /* 스크롤 시 겹침 방지 */
   padding: 0;
   margin: 0;
 }
