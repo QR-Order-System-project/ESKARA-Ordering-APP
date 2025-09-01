@@ -49,32 +49,19 @@ const initialCalls = [
     requests: ["밑반찬 리필", "숟가락 1개"],
     createdAt: Date.now() - 1000 * 60 * 22,
   },
-  {
-    id: 7,
-    tableNo: 24,
-    requests: ["밑반찬 리필", "숟가락 1개"],
-    createdAt: Date.now() - 1000 * 60 * 22,
-  },
-  {
-    id: 8,
-    tableNo: 24,
-    requests: ["밑반찬 리필", "숟가락 1개"],
-    createdAt: Date.now() - 1000 * 60 * 22,
-  },
 ];
 
 export const ManagerCallTab = () => {
-  /* 상태 */
   const [calls, setCalls] = useState(initialCalls);
   const [selected, setSelected] = useState(null);
 
-  /* 정렬된 큐 (오래된 순) */
+  // 정렬된 큐 (오래된 순)
   const sorted = useMemo(
     () => [...calls].sort((a, b) => a.createdAt - b.createdAt),
     [calls]
   );
 
-  /* 이벤트 핸들러 */
+  // 이벤트 핸들러
   const openModal = (call) => setSelected(call);
   const closeModal = () => setSelected(null);
   const confirmAndRemove = () => {
@@ -85,44 +72,46 @@ export const ManagerCallTab = () => {
 
   return (
     <>
-      {/* 상단 타이틀 */}
-      <div className={styles.root}>
+      <div className={styles.page}>
         <div className={styles.titleBar}>
           <PageTitle title="직원 호출" Icon={AiOutlineUser} />
         </div>
 
-        {/* 호출 리스트 */}
-        <ul className={styles.list}>
-          {sorted.map((call) => (
-            <li
-              key={call.id}
-              className={styles.item}
-              onClick={() => openModal(call)}
-            >
-              <div className={styles.tableBox}>
-                <div className={styles.label}>테이블</div>
-                <div className={styles.number}>
-                  {String(call.tableNo).padStart(2, "0")}
-                </div>
-              </div>
-              <div className={styles.requests}>
-                {call.requests.map((r, i) => (
-                  <div key={i} className={styles.reqLine}>
-                    {r}
+        {/* 내부 스크롤 담당 래퍼 */}
+        <div className={styles.wrapper}>
+          <ul className={styles.list}>
+            {sorted.map((call) => (
+              <li
+                key={call.id}
+                className={styles.item}
+                onClick={() => openModal(call)}
+              >
+                <div className={styles.tableBox}>
+                  <div className={styles.label}>테이블</div>
+                  <div className={styles.number}>
+                    {String(call.tableNo).padStart(2, "0")}
                   </div>
-                ))}
-              </div>
-            </li>
-          ))}
+                </div>
 
-          {/* 비어있을 때 */}
-          {sorted.length === 0 && (
-            <div className={styles.empty}>현재 대기 중인 요청이 없습니다.</div>
-          )}
-        </ul>
+                <div className={styles.requests}>
+                  {call.requests.map((r, i) => (
+                    <div key={i} className={styles.reqLine}>
+                      {r}
+                    </div>
+                  ))}
+                </div>
+              </li>
+            ))}
+
+            {sorted.length === 0 && (
+              <div className={styles.empty}>
+                현재 대기 중인 요청이 없습니다.
+              </div>
+            )}
+          </ul>
+        </div>
       </div>
 
-      {/* 완료 확인 모달 */}
       <Modal
         open={!!selected}
         title={

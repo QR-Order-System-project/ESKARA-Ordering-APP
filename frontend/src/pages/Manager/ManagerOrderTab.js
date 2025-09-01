@@ -96,39 +96,33 @@ export const ManagerOrderTab = () => {
           <PageTitle title="주문 관리" Icon={HiOutlineClipboardList} />
         </div>
 
-        {/* 세로 스크롤 영역 (타이틀 제외) */}
-        <div className={styles.vScroller}>
-          {/* 가로 스크롤 영역 (칼럼 보드) */}
-          <div className={styles.hScroller}>
-            <div className={styles.board} role="list">
-              {Object.entries(data).map(([menu, tables]) => (
-                <section className={styles.column} key={menu} role="listitem">
-                  {/* 칼럼 헤더 */}
-                  <header className={styles.columnHeader}>
-                    <span className={styles.columnTitle}>{menu}</span>
-                  </header>
+        <div className={styles.board} role="list">
+          {Object.entries(data).map(([menu, tables]) => (
+            <section className={styles.column} key={menu} role="listitem">
+              {/* 칼럼 헤더 */}
+              <header className={styles.columnHeader}>
+                <span className={styles.columnTitle}>{menu}</span>
+              </header>
 
-                  {/* 카드 스택 */}
-                  <div className={styles.stack}>
-                    {tables.map((t) => (
-                      <button
-                        key={t.id}
-                        className={styles.card}
-                        onClick={() => handleCardClick(menu, t)}
-                      >
-                        {t.label}
-                      </button>
-                    ))}
+              {/* 카드 스택 */}
+              <div className={styles.stack}>
+                {tables.map((t) => (
+                  <button
+                    key={t.id}
+                    className={styles.card}
+                    onClick={() => handleCardClick(menu, t)}
+                  >
+                    {t.label}
+                  </button>
+                ))}
 
-                    {/* 비었을 때 */}
-                    {tables.length === 0 && (
-                      <div className={styles.empty}>대기중인 테이블 없음</div>
-                    )}
-                  </div>
-                </section>
-              ))}
-            </div>
-          </div>
+                {/* 비었을 때 */}
+                {tables.length === 0 && (
+                  <div className={styles.empty}>대기중인 테이블 없음</div>
+                )}
+              </div>
+            </section>
+          ))}
         </div>
       </div>
 
