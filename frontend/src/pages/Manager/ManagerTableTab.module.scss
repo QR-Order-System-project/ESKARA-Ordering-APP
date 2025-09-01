@@ -33,7 +33,7 @@
   align-content: start; /* 위에서부터 촘촘히 */
   align-items: stretch; /* 셀 너비 꽉 채움 */
 
-  scrollbar-gutter: stable both-edges;
+  scrollbar-gutter: stable;
 
   &::-webkit-scrollbar {
     width: 7px;
