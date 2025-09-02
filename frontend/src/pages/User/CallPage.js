@@ -61,7 +61,8 @@ export default function CallPage() {
           <PageTitle title="직원 호출" Icon={BsPerson} size={31} />
 
           <div className={styles.ListContainer}> 
-            <div className={styles.CallListArea}>
+            <div className={styles.ListInner}>
+              <div className={styles.CallListArea}>
               {CALL_REQUESTS.map((item) => (
                 <button
                   key={item.id}
@@ -73,6 +74,7 @@ export default function CallPage() {
                   {item.text}
                 </button>
               ))}
+            </div>
             </div>
           </div>
 
