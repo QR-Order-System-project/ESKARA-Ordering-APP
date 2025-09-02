@@ -1,0 +1,49 @@
+.CartBar {
+  position: sticky;
+  bottom: 0;
+  height: 60px;
+  background: #D5A68B;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  font-weight: 700;
+  color: white;
+  margin-top: -5px;
+}
+
+.Left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 24px; 
+}
+
+.IconWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.Badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: red;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 50%;  /* 원형 */
+  width: 20px;         /* 고정 크기 */
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 텍스트 가운데 */
+  line-height: 1;
+}
+
+
+.Right {
+  font-size: 24px;
+  font-weight: 700;
+}

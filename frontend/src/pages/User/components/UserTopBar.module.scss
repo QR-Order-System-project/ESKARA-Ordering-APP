@@ -1,0 +1,58 @@
+.TopBar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 8px 8px;
+  background: #fff;
+}
+
+.LeftGroup,
+.RightGroup {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.HomeButton {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #000;
+  border-radius: 10px;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 40px;
+}
+
+.CommonButton {
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #000;
+  border-radius: 10px;
+  background-color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 0px 12px;
+  cursor: pointer;
+}
+
+.TableLabel {
+  @extend .CommonButton;
+  cursor: default;
+  color: black;
+}
+
+.CallManagerButton {
+  @extend .CommonButton;
+}
+
+.OrderListButton {
+  @extend .CommonButton;
+}
