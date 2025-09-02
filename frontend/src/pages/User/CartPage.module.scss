@@ -1,0 +1,24 @@
+:root { --topbar-h: 56px; }
+
+.Wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.MainPanel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 340px;
+  background-color: white;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.TopBarWrapper {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: white;
+  margin-bottom: 20px;
+}

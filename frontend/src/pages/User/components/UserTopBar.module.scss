@@ -56,3 +56,9 @@
 .OrderListButton {
   @extend .CommonButton;
 }
+
+.active {
+  background-color: #D5A68B; // 파란색 강조
+  color: #fff;
+  border-color: black;
+}

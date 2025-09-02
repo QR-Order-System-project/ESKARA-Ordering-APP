@@ -1,0 +1,100 @@
+:root { --topbar-h: 56px; }
+
+.Wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.MainPanel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 340px;
+  background-color: white;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.TopBarWrapper {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: white;
+  margin-bottom: 20px;
+}
+
+/* 1. 새로 추가된 바깥쪽 컨테이너 스타일 */
+.ListContainer {
+  margin: 16px 16px 70px 16px; /* 위아래좌우 여백 */
+  border: 2px solid black;
+  border-radius: 10px;  
+  overflow: hidden; /* 내부 스크롤바가 둥근 모서리를 넘어가지 않도록 함 */
+  display: flex; /* 내부 요소가 높이를 100% 채우도록 하기 위함 */
+  padding-bottom: 40px;
+}
+
+/* 2. 기존 CallListArea 스타일 수정 (이제 안쪽 내용 역할) */
+.CallListArea {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto; /* 내용이 많으면 여기서 스크롤 */
+  
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2열 그리드 */
+  gap: 16px; /* 아이템 사이 간격 */
+  padding: 20px; /* 컨테이너 안쪽 여백 */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #D5A68B;
+    border-radius: 30px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: #D5A68B transparent;
+}
+
+/* 호출 항목 버튼 기본 스타일 */
+.CallItem {
+  border: 2px solid black;
+  background-color: white;
+  color: #333;
+  padding: 20px 10px;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  word-break: keep-all; /* 줄바꿈 시 단어 유지 */
+  transition: all 0.2s ease-in-out;
+}
+
+/* 호출 항목 선택 시 스타일 */
+.selected {
+  background-color: #d5a68b;
+  border-color: black;
+  color: white;
+}
+
+/* 하단 '호출하기' 버튼 스타일 */
+.CallButton {
+  /* CartBar의 기본 디자인 유지 */
+  height: 60px;
+  background: #D5A68B;
+  color: white;
+  font-weight: 700;
+  font-size: 24px;
+  
+  /* 내용물을 중앙에 배치하기 위한 flex 설정 */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 👈 텍스트를 가로 중앙으로 */
+  
+  /* 버튼 전체 스타일 */
+  width: 100%;
+  border: none;
+  cursor: pointer;
+}
