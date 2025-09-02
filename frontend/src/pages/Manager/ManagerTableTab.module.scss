@@ -58,17 +58,6 @@
   }
 }
 
-/* 텍스트/버튼 가독성: clamp 유지, 잘못된 font-style 제거 */
-.confirmBody,
-.payOnOffBody {
-  font-family: Inter, sans-serif;
-  font-weight: 300;
-  font-size: clamp(14px, 3.8vw, 18px);
-  text-align: center;
-  color: #ffffff;
-  margin: 10px 0;
-}
-
 /* 하단 토글 버튼: 터치 타깃/폰트 반응형 유지 */
 .payOnOffButton {
   display: flex;

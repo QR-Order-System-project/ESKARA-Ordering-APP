@@ -96,13 +96,8 @@ export const ManagerCallTab = () => {
         }
         onClose={closeModal}
         onConfirm={confirmAndRemove}
-      >
-        <div className={styles.modalBody}>
-          <span>
-            {selected?.tableNo}번 테이블 요청을 완료했는지 확인해주세요.
-          </span>
-        </div>
-      </Modal>
+        body={`${selected?.tableNo}번 테이블 요청을 완료했는지 확인해주세요.`}
+      />
     </>
   );
 };

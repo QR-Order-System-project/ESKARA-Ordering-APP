@@ -193,7 +193,7 @@ export const ManagerTableTab = () => {
       </div>
     );
     const body = (
-      <p className={styles.payOnOffBody}>
+      <p>
         {isPaymentActive
           ? "고객의 결제 버튼이 비활성화됩니다."
           : "고객의 결제 버튼이 활성화됩니다."}
@@ -227,12 +227,7 @@ export const ManagerTableTab = () => {
             <span>처리하시겠습니까?</span>
           </div>
         ),
-        body: (
-          <p className={styles.confirmBody}>
-            총 주문금액과 이체금액을 확인해주세요.
-          </p>
-        ),
-
+        body: "총 주문금액과 이체금액을 확인해주세요.",
         //임시 API
         onConfirm: async () => {
           try {
@@ -309,9 +304,8 @@ export const ManagerTableTab = () => {
         onConfirm={dialog.onConfirm}
         title={dialog.title}
         dimmed
-      >
-        {dialog.body}
-      </Modal>
+        body={dialog.body}
+      />
     </div>
   );
 };
