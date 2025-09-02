@@ -56,8 +56,26 @@ const addMenuToMenuQueueDB = async ({ tableNumber, items }) => {
 };
 
 // menuQueue 에서 삭제  
-const deleteOrdersFromMenuQueueDB = async ({ menu, count }) => {
-  
+const deleteOrdersFromMenuQueueDB = async ({ tableNumber, menu }) => {
+  const docRef = db.collection('queues').doc('menuQueue');
+
+  await db.runTransaction(async (tx) => {
+      const snap = await tx.get(docRef);
+      const current = snap.exists ? snap.data() : {};
+      const target = { ...current };
+
+      const queue = target[menu].slice();
+
+      const idx = queue.lastIndexOf(tableNumber);
+
+      if (idx !== -1) {
+       queue.splice(idx, 1); // 해당 위치 요소 1개 삭제
+      }
+    // merge:true 로 필요한 필드만 갱신
+    target[menu] = queue;
+    
+    tx.set(docRef, target, { merge: true });
+  });
 };
 
 
