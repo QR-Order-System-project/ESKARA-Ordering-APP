@@ -7,6 +7,7 @@ import { ManagerTableDetail } from "./ManagerTableDetail";
 import { Modal } from "../../components/popups/Modal";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { PageTitle } from "../../components/PageTitle";
+import { CompactToastModal } from "../../components/popups/CompactToastModal";
 
 /**
  * ManagerTableTab
@@ -212,12 +213,16 @@ export const ManagerTableTab = () => {
     styles.payOnOffBody,
   ]);
 
+  const [toast, setToast] = useState(null);
+  const showToast = () =>
+    setToast({ message: "주문 내역이 존재하지 않습니다.", variant: "error" });
+
   /* 상세에서 '결제완료' 클릭 → 확인 모달 후 처리 */
   const handlePayComplete = useCallback(
     (tableId) => {
       const t = tableMap.get(tableId);
       if (!t || (t.orders?.length ?? 0) === 0) {
-        // 주문이 없으면 아무 동작 없음
+        showToast();
         return;
       }
       openDialog({
@@ -306,6 +311,15 @@ export const ManagerTableTab = () => {
         dimmed
         body={dialog.body}
       />
+
+      {toast && (
+        <CompactToastModal
+          message={toast.message}
+          variant={toast.variant}
+          duration={1800}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 };

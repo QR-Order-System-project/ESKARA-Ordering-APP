@@ -18,7 +18,7 @@ import { FaCheckCircle } from "react-icons/fa";
 //       <button onClick={showError}>실패 토스트</button>
 
 //       {toast && (
-//         <CompactToastModel
+//         <CompactToastModal
 //           message={toast.message}
 //           variant={toast.variant}
 //           duration={1800}
