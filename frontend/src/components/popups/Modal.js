@@ -21,6 +21,9 @@ export const Modal = ({
   onConfirm,
   lockScroll = true,
   dimmed = true,
+  body,
+  button1 = "닫기",
+  button2 = "확인",
 }) => {
   const titleId = useId();
 
@@ -62,16 +65,16 @@ export const Modal = ({
         )}
 
         {/* 내용 */}
-        <div className={styles.body}>{children}</div>
+        <div className={styles.body}>{body}</div>
 
         {/* 하단 버튼 */}
         <div className={styles.footer}>
           <button type="button" className={styles.btn} onClick={onClose}>
-            닫기
+            {button1}
           </button>
           {onConfirm && (
             <button type="button" className={styles.btn} onClick={onConfirm}>
-              확인
+              {button2}
             </button>
           )}
         </div>

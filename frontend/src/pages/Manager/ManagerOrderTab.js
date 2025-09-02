@@ -131,19 +131,16 @@ export const ManagerOrderTab = () => {
         open={open}
         title={
           <div className={styles.titleLines}>
-            <span>해당 주문을 완료</span>
+            <span>해당 주문을 어떻게</span>
             <span>처리하시겠습니까?</span>
           </div>
         }
         onClose={closeModal}
         onConfirm={removeTable}
-      >
-        <div>
-          <p className={styles.orderBody}>
-            {selected?.table?.label} - {selected?.menu}
-          </p>
-        </div>
-      </Modal>
+        button1="삭제"
+        button2="완료"
+        body={`${selected?.table?.label} - ${selected?.menu}`}
+      />
     </>
   );
 };
