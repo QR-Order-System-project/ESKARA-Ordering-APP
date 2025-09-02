@@ -14,13 +14,14 @@ export const MainPage = () => {
   const sideRef = useRef(null);
   const drinkRef = useRef(null);
   const scrollAreaRef = useRef(null);
-  const bottomSentinelRef = useRef(null); 
+  const bottomSentinelRef = useRef(null);
 
   const intersectionStatusRef = useRef(new Map());
 
   const [active, setActive] = useState("event");
   const [cart, setCart] = useState([]);
   const [topBarHeight, setTopBarHeight] = useState(0);
+  const [isManualScroll, setIsManualScroll] = useState(false);
 
   useLayoutEffect(() => {
     const el = topRef.current;
@@ -41,34 +42,39 @@ export const MainPage = () => {
     if (!scrollRoot || topBarHeight === 0) return;
 
     const sections = [eventRef, mainRef, sideRef, drinkRef];
-    
+
     const observer = new IntersectionObserver(
       (entries) => {
+        if (isManualScroll) return;
+
         entries.forEach((entry) => {
           intersectionStatusRef.current.set(entry.target, entry);
         });
 
         const statuses = Array.from(intersectionStatusRef.current.values());
 
-        const bottomSentinelEntry = statuses.find(s => s.target === bottomSentinelRef.current);
-        if (bottomSentinelEntry && bottomSentinelEntry.isIntersecting) {
-          setActive('drink');
+        const bottomSentinelEntry = statuses.find(
+          (s) => s.target === bottomSentinelRef.current
+        );
+        if (bottomSentinelEntry?.isIntersecting) {
+          setActive("drink");
           return;
         }
 
         const visibleEntries = statuses.filter(
-          (status) => status.isIntersecting && status.target !== bottomSentinelRef.current
+          (status) =>
+            status.isIntersecting && status.target !== bottomSentinelRef.current
         );
 
         if (visibleEntries.length > 0) {
           const topMostVisibleEntry = visibleEntries.reduce((prev, current) => {
-            return prev.boundingClientRect.top < current.boundingClientRect.top ? prev : current;
+            return prev.boundingClientRect.top < current.boundingClientRect.top
+              ? prev
+              : current;
           });
-          
+
           const key = topMostVisibleEntry.target.getAttribute("data-key");
-          if (key) {
-            setActive(key);
-          }
+          if (key) setActive(key);
         }
       },
       {
@@ -77,7 +83,7 @@ export const MainPage = () => {
         threshold: Array.from({ length: 101 }, (_, i) => i / 100),
       }
     );
-    
+
     sections.forEach((ref) => {
       if (ref.current) observer.observe(ref.current);
     });
@@ -86,17 +92,21 @@ export const MainPage = () => {
     }
 
     return () => observer.disconnect();
-  }, [topBarHeight]);
+  }, [topBarHeight, isManualScroll]);
 
   const handleSelect = (key) => {
     const map = { event: eventRef, main: mainRef, side: sideRef, drink: drinkRef };
     const sectionEl = map[key]?.current;
     const scrollRoot = scrollAreaRef.current;
     if (!sectionEl || !scrollRoot) return;
-    
-    const targetScrollTop = sectionEl.offsetTop - scrollRoot.offsetTop - topBarHeight;
-    scrollRoot.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
+
+    setIsManualScroll(true);
+    const targetScrollTop =
+      sectionEl.offsetTop - scrollRoot.offsetTop - topBarHeight;
+    scrollRoot.scrollTo({ top: targetScrollTop, behavior: "smooth" });
     setActive(key);
+
+    setTimeout(() => setIsManualScroll(false), 800);
   };
 
   const handleAddToCart = (menu) => {
