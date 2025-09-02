@@ -58,7 +58,7 @@ export default function CallPage() {
             <UserTopBar tableNumber={99} activeMenu="call" />
           </div>
 
-          <PageTitle title="직원 호출" Icon={BsPerson} size={31} />
+          <PageTitle title="직원호출" Icon={BsPerson} size={31} />
 
           <div className={styles.ListContainer}> 
             <div className={styles.ListInner}>
