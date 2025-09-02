@@ -36,7 +36,7 @@
   margin-top: 6px;
   display: flex;
   flex-direction: column;
-  gap: 1px;   /* 이름-가격-설명 줄 간격 일정하게 */
+  gap: 1px;
 }
 
 .Name {
@@ -58,13 +58,13 @@
 
 .Actions {
   display: flex;
-  gap: 12px; /* Counter와 Add 사이 간격 */
+  gap: 12px;
   margin-top: 6px;
 }
 
 .Counter, .Add {
-  flex: 1;                  /* 같은 폭 */
-  height: 38px;             /* 같은 높이 */
+  flex: 1;
+  height: 38px;
   border: 2px solid #000;
   border-radius: 10px;
   box-sizing: border-box;
@@ -74,12 +74,11 @@
   background: #fff;
 }
 
-/* Counter 내부 분할 */
 .Counter {
   overflow: hidden;
 
   button, span {
-    flex: 1; /* 세 칸 균등 분배 */
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,7 +88,6 @@
     border: none;
   }
 
-  /* 가운데 숫자 칸에 좌우 구분선 */
   span {
     border-left: 2px solid #000;
     border-right: 2px solid #000;
@@ -98,7 +96,6 @@
   }
 }
 
-/* Add 버튼 */
 .Add {
   font-weight: 700;
   font-size: 14px;

@@ -1,13 +1,13 @@
 :root {
-  --topbar-h: 50px;   /* UserTopBar 높이에 맞춰서 조정 */
+  --topbar-h: 50px; 
 }
 
 .MenuBar {
-  position: sticky;        /* ✅ 추가 */
-  top: var(--topbar-h);    /* ✅ TopBar 바로 밑에 고정 */
+  position: sticky; 
+  top: var(--topbar-h);
   z-index: 20;
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 버튼 4개 균등 배치 */
+  grid-template-columns: repeat(4, 1fr);
   background: #fff;
   border: 2px solid #000;
   border-radius: 10px;

@@ -3,7 +3,7 @@
 }
 
 .Section {
-  margin-bottom: 16px; /* 섹션 간격 */
+  margin-bottom: 16px;
 }
 
 .SectionHeader {
@@ -17,10 +17,10 @@
 
 .SectionHeader::after {
   content: "";
-  flex: 1;                 /* 남은 공간을 채움 */
-  height: 2px;             /* 선 두께 */
-  background: #000;        /* 선 색 */
-  margin-left: 15px;       /* 글자와 선 사이 여백 */
+  flex: 1;
+  height: 2px; 
+  background: #000;
+  margin-left: 15px;
 }
 
 .SectionContent {

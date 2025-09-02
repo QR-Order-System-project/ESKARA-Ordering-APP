@@ -30,9 +30,9 @@ export default function MenuCard({id, name, price, desc, img, onAdd }) {
 
         <div className={styles.Actions}>
           <div className={styles.Counter}>
-            <button onClick={() => setCount(count + 1)}>+</button>
-            <span>{count}</span>
             <button onClick={() => setCount(Math.max(1, count - 1))}>-</button>
+            <span>{count}</span>
+            <button onClick={() => setCount(count + 1)}>+</button>
           </div>
           <button className={styles.Add} onClick={handleAddClick}>메뉴담기</button>
         </div>
@@ -42,7 +42,7 @@ export default function MenuCard({id, name, price, desc, img, onAdd }) {
     {toast && (
         <CompactToastModal
           message={toast.message}
-          variant={toast.variant}   // "success" | "error"
+          variant={toast.variant}
           duration={1800}
           onClose={() => setToast(null)}
         />

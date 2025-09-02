@@ -24,12 +24,11 @@
 
 .MenuBarWrapper {
   position: sticky;
-  top: 0; /* TopBar 바로 아래에 붙도록 설정 */
+  top: 0;
   z-index: 20;
   background: white;
 }
 
-/* 스크롤 전체 (배너+메뉴바+섹션) */
 .MenuScrollArea {
   flex: 1;
   overflow-y: auto;
