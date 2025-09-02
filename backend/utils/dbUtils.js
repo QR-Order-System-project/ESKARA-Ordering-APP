@@ -37,19 +37,21 @@ const addOrderToOrdersDB = async ({ tableNumber, items }) => {
 //  menuQueue 에 추가 
 const addMenuToMenuQueueDB = async ({ tableNumber, items }) => {
   // 메뉴 큐 참조 
-  const menuQueueRef = db.collection('menuQueue');
-  let newMenuQueue = menuQueueRef.exists ? menuQueueRef : [];
-  for (const [menu, count] of Object.entries(items)) {
-    let targetMenu = menuQueueRef.exists ? menuQueueRef.doc('menu') : [];
-    for (let i = 0; i < count; i++) {
-      targetMenu.push(tableNumber);
-    }
-  }
-  // 수정한 정보를 DB 에 반영 (의견 필요)
-  await menuQueueRef.set({
+    const docRef = db.collection('queues').doc('menuQueue');
+    await db.runTransaction(async (tx) => {
+      const snap = await tx.get(docRef);
+      const current = snap.exists ? snap.data() : {};
+      const target = { ...current };
 
+
+    for (const {menu, count} of items) {
+      const queue = Array.isArray(target[menu]) ? target[menu].slice() : [];
+      for (let i = 0; i < count; i++) queue.push(tableNumber);
+      target[menu] = queue;
+    }
+    // merge:true 로 필요한 필드만 갱신
+    tx.set(docRef, target, { merge: true });
   });
-    
 
 };
 
