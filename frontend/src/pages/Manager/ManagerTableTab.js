@@ -5,11 +5,7 @@ import { Table } from "./Table";
 import { ManagerTableDetail } from "./ManagerTableDetail";
 
 import { Modal } from "../../components/popups/Modal";
-<<<<<<< HEAD
-import { FaMoneyBillWave } from "react-icons/fa";
-=======
 import { BsCurrencyDollar } from "react-icons/bs";
->>>>>>> origin/feat/frontend/manager
 import { PageTitle } from "../../components/PageTitle";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 
