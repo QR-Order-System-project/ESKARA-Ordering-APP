@@ -2,8 +2,6 @@
 
 /* === 페이지 래퍼 (뷰포트 고정, 바깥 스크롤 차단) === */
 .boardWrap {
-  height: 100dvh;
-  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   background: #ffffff;
@@ -43,11 +41,7 @@
   display: flex;
   flex-direction: column;
   background: #ffffff;
-<<<<<<< HEAD
-  border: 1.5px solid #000000;
-=======
   border: 2px solid #000000;
->>>>>>> origin/feat/frontend/manager
   border-radius: 10px;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
@@ -63,11 +57,7 @@
   top: 0;
   z-index: 1;
   background: #ffffff;
-<<<<<<< HEAD
-  border-bottom: 1px solid #000;
-=======
   border-bottom: 2px solid #000;
->>>>>>> origin/feat/frontend/manager
   padding: 10px 12px;
   display: flex;
   justify-content: center;

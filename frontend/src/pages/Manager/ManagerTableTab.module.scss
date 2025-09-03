@@ -103,6 +103,8 @@
 
 /* 하단 고정 푸터(버튼 래퍼) */
 .footer {
+  position: sticky;
+  bottom: 0;
   height: 60px;
   background: #d5a68b;
   color: white;
