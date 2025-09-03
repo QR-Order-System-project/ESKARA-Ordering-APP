@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./HomeButton.module.scss";
-import { HiOutlineHome } from "react-icons/hi2";
+import { TbHome } from "react-icons/tb";
 
 /**
  * Props
@@ -40,7 +40,7 @@ export const HomeButton = ({
       onClick={handleClick}
       {...rest}
     >
-      <HiOutlineHome size={24} />
+      <TbHome size={24} />
     </button>
   );
 };

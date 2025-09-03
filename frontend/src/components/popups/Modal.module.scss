@@ -29,7 +29,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border: 1.5px solid #000000;
+  border: 2px solid #000000;
 }
 
 .bare {
@@ -46,7 +46,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 20px;
+  padding: 0 10px;
 }
 
 .title {
@@ -64,6 +64,7 @@
   align-items: center;
   cursor: pointer;
   color: #ffffff;
+  margin-left: auto;
 
   svg {
     display: block;
@@ -74,7 +75,7 @@
 .footer {
   display: flex;
   gap: 19px;
-  margin: 10px 20px 20px 20px;
+  margin: 5px 20px 20px 20px;
   justify-content: center;
 }
 
@@ -82,13 +83,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 26px;
   border-radius: 10px;
   background-color: #ffffff;
-  padding: 13px 30px 15px 30px;
+  padding: 13px 40px 15px 40px;
   cursor: pointer;
-  border: 1.5px solid #000000;
+  border: 2px solid #000000;
 }
 
 /* === 본문 === */
@@ -98,5 +99,5 @@
   font-size: 18px;
   text-align: center;
   color: #ffffff;
-  margin: 10px 0;
+  margin: 7px 0;
 }

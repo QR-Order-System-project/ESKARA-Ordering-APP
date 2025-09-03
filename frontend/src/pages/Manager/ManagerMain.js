@@ -7,7 +7,6 @@ import { ManagerTableTab } from "./ManagerTableTab";
 import { ManagerOrderTab } from "./ManagerOrderTab";
 import { ManagerCallTab } from "./ManagerCallTab";
 import { useLocation } from "react-router-dom";
-import { CompactToastModal } from "../../components/popups/CompactToastModal";
 
 /**
  * ManagerMain
