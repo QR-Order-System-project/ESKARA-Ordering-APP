@@ -23,7 +23,7 @@ export const OrderList = ({ orders }) => {
           ))
         ) : (
           <div className={styles.notice}>
-            주문 내역이
+            주문내역이
             <br /> 존재하지 않습니다.
           </div>
         )}

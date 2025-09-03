@@ -1,3 +1,28 @@
+:root { --topbar-h: 56px; }
+
+.Wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.MainPanel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 340px;
+  background-color: white;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.TopBarWrapper {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: white;
+  margin-bottom: 20px;
+}
+
 .mainPanel {
   display: flex;
   margin: 16px 16px 135px 16px;
@@ -42,10 +67,27 @@
   font-weight: 500;
   font-size: 24px;
   color: #7f7f7f;
-<<<<<<< HEAD
-  text-align: center;
+}
+
+.PaymentBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.OrderButton {
+  height: 60px;
+  background: #d5a68b;
+  color: white;
+  font-weight: 700;
+  font-size: 24px;
+  display: flex;
   align-items: center;
-  flex: 1;
-=======
->>>>>>> origin/feat/frontend/manager
+  justify-content: center;
+  width: 100%;
+  border: none;
 }

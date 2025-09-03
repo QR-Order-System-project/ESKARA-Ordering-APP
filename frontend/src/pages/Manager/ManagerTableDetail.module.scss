@@ -1,22 +1,13 @@
 /* pages/Manager/ManagerTableDetail.module.scss */
 
-/* === 메인 패널 (상세 화면 컨테이너) === */
+/* === 메인 패널 (상세 화면 전체 컨테이너) === */
 .mainPanel {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 420px;
-  margin: 0 auto;
-
-  background-color: #ffffff;
-  gap: 6px;
-
-  /* 내부 스크롤 안전 */
   height: 100%;
-  min-height: 0;
-  font-family: Inter, sans-serif;
-  font-weight: 600;
-  font-size: clamp(14px, 3.8vw, 16px);
+  width: 100%;
+  background-color: #ffffff;
+  overflow: hidden;
 }
 
 /* === 상단 타이틀 (고정) === */
@@ -25,66 +16,53 @@
   top: 0;
   z-index: 10;
   background: #ffffff;
-  /* 필요 시 경계선: border-bottom: 1.5px solid #000; */
 }
 
-/* === 주문 목록 + 합계 (세로 스크롤 허용) === */
+/* === 주문 목록 (세로 스크롤 영역) === */
 .content {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-height: min(484px, 65vh);
-  flex: 1 1 auto;
+  flex: 1; /* 남는 공간을 모두 차지하며, 푸터를 아래로 밀어냄 */
+  overflow-y: auto;
   min-height: 0;
-  overflow: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-gutter: stable both-edges;
+  padding: 0 8px; /* 좌우 여백 추가 */
 }
 
-/* === 결제 버튼 행 === */
-.buttonRow {
-  margin-top: 4px;
+/* === 하단 결제 바 (고정) === */
+.footer {
+  display: flex;
+  justify-content: space-between; /* 양쪽 끝으로 요소를 배치 */
+  align-items: center;
+  padding: 10px 16px;
+  background: #ffffff;
+  border-top: 1px solid #f0f0f0; /* 상단 구분선 */
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.payCompleteButton {
+/* === 버튼 그룹 (현재는 버튼 하나만 포함) === */
+.buttonGroup {
+  display: flex;
+}
+
+/* === 공통 버튼 스타일 === */
+.button {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 8px;
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap; /* 버튼 텍스트가 줄바꿈되지 않도록 */
+}
 
-  width: 100%;
-  height: clamp(48px, 7.2vh, 58px);
-
+/* === 결제 완료 버튼 === */
+.payButton {
   background-color: #d5a68b;
   color: #fff;
-  border: none;
-  border-radius: 8px;
-
-  font-family: Inter, sans-serif;
-  font-weight: 600;
-  font-size: clamp(16px, 4.5vw, 20px);
 }
-
-/* === 뒤로 버튼 행 === */
-.backRow {
-  margin-top: 6px;
-}
-
-.backButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  height: clamp(40px, 6.2vh, 50px);
-
-  background: #ffffff;
-  border: 1.5px solid #000;
-  border-radius: 8px;
-
-  font-family: Inter, sans-serif;
-  font-weight: 600;
-  font-size: clamp(14px, 4vw, 18px);
-  color: #000;
 }
 
 /* === 작은 기기 대응 === */

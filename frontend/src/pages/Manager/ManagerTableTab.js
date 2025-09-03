@@ -5,7 +5,11 @@ import { Table } from "./Table";
 import { ManagerTableDetail } from "./ManagerTableDetail";
 
 import { Modal } from "../../components/popups/Modal";
+<<<<<<< HEAD
 import { FaMoneyBillWave } from "react-icons/fa";
+=======
+import { BsCurrencyDollar } from "react-icons/bs";
+>>>>>>> origin/feat/frontend/manager
 import { PageTitle } from "../../components/PageTitle";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 
@@ -262,7 +266,7 @@ export const ManagerTableTab = () => {
       {selectedTable === null ? (
         <>
           {/* 상단 타이틀 */}
-          <PageTitle title="테이블 관리" Icon={FaMoneyBillWave} />
+          <PageTitle title="테이블 관리" Icon={BsCurrencyDollar} />
 
           {/* 테이블 목록 (스크롤 컨테이너 포함) */}
           <div className={styles.mainPanel}>

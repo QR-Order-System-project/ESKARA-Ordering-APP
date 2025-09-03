@@ -116,7 +116,7 @@ export const ManagerOrderTab = () => {
                   </button>
                 ))}
 
-                {/* 혹시 비었을 때 문구 추가할 가능성이 있을지?*/}
+                {/* 비었을 때 */}
                 {tables.length === 0 && <div className={styles.empty}></div>}
               </div>
             </section>

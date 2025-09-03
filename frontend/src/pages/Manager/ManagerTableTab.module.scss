@@ -1,8 +1,9 @@
 /* === 기존 그대로 유지 + 중복 정리 === */
+
 .mainPanel {
   display: flex;
   flex-direction: column;
-  border: 1.5px solid #000;
+  border: 2px solid #000;
   border-radius: 10px;
   background-color: #ffffff;
   align-items: center;
@@ -102,11 +103,16 @@
 
 /* 하단 고정 푸터(버튼 래퍼) */
 .footer {
-  position: sticky;
-  bottom: 0;
-  background: #d5a68b; /* 스크롤 시 겹침 방지 */
-  padding: 0;
-  margin: 0;
+  height: 60px;
+  background: #d5a68b;
+  color: white;
+  font-weight: 700;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: none;
 }
 
 .titleLines {

@@ -52,7 +52,7 @@ export const Modal = ({
       >
         {/* X 버튼 */}
         <button type="button" className={styles.iconClose} onClick={onClose}>
-          <IoCloseSharp size={16} />
+          <IoCloseSharp size={40} />
         </button>
 
         {/* 제목 */}

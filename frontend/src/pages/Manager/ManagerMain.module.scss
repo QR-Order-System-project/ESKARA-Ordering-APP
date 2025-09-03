@@ -18,15 +18,7 @@
   flex-direction: column;
 
   width: 100%;
-  max-width: 420px;
   margin: 0 auto;
-
-  /* 좌/우 여백 및 safe-area 대응 */
-  padding: calc(env(safe-area-inset-top, 0px) + 0px)
-    calc(env(safe-area-inset-right, 0px) + 10px)
-    calc(env(safe-area-inset-bottom, 0px) + 0px)
-    calc(env(safe-area-inset-left, 0px) + 10px);
-
   height: 100%; /* wrapper(뷰포트) 꽉 채움 */
   min-width: 0; /* flex 컨텍스트에서 가로 넘침 방지 */
   overflow: hidden; /* 스크롤은 content에서만 */
@@ -40,6 +32,8 @@
 .topBar {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 10px 8px 8px;
 }
 
 /* === 로고 묶음 === */

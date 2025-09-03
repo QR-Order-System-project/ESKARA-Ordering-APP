@@ -61,7 +61,7 @@ export const CompactToastModal = ({
   // 토스트 UI
   const node = (
     <div className={`${styles.toast} ${styles[variant]}`}>
-      <Icon size={18} />
+      <Icon size={18} className={styles.icon} />
       <span className={styles.text}>{message}</span>
     </div>
   );
