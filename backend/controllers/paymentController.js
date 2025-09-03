@@ -31,7 +31,7 @@ const getAllTableStatus = async (req, res) => {
       statusList.push({
         tableNumber: data.tableNumber,
         totalAmount,
-        paymentEnabled: totalAmount == 0 ? true : false,
+        payed: totalAmount == 0 ? true : false,
       });
     });
 
@@ -86,7 +86,7 @@ const getTablePaymentDetails = async (req, res) => {
 };
 
 // 결제 완료 처리
-const { addOrderToArchive, deleteOrderFromActiveOrders } = require("../utils/dbUtils");
+const { addOrderToArchive, deleteOrderFromOrders } = require("../utils/dbUtils");
 
 const finalizePayment = async (req, res) => {
   try {
@@ -117,7 +117,7 @@ const finalizePayment = async (req, res) => {
     await addOrderToArchive({ timeSlot, tableNumber, data, totalAmount });
 
     // oreders에서 주문 목록에서 제거
-    await deleteOrderFromActiveOrders({ timeSlot, tableNumber });
+    await deleteOrderFromOrders({ timeSlot, tableNumber });
 
     return res.status(200).json({ message: "결제 완료되었습니다." });
   } catch (err) {
@@ -126,8 +126,49 @@ const finalizePayment = async (req, res) => {
   }
 };
 
+// 전역 결제 활성화 설정
+const setGlobalPaymentEnable = async (req, res) => {
+  try {
+    const { paymentAble } = req.body;
+    if (typeof paymentAble !== "boolean") {
+      return res.status(400).json({ message: "paymentAble값이 boolean이 아닙니다." });
+    }
+
+    const ref = db.collection("globalSettings").doc("payment");
+    await ref.set({ paymentAble });
+
+    return res.status(200).json({
+      message: `결제 활성화 상태가 ${paymentAble}로 설정되었습니다.`,
+    });
+  } catch (err) {
+    console.error("전역 결제 활성화 설정 실패:", err);
+    return res.status(500).json({ message: "서버 오류" });
+  }
+};
+
+// 전역 결제 활성화 상태 조회
+const getGlobalPaymentEnable = async (req, res) => {
+  try {
+    const ref = db.collection("globalSettings").doc("payment");
+    const doc = await ref.get();
+
+    if (!doc.exists) {
+      return res.status(200).json({ paymentAble: false });
+    }
+
+    const data = doc.data();
+    return res.status(200).json({ paymentAble: data.paymentAble });
+  } catch (err) {
+    console.error("전역 결제 활성화 조회 실패:", err);
+    return res.status(500).json({ message: "서버 오류" });
+  }
+};
+
+
 module.exports = {
   getAllTableStatus,
   getTablePaymentDetails,
-  finalizePayment
+  finalizePayment,
+  setGlobalPaymentEnable,
+  getGlobalPaymentEnable
 };

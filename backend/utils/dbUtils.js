@@ -105,7 +105,7 @@ const addOrderToArchive = async ({ timeSlot, tableNumber, data, totalAmount }) =
   });
 };
 
-const deleteOrderFromActiveOrders = async ({ timeSlot, tableNumber }) => {
+const deleteOrderFromOrders = async ({ timeSlot, tableNumber }) => {
   const orderRef = db
     .collection("orders")
     .doc(timeSlot)
@@ -135,7 +135,6 @@ const getArchivedOrders = async (timeSlot = getTimeSlot()) => {
         updatedAt: data.updatedAt,
         items: data.items || {},
         totalAmount: data.totalAmount ?? 0,
-        paymentEnabled: data.paymentEnabled ?? false,
         archiveId: doc.id
       });
     });
@@ -155,6 +154,6 @@ module.exports = {
   removeTableFromMenu,
   deleteTableMenuWithoutRecord,
   addOrderToArchive,
-  deleteOrderFromActiveOrders,
+  deleteOrderFromOrders,
   getArchivedOrders
 };
