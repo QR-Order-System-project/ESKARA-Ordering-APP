@@ -116,10 +116,8 @@ export const ManagerOrderTab = () => {
                   </button>
                 ))}
 
-                {/* 비었을 때 */}
-                {tables.length === 0 && (
-                  <div className={styles.empty}>대기중인 테이블 없음</div>
-                )}
+                {/* 혹시 비었을 때 문구 추가할 가능성이 있을지?*/}
+                {tables.length === 0 && <div className={styles.empty}></div>}
               </div>
             </section>
           ))}
