@@ -1,0 +1,50 @@
+:root { --topbar-h: 56px; }
+
+.Wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.MainPanel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 340px;
+  background-color: white;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.TopBarWrapper {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: white;
+  margin-bottom: 20px;
+}
+
+.OrderButtonWrapper {
+  z-index: 20;
+  background: white;
+}
+
+.PaymentBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+.OrderButton {
+  height: 60px;
+  background: #d5a68b;
+  color: white;
+  font-weight: 700;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: none;
+}

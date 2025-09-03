@@ -1,3 +1,5 @@
+:root { --topbar-h: 56px; }
+
 .Wrapper {
   display: flex;
   justify-content: center;
@@ -6,92 +8,60 @@
 .MainPanel {
   display: flex;
   flex-direction: column;
-  width: 360px;
-  font-family: Inter;
-  font-weight: 600;
-  font-style: Semi Bold;
-  font-size: 16px;
-  background-color: #edce7a;
-  gap: 5px;
+  width: 100%;
+  min-width: 340px;
+  background-color: white;
+  height: 100vh;
+  overflow: hidden;
 }
 
-.TopBar {
-  display: flex;
-  margin: 10px;
-  justify-content: space-between;
+.TopBarWrapper {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: white;
 }
 
-.ButtonGroup {
-  display: flex;
-  gap: 6px;
-  align-items: center;
+.MenuBarWrapper {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: white;
 }
 
-.TabelLabel {
+.MenuScrollArea {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   display: flex;
-  box-sizing: border-box;
-  border-radius: 10px;
-  border-width: 1.5px;
-  width: 88px;
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-  background-color: #ffffff;
-  border: 1.5px solid #000000;
-  padding-right: 1px;
-  padding-left: 1px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
+  flex-direction: column;
+  scroll-padding-top: calc(var(--topbar-h) + 2px);
 
-.CallManagerButton {
-  display: flex;
-  box-sizing: border-box;
-  border-radius: 10px;
-  border-width: 1.5px;
-  width: 88px;
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-  background-color: #ffffff;
-  border: 1.5px solid #000000;
-  padding-right: 1px;
-  padding-left: 1px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  font-family: Inter;
-  font-weight: 600;
-  font-style: Semi Bold;
-  font-size: 16px;
-  cursor: pointer;
-}
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #D5A68B;
+    border-radius: 20px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
 
-.OrderListButton {
-  display: flex;
-  box-sizing: border-box;
-  border-radius: 10px;
-  border-width: 1.5px;
-  width: 88px;
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-  background-color: #ffffff;
-  border: 1.5px solid #000000;
-  padding-right: 1px;
-  padding-left: 1px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  font-family: Inter;
-  font-weight: 600;
-  font-style: Semi Bold;
-  font-size: 16px;
-  cursor: pointer;
+  scrollbar-width: thin;
+  scrollbar-color: #D5A68B transparent;
 }
 
 .Banner {
-  display: flex;
   height: 180px;
-  align-items: center;
-  justify-content: center;
-  background-color: #d7ab36;
+  flex-shrink: 0;
+  margin-top: 3px;
+  margin-bottom: 10px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
+
+.MenuContentWrapper { display: flex; flex-direction: column; }
