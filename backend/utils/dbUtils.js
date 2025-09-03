@@ -80,11 +80,33 @@ const deleteOrdersFromMenuQueueDB = async ({ tableNumber, menu }) => {
 
 
 
-
-
 // orders 에서 count 변경
-const discountCountFromOrders = async({menu, count}) => {
+// items 이랑 updateAt 만 변경
+const discountCountFromOrders = async({tableNumber, menu}) => {
+  const timeSlot = getTimeSlot();
+  const now = new Date().toISOString();
 
+  // 주문 참조 
+  const orderRef = db.collection('orders')
+    .doc(timeSlot)
+    .collection('tables')
+    .doc(`table-${tableNumber}`);
+
+  // 기존 주문을 가져와서 count 반영 
+  const snapshot = await orderRef.get();
+  let newOrderItems = snapshot.exists ? snapshot.data().items : {};
+  newOrderItems[menu] = newOrderItems[menu]-1;
+  
+  if (newOrderItems[menu] === 0) {
+    delete newOrderItems[menu];
+  }
+
+  // 수정한 정보를 DB 에 반영
+  await orderRef.set({
+    tableNumber: tableNumber,
+    items: newOrderItems,
+    updatedAt: now
+  }, { merge: true }); // merge : 명시한 정보만 업데이트, 나머지는 기존값 유지
 };
 
 
