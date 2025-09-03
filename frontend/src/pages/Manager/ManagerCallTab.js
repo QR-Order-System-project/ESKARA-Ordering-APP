@@ -1,8 +1,6 @@
 // pages/Manager/ManagerCallTab.jsx
 import { useState, useMemo } from "react";
 import styles from "./ManagerCallTab.module.scss";
-import { PageTitle } from "../../components/PageTitle";
-import { AiOutlineUser } from "react-icons/ai";
 import { Modal } from "../../components/popups/Modal";
 
 const initialCalls = [
@@ -57,7 +55,6 @@ export const ManagerCallTab = () => {
   return (
     <>
       <div className={styles.page}>
-        <PageTitle title="직원 호출" Icon={AiOutlineUser} />
         <div className={styles.list}>
           {sorted.map((call) => (
             <div

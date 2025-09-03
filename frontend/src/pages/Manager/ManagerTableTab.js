@@ -1,13 +1,13 @@
 // ManagerTableTab.jsx
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, useEffect } from "react";
 import styles from "./ManagerTableTab.module.scss";
 import { Table } from "./Table";
 import { ManagerTableDetail } from "./ManagerTableDetail";
 
 import { Modal } from "../../components/popups/Modal";
-import { BsCurrencyDollar } from "react-icons/bs";
-import { PageTitle } from "../../components/PageTitle";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
+import { FaMoneyBillWave } from "react-icons/fa";
+import { BsCurrencyDollar } from "react-icons/bs";
 
 /**
  * ManagerTableTab
@@ -19,7 +19,7 @@ import { CompactToastModal } from "../../components/popups/CompactToastModal";
 const fakeSaveBill = (payload) =>
   new Promise((resolve) => setTimeout(() => resolve(payload), 300));
 
-export const ManagerTableTab = () => {
+export const ManagerTableTab = ({ changeTitle }) => {
   /* 테이블 목록 상태 */
   const [tables, setTables] = useState([
     {
@@ -138,7 +138,6 @@ export const ManagerTableTab = () => {
 
   /* 선택된 테이블 ID */
   const [selectedId, setSelectedId] = useState(null);
-
   /* 페이지 전용 모달 상태 */
   const [dialog, setDialog] = useState({
     open: false,
@@ -257,25 +256,28 @@ export const ManagerTableTab = () => {
     [tableMap, getTotal, openDialog, closeDialog, styles.confirmBody]
   );
 
+  useEffect(() => {
+    if (selectedTable) {
+      changeTitle(`테이블 ${selectedId}`, FaMoneyBillWave);
+    } else {
+      changeTitle("테이블 관리", BsCurrencyDollar);
+    }
+  }, [selectedTable]);
+
   return (
     <div className={styles.wrapper}>
       {selectedTable === null ? (
         <>
-          {/* 상단 타이틀 */}
-          <PageTitle title="테이블 관리" Icon={BsCurrencyDollar} />
-
           {/* 테이블 목록 (스크롤 컨테이너 포함) */}
           <div className={styles.mainPanel}>
-            <div className={styles.content}>
-              <div className={styles.tablePanel}>
-                {tables.map((t) => (
-                  <Table
-                    key={t.id}
-                    table={{ ...t, totalPrice: getTotal(t.orders) }}
-                    onClick={() => setSelectedId(t.id)}
-                  />
-                ))}
-              </div>
+            <div className={styles.tablePanel}>
+              {tables.map((t) => (
+                <Table
+                  key={t.id}
+                  table={{ ...t, totalPrice: getTotal(t.orders) }}
+                  onClick={() => setSelectedId(t.id)}
+                />
+              ))}
             </div>
           </div>
 

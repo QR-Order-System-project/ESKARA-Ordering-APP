@@ -1,8 +1,6 @@
 import { useCallback, useState } from "react";
 import styles from "./ManagerOrderTab.module.scss";
 import { Modal } from "../../components/popups/Modal";
-import { PageTitle } from "../../components/PageTitle";
-import { HiOutlineClipboardList } from "react-icons/hi";
 
 /**
  * ManagerOrderTab
@@ -92,10 +90,6 @@ export const ManagerOrderTab = () => {
     <>
       {/* 상단 타이틀 */}
       <div className={styles.boardWrap}>
-        <div className={styles.titleBar}>
-          <PageTitle title="주문 관리" Icon={HiOutlineClipboardList} />
-        </div>
-
         <div className={styles.board} role="list">
           {Object.entries(data).map(([menu, tables]) => (
             <section className={styles.column} key={menu} role="listitem">

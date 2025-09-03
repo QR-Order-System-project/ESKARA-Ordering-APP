@@ -33,11 +33,6 @@ export const ManagerTableDetail = ({ table, onClose, onPayComplete }) => {
 
   return (
     <div className={styles.mainPanel}>
-      {/* 상단 타이틀 (테이블명) */}
-      <div className={styles.titleBar}>
-        <PageTitle title={name} Icon={FaMoneyBillWave} />
-      </div>
-
       {/* 주문 내역 + 합계 금액 */}
       <div className={styles.content}>
         <OrderList orders={safeOrders} />
