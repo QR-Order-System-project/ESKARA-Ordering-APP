@@ -1,12 +1,24 @@
 /* === 기존 그대로 유지 + 중복 정리 === */
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
+
 .mainPanel {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   border: 2px solid #000;
   border-radius: 10px;
   background-color: #ffffff;
   align-items: center;
+  min-width: 0;
+  min-height: 0;
+  margin: 10px;
+  padding: 10px 10px 10px 20px;
 }
 
 /* === 반응형/스크롤 안전화 (시각 동일) === */
@@ -16,7 +28,11 @@
   row-gap: 16px; /* 세로 간격 */
   column-gap: 24px; /* 가로 간격 */
   flex: 1 1 auto;
+  width: 100%;
   min-height: 0;
+  min-width: 0;
+  padding-right: 10px;
+  margin: 10px;
 
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -40,21 +56,6 @@
   /* 필요시: word-break: keep-all; overflow-wrap: anywhere; */
 }
 
-@media (max-width: 300px) {
-  .tablePanel {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding-right: 10px;
-  }
-}
-
-/* 중간 폭에서 카드 간격만 살짝 */
-@media (min-width: 481px) and (max-width: 768px) {
-  .tablePanel {
-    gap: 18px;
-  }
-}
-
 /* 하단 토글 버튼: 터치 타깃/폰트 반응형 유지 */
 .payOnOffButton {
   display: flex;
@@ -73,27 +74,6 @@
   font-weight: 600;
   font-size: clamp(16px, 4.5vw, 20px);
   /* 원 스타일 유지, 필요시 cursor: pointer; */
-}
-
-/* 작은 화면 미세 조정 */
-@media (max-width: 480px) {
-  .mainPanel {
-    margin: 8px;
-  }
-  .tablePanel {
-    margin: 14px 8px 14px 14px;
-    padding-right: 3px;
-  }
-}
-
-/* 극소폭 기기 */
-@media (max-width: 320px) {
-  .tablePanel {
-    gap: 10px;
-  }
-  .payOnOffButton {
-    font-size: 15px;
-  }
 }
 
 /* 하단 고정 푸터(버튼 래퍼) */

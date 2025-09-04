@@ -34,6 +34,31 @@ const initialCalls = [
     tableNo: 24,
     requests: ["밑반찬 리필", "숟가락 1개"],
   },
+  {
+    id: 7,
+    tableNo: 24,
+    requests: ["밑반찬 리필", "숟가락 1개"],
+  },
+  {
+    id: 8,
+    tableNo: 24,
+    requests: ["밑반찬 리필", "숟가락 1개"],
+  },
+  {
+    id: 9,
+    tableNo: 24,
+    requests: ["밑반찬 리필", "숟가락 1개"],
+  },
+  {
+    id: 10,
+    tableNo: 24,
+    requests: ["밑반찬 리필", "숟가락 1개"],
+  },
+  {
+    id: 11,
+    tableNo: 24,
+    requests: ["밑반찬 리필", "숟가락 1개"],
+  },
 ];
 
 export const ManagerCallTab = () => {

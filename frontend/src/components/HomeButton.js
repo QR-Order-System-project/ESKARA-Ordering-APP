@@ -21,7 +21,6 @@ export const HomeButton = ({
 
   const handleClick = (e) => {
     onClick?.(e);
-    // 외부 핸들러가 '막아라'고 했으면 내부 동작 중단 -> 새로고침 구현하느라 어쩔 수 없었음. 나중에 수정하면 빼도 됨.
     if (e?.defaultPrevented) return;
 
     if (reload) {

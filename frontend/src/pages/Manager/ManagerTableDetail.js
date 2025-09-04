@@ -36,19 +36,20 @@ export const ManagerTableDetail = ({ table, onClose, onPayComplete }) => {
       {/* 주문 내역 + 합계 금액 */}
       <div className={styles.content}>
         <OrderList orders={safeOrders} />
-        <TotalPriceLabel label="주문" price={totalPrice} />
       </div>
 
-      {/* 결제완료 버튼 */}
-      <div className={styles.buttonRow}>
-        <button
-          type="button"
-          className={styles.payCompleteButton}
-          onClick={handlePay}
-          disabled={id == null}
-        >
-          결제완료
-        </button>
+      <div className={styles.lowPanel}>
+        <TotalPriceLabel label="주문" price={totalPrice} />
+        <div className={styles.buttonRow}>
+          <button
+            type="button"
+            className={styles.payCompleteButton}
+            onClick={handlePay}
+            disabled={id == null}
+          >
+            결제완료
+          </button>
+        </div>
       </div>
     </div>
   );

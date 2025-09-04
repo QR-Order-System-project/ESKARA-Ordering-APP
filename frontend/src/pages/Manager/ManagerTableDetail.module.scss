@@ -1,11 +1,17 @@
 /* pages/Manager/ManagerTableDetail.module.scss */
 
 /* === 메인 패널 (상세 화면 전체 컨테이너) === */
+.wrapper {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+
 .mainPanel {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  width: 100%;
+  flex: 1 1 auto;
   background-color: #ffffff;
   overflow: hidden;
 }
@@ -20,48 +26,56 @@
 
 /* === 주문 목록 (세로 스크롤 영역) === */
 .content {
-  flex: 1; /* 남는 공간을 모두 차지하며, 푸터를 아래로 밀어냄 */
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
   overflow-y: auto;
   min-height: 0;
-  padding: 0 8px; /* 좌우 여백 추가 */
+  padding: 0 8px;
+
+  > *:only-child {
+    margin-bottom: 16px !important;
+  }
 }
 
-/* === 하단 결제 바 (고정) === */
-.footer {
+.lowPanel {
   display: flex;
-  justify-content: space-between; /* 양쪽 끝으로 요소를 배치 */
+  position: sticky;
+  bottom: 0;
+  flex-direction: column;
+  z-index: 20;
+}
+
+.buttonRow {
+  height: 60px;
+  background: #d5a68b;
+  color: white;
+  font-weight: 700;
+  font-size: 24px;
+  display: flex;
   align-items: center;
-  padding: 10px 16px;
-  background: #ffffff;
-  border-top: 1px solid #f0f0f0; /* 상단 구분선 */
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+  justify-content: center;
+  width: 100%;
+  border: none;
 }
 
-/* === 버튼 그룹 (현재는 버튼 하나만 포함) === */
-.buttonGroup {
-  display: flex;
-}
-
-/* === 공통 버튼 스타일 === */
-.button {
+.payCompleteButton {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 48px;
-  padding: 0 24px;
-  border-radius: 8px;
+
+  width: 100%;
+  height: clamp(48px, 7.2vh, 58px);
+  margin: 0;
+
+  background-color: #d5a68b;
+  color: #ffffff;
+  border: none;
+
   font-family: Inter, sans-serif;
   font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  white-space: nowrap; /* 버튼 텍스트가 줄바꿈되지 않도록 */
-}
-
-/* === 결제 완료 버튼 === */
-.payButton {
-  background-color: #d5a68b;
-  color: #fff;
+  font-size: clamp(16px, 4.5vw, 20px);
+  /* 원 스타일 유지, 필요시 cursor: pointer; */
 }
 
 /* === 작은 기기 대응 === */

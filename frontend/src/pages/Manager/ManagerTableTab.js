@@ -19,7 +19,7 @@ import { BsCurrencyDollar } from "react-icons/bs";
 const fakeSaveBill = (payload) =>
   new Promise((resolve) => setTimeout(() => resolve(payload), 300));
 
-export const ManagerTableTab = ({ changeTitle }) => {
+export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
   /* 테이블 목록 상태 */
   const [tables, setTables] = useState([
     {
@@ -264,11 +264,27 @@ export const ManagerTableTab = ({ changeTitle }) => {
     }
   }, [selectedTable]);
 
+  useEffect(() => {
+    if (resetSignal == null) return;
+    setSelectedId(null);
+    setDialog((d) => ({ ...d, open: false }));
+  }, [resetSignal]);
+
   return (
     <div className={styles.wrapper}>
-      {selectedTable === null ? (
+      {selectedTable ? (
+        // 상세 화면
+        <ManagerTableDetail
+          table={{
+            ...selectedTable,
+            totalPrice: getTotal(selectedTable.orders),
+          }}
+          onClose={() => setSelectedId(null)}
+          onPayComplete={handlePayComplete}
+        />
+      ) : (
+        // 목록 화면
         <>
-          {/* 테이블 목록 (스크롤 컨테이너 포함) */}
           <div className={styles.mainPanel}>
             <div className={styles.tablePanel}>
               {tables.map((t) => (
@@ -281,30 +297,19 @@ export const ManagerTableTab = ({ changeTitle }) => {
             </div>
           </div>
 
-          {/* 하단 토글 버튼 (고정) */}
           <div className={styles.footer}>
             <button
               type="button"
               className={styles.payOnOffButton}
               onClick={showToggleDialog}
             >
-              {isPaymentActive ? "결제 비활성화" : "결제 활성화"}
+              {`결제 ${isPaymentActive ? "비활성화" : "활성화"}`}
             </button>
           </div>
         </>
-      ) : (
-        /* 상세 화면 */
-        <ManagerTableDetail
-          table={{
-            ...selectedTable,
-            totalPrice: getTotal(selectedTable.orders),
-          }}
-          onClose={() => setSelectedId(null)}
-          onPayComplete={handlePayComplete}
-        />
       )}
 
-      {/* 단일 모달 (동적으로 타이틀/본문/확인 주입) */}
+      {/* 공용 모달/토스트는 항상 마지막에 두면 깔끔 */}
       <Modal
         open={dialog.open}
         onClose={closeDialog}
