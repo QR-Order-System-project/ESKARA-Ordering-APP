@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { HomeButton } from "../../components/HomeButton";
 import { ButtonBar } from "./ButtonBar";
 import styles from "./ManagerMain.module.scss";
 import { ManagerTableTab } from "./ManagerTableTab";
 import { ManagerOrderTab } from "./ManagerOrderTab";
 import { ManagerCallTab } from "./ManagerCallTab";
-import { useLocation } from "react-router-dom";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { PageTitle } from "../../components/PageTitle";
 import { BsCurrencyDollar } from "react-icons/bs";
@@ -17,20 +16,29 @@ export const ManagerMain = () => {
     Icon: BsCurrencyDollar,
   });
 
+  const [tableReset, setTableReset] = useState(0);
+
   const changeTitle = (title, Icon) => {
     setHeader({ title, Icon });
   };
 
   const handleTabChange = ({ label, title, Icon }) => {
+    if (active === "TABLE" && label === "TABLE") {
+      setTableReset((n) => n + 1);
+      return;
+    }
     setActive(label);
     setHeader({ title, Icon });
   };
 
-  const location = useLocation();
-
-  useEffect(() => {
-    if (location.pathname === "/manager") setActive("TABLE");
-  }, [location]);
+  const handleHomeClick = useCallback(() => {
+    if (active === "TABLE") {
+      setTableReset((n) => n + 1);
+    } else {
+      setActive("TABLE");
+      setHeader({ title: "테이블 관리", Icon: BsCurrencyDollar });
+    }
+  }, [active]);
 
   const [toast, setToast] = useState(null);
 
@@ -39,7 +47,7 @@ export const ManagerMain = () => {
       <div className={styles.mainPanel}>
         <div className={styles.topPanel}>
           <div className={styles.topBar}>
-            <HomeButton reload />
+            <HomeButton onClick={handleHomeClick} />
             <div className={styles.logoPanel}>
               <img src="/icons/logo.svg" alt="로고" className={styles.logo} />
             </div>
@@ -48,12 +56,19 @@ export const ManagerMain = () => {
           <ButtonBar value={active} onChange={handleTabChange} />
           <PageTitle title={header.title} Icon={header.Icon} />
         </div>
+
         <div className={styles.content}>
-          {active === "TABLE" && <ManagerTableTab changeTitle={changeTitle} />}
+          {active === "TABLE" && (
+            <ManagerTableTab
+              changeTitle={changeTitle}
+              resetSignal={tableReset}
+            />
+          )}
           {active === "ORDER" && <ManagerOrderTab />}
           {active === "CALL" && <ManagerCallTab />}
         </div>
       </div>
+
       {toast && (
         <CompactToastModal
           message={toast.message}
