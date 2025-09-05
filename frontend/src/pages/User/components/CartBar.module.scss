@@ -1,6 +1,8 @@
 .CartBar {
-  position: sticky;
+  position: fixed;
   bottom: 0;
+  left: 0;
+  right: 0;
   height: 60px;
   background: #D5A68B;
   display: flex;

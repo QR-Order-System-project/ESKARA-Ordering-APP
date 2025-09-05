@@ -11,7 +11,7 @@
   width: 100%;
   min-width: 340px;
   background-color: white;
-  height: 100vh;
+  height: 100svh;
   overflow: hidden;
 }
 
@@ -88,6 +88,7 @@
 .CallButton {
   position: fixed;
   bottom: 0;
+  width: 100%;
   height: 60px;
   background: #D5A68B;
   color: white;
@@ -99,4 +100,6 @@
   width: 100%;
   border: none;
   cursor: pointer;
+  padding-bottom: env(safe-area-inset-bottom);
+  height: calc(60px + env(safe-area-inset-bottom));
 }

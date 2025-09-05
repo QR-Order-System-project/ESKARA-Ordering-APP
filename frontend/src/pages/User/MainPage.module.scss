@@ -11,8 +11,9 @@
   width: 100%;
   min-width: 340px;
   background-color: white;
-  height: 100vh;
+  height: 100svh;
   overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .TopBarWrapper {
