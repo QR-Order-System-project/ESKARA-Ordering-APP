@@ -14,26 +14,32 @@ const getAllTableStatus = async (req, res) => {
     const pricePath = path.join(__dirname, "../data/menuPrice.json");
     const menuPrice = JSON.parse(fs.readFileSync(pricePath, "utf-8"));
 
-    const statusList = [];
-
-    // 각 테이블 문서 순회
+    // Orders에 존재하는 테이블 조회
+    const existingOrders = {};
     snapshot.forEach(doc => {
       const data = doc.data();
-      const items = data.items || {};
+      existingOrders[data.tableNumber] = data.items || {};
+    });
 
-      // 총 결제 금액 계산
-      let totalAmount = 0;
+    // 전체 테이블(1~32) 순회하며 결제 상태 계산
+    const totalTables = 32;
+    const statusList = [];
+
+    for (let i = 1; i <= totalTables; i++) {
+      const tableNumber = i;
+      const items = existingOrders[tableNumber] || {};
+
+      let totalAmout = 0;
       for (const [menu, count] of Object.entries(items)) {
-        totalAmount += (menuPrice[menu] || 0) * count;
+        totalAmout += (menuPrice[menu] || 0) * count;
       }
 
-      // 리스트에 테이블 정보 추가
       statusList.push({
-        tableNumber: data.tableNumber,
-        totalAmount,
-        payed: totalAmount == 0 ? true : false,
+        tableNumber,
+        totalAmout,
+        payed: totalAmout === 0,
       });
-    });
+    }
 
     return res.status(200).json(statusList);
   } catch (err) {
@@ -56,7 +62,11 @@ const getTablePaymentDetails = async (req, res) => {
 
     // 주문 정보가 없을 경우
     if (!doc.exists) {
-      return res.status(404).json({ message: "해당 테이블의 주문이 존재하지 않습니다." });
+      return res.status(200).json({
+        tableNumber,
+        items: [],
+        totalAmount: 0
+      });
     }
     const data = doc.data();
     const items = data.items || {};
@@ -87,6 +97,7 @@ const getTablePaymentDetails = async (req, res) => {
 
 // 결제 완료 처리
 const { addOrderToArchive, deleteOrderFromOrders } = require("../utils/dbUtils");
+const { table } = require("console");
 
 const finalizePayment = async (req, res) => {
   try {
