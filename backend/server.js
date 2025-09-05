@@ -8,6 +8,7 @@ const orderRoutes = require('./routes/orderRoutes');
 const menuRoutes = require('./routes/menuRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const employeeCallRoutes = require('./routes/employeeCallRoutes');
+const fcmRoutes = require('./routes/fcmRoutes');
 const socketHandler = require('./sockets/socketHandler');
 const db = require('./firebase');
 
@@ -24,6 +25,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/menu', menuRoutes)
 app.use('/api/payments', paymentRoutes);
 app.use('/api/employee', employeeCallRoutes);
+app.use("/api/fcm", fcmRoutes);
 
 socketHandler(io);
 
