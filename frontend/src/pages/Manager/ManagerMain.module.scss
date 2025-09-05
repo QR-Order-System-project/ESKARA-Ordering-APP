@@ -1,20 +1,57 @@
+/* pages/Manager/ManagerMain.module.scss */
+
+/* === 전체 화면 Wrapper (뷰포트 전용) === */
 .wrapper {
+  position: fixed;
+  inset: 0; /* top/right/bottom/left 모두 0 */
   display: flex;
   justify-content: center;
+  width: 100%;
+  background: #ffffff;
+  overflow: hidden; /* wrapper 자체 스크롤 차단 */
+  isolation: isolate;
 }
 
+/* === 메인 패널 (실제 컨텐츠 박스) === */
 .mainPanel {
   display: flex;
   flex-direction: column;
-  width: 360px;
-  font-family: Inter;
-  font-weight: 600;
-  font-style: Semi Bold;
-  font-size: 16px;
-  background-color: #edce7a;
-  gap: 5px;
+
+  width: 100%;
+  margin: 0 auto;
+  height: 100%; /* wrapper(뷰포트) 꽉 채움 */
+  min-width: 0; /* flex 컨텍스트에서 가로 넘침 방지 */
+  overflow: hidden; /* 스크롤은 content에서만 */
+
+  font: 600 16px/1.4 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+    sans-serif;
+  gap: 0px;
 }
 
+/* === 상단 바 === */
 .topBar {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 8px 8px;
+}
+
+/* === 로고 묶음 === */
+.logoPanel {
+  display: flex;
+}
+
+/* === 아이콘 크기 고정 === */
+.yuseongIcon {
+  width: 47px;
+  height: 47px;
+  image-rendering: auto;
+}
+
+/* === 콘텐츠 스크롤 영역 === */
+.content {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  overflow: visible;
 }

@@ -1,0 +1,103 @@
+/* === 모달 컨테이너 & 배경 === */
+.container {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5); // 기본 반투명 배경
+}
+
+.overlayClear {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2); // 옅은 배경 (또는 transparent)
+}
+
+/* === 모달 박스 === */
+.modal {
+  position: relative;
+  width: min(92vw, 520px);
+  max-height: min(86vh, 720px);
+  background: #d5a68b;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 2px solid #000000;
+}
+
+.bare {
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: visible;
+  width: auto;
+  max-height: none;
+}
+
+/* === 헤더 / 타이틀 / 닫기 버튼 === */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 30px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.iconClose {
+  background: none;
+  border: none;
+  margin: 10px 10px 0 10px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  color: #ffffff;
+  margin-left: auto;
+
+  svg {
+    display: block;
+  }
+}
+
+/* === 푸터 버튼 영역 === */
+.footer {
+  display: flex;
+  gap: 19px;
+  margin: 5px 20px 20px 20px;
+  justify-content: center;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 26px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  padding: 13px 40px 15px 40px;
+  cursor: pointer;
+  border: 2px solid #000000;
+}
+
+/* === 본문 === */
+.body {
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 18px;
+  text-align: center;
+  color: #ffffff;
+  margin: 7px 0;
+}

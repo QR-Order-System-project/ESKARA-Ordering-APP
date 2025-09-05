@@ -1,0 +1,126 @@
+.page {
+  display: flex;
+  height: auto;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.list {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  overflow: auto;
+  max-height: 450px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+  padding-right: 8px;
+
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #d5a68b;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+}
+
+.card {
+  display: flex;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 20px;
+  border: 2px solid #000000;
+  border-radius: 10px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  background-color: #d5a68b;
+  color: white;
+  font-size: 24px;
+}
+
+.tableNo {
+  display: flex;
+  justify-content: center;
+  font-family: Inter;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.requests {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  border: 2px solid #000000;
+  border-left: none;
+  border-radius: 10px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  font-family: Inter;
+  font-weight: 600;
+  font-size: 20px;
+  padding: 10px;
+}
+
+/* === 모달 텍스트 === */
+.modalList {
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  text-align: center;
+  padding: 0;
+  color: #ffffff;
+}
+.titleLines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.titleLines > span {
+  display: block;
+  white-space: nowrap;
+}
+
+/* === 반응형 === */
+@media (max-width: 480px) {
+  .list {
+    max-width: 100%;
+    padding: 0 12px;
+    row-gap: 8px;
+  }
+  .tableBox {
+    min-width: 84px;
+    font-size: 16px;
+    padding: 8px 0;
+  }
+  .number {
+    font-size: 26px;
+  }
+  .requests {
+    padding: 10px;
+    gap: 4px;
+  }
+  .reqLine {
+    font-size: 16px;
+  }
+}
+@media (max-width: 360px) {
+  .tableBox {
+    min-width: 76px;
+    font-size: 15px;
+  }
+  .number {
+    font-size: 24px;
+  }
+  .reqLine {
+    font-size: 15px;
+  }
+}

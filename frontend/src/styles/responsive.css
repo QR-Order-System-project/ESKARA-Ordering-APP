@@ -1,0 +1,36 @@
+:root {
+  --fs-body: clamp(14px, 3.6vw, 16px);
+  --fs-title: clamp(18px, 5vw, 22px);
+
+  --space-1: 8px;
+  --space-2: 12px;
+  --space-3: 16px;
+}
+
+body {
+  font-size: var(--fs-body);
+  line-height: 1.4;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.container {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.grid-auto {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.touch {
+  min-height: 44px;
+}

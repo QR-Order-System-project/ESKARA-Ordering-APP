@@ -1,0 +1,110 @@
+/* pages/Manager/ManagerOrderTab.module.scss */
+
+/* === 페이지 래퍼 (뷰포트 고정, 바깥 스크롤 차단) === */
+.boardWrap {
+  height: 100dvh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+/* === 상단 제목 (고정) === */
+.titleBar {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #ffffff;
+}
+
+/* 보드가 세로 스크롤 주체 */
+.board {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 10px;
+  padding: 12px;
+
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  grid-auto-columns: calc((100% - 10px) / 2);
+
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+/* === 칼럼 === */
+.column {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 10px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  min-width: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  max-height: 470px;
+}
+
+/* === 칼럼 헤더 (고정) === */
+.columnHeader {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #ffffff;
+  border-bottom: 2px solid #000;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.columnTitle {
+  font-weight: 600;
+  font-size: 20px;
+  text-align: center;
+}
+
+/* === 카드 스택 (세로 목록) === */
+.stack {
+  display: grid;
+  grid-auto-rows: min-content;
+  gap: 10px;
+  padding: 10px;
+  min-height: 0;
+}
+
+/* === 카드 === */
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  background: #ffffff;
+  border: 2px solid #222;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 24px;
+  padding: 36px 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* === 모달 제목(두 줄) === */
+.titleLines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.titleLines > span {
+  display: block;
+  white-space: nowrap;
+}

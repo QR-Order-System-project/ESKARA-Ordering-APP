@@ -1,0 +1,123 @@
+/* === 기존 그대로 유지 + 중복 정리 === */
+
+.mainPanel {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #000;
+  border-radius: 10px;
+  background-color: #ffffff;
+  align-items: center;
+
+  /* 스크롤/레이아웃 안전장치 */
+  min-width: 0;
+  min-height: 0;
+}
+
+/* === 반응형/스크롤 안전화 (시각 동일) === */
+.tablePanel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* 항상 2열 */
+  row-gap: 16px; /* 세로 간격 */
+  column-gap: 24px; /* 가로 간격 */
+  max-height: min(484px, 70vh);
+  min-height: 0;
+
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #d5a68b;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+}
+
+.tablePanel > * {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0; /* 긴 텍스트 넘침 방지 */
+  /* 필요시: word-break: keep-all; overflow-wrap: anywhere; */
+}
+
+@media (max-width: 300px) {
+  .tablePanel {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding-right: 10px;
+  }
+}
+
+/* 중간 폭에서 카드 간격만 살짝 */
+@media (min-width: 481px) and (max-width: 768px) {
+  .tablePanel {
+    gap: 18px;
+  }
+}
+
+/* 하단 토글 버튼: 터치 타깃/폰트 반응형 유지 */
+.payOnOffButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: clamp(48px, 7.2vh, 58px);
+  margin: 0;
+
+  background-color: #d5a68b;
+  color: #ffffff;
+  border: none;
+
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+  font-size: clamp(16px, 4.5vw, 20px);
+  /* 원 스타일 유지, 필요시 cursor: pointer; */
+}
+
+/* 작은 화면 미세 조정 */
+@media (max-width: 480px) {
+  .mainPanel {
+    margin: 8px;
+  }
+  .tablePanel {
+    margin: 14px 8px 14px 14px;
+    padding-right: 3px;
+    max-height: min(420px, 58vh);
+  }
+}
+
+/* 극소폭 기기 */
+@media (max-width: 320px) {
+  .tablePanel {
+    gap: 10px;
+  }
+  .payOnOffButton {
+    font-size: 15px;
+  }
+}
+
+/* 하단 고정 푸터(버튼 래퍼) */
+.footer {
+  height: 60px;
+  background: #d5a68b;
+  color: white;
+  font-weight: 700;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: none;
+}
+
+.titleLines {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 2px; /* 줄 간격 */
+}
