@@ -1,3 +1,5 @@
+const { sendFCMToRole } = require("../utils/fcmUtils");
+
 function socketHandler(io) {
   const roleSockets = {
     customer: new Set(),
@@ -24,9 +26,17 @@ function socketHandler(io) {
 
     // 새 주문 (손님 -> 요리사/서버/실무단/손님 화면 갱신)
     // order 저장, menuQueue 저장, order 보여주기, menuQueue 보여주기
-    socket.on("newOrderPlaced", ({ tableNumber, items }) => {
+    socket.on("newOrderPlaced", async ({ tableNumber, items }) => {
       log(socket, `새 주문 - 테이블 ${tableNumber}`);
       emitToRoles(["chef", "server", "customer", "staff"], "menuQueueUpdated", { tableNumber, items });
+
+      // 주문 메뉴 이름 추출
+      const itemNames = items.map(item => item.menu).join(", ");
+
+      // FCM 푸시 알림
+      const message = `테이블 ${tableNumber}에서 주문: ${itemNames}`;
+      await sendFCMToRole("chef", "새 주문 도착", message);
+      await sendFCMToRole("server", "새 주문 도착", message);
     });
 
     // 요리 완료 (서버 -> 요리사/서버 화면 갱신)
@@ -45,9 +55,12 @@ function socketHandler(io) {
 
     // 직원 호출 (손님 -> 서버)
     // callEmployee at employeeCallController.js
-    socket.on("employeeCalled", ({ tableNumber, items }) => {
+    socket.on("employeeCalled", async ({ tableNumber, items }) => {
       log(socket, `직원 호출 - 테이블 ${tableNumber}`);
       emitToRoles(["server"], "employeeCallUpdated", { tableNumber, items });
+
+      // FCM 푸시 알림
+      await sendFCMToRole("server", "직원 호출 발생", `테이블 ${tableNumber}에서 호출이 발생했습니다.`);
     });
 
     // 직원 호출 처리 완료 (서버 -> 서버 화면에서 제거)
