@@ -23,51 +23,59 @@ function socketHandler(io) {
     });
 
     // 새 주문 (손님 -> 요리사/서버/실무단/손님 화면 갱신)
+    // order 저장, menuQueue 저장, order 보여주기, menuQueue 보여주기
     socket.on("newOrderPlaced", ({ tableNumber, items }) => {
       log(socket, `새 주문 - 테이블 ${tableNumber}`);
       emitToRoles(["chef", "server", "customer", "staff"], "menuQueueUpdated", { tableNumber, items });
     });
 
-    // 서빙 완료 또는 주문 취소 (서버 -> 요리사/서버 화면 갱신)
-    socket.on("orderServedOrCanceled", ({ tableNumber, menu }) => {
-      log(socket, `서빙 완료 or 취소 - 테이블 ${tableNumber}, 메뉴: ${menu}`);
+    // 요리 완료 (서버 -> 요리사/서버 화면 갱신)
+    // menuQueue 삭제, menuQueue 보여주기
+    socket.on("orderServedOrCanceled", () => {
+      log(socket, `요리 완료`);
       emitToRoles(["chef", "server"], "menuQueuePopped", { tableNumber, menu });
     });
 
     // 주문 취소 (서버 -> 요리사/서버/손님/실무단 화면)
-    socket.on("orderCanceled", ({ tableNumber, items }) => {
-      log(socket, `주문 취소 - 테이블 ${tableNumber}`);
-      emitToRoles(["chef", "server", "customer", "staff"], "orderCancellationUpdated", { tableNumber, items });
+    // order 수정, menuQueue 삭제, order 보여주기, menuQueue 보여주기
+    socket.on("orderCanceled", () => {
+      log(socket, `주문 취소`);
+      emitToRoles(["chef", "server", "customer", "staff"], "orderCancellationUpdated", {});
     });
 
     // 직원 호출 (손님 -> 서버)
+    // callEmployee at employeeCallController.js
     socket.on("employeeCalled", ({ tableNumber, items }) => {
       log(socket, `직원 호출 - 테이블 ${tableNumber}`);
       emitToRoles(["server"], "employeeCallUpdated", { tableNumber, items });
     });
 
     // 직원 호출 처리 완료 (서버 -> 서버 화면에서 제거)
-    socket.on("employeeCallHandled", ({ tableNumber, items }) => {
-      log(socket, `호출 처리 완료 - 테이블 ${tableNumber}`);
-      emitToRoles(["server"], "employeeCallPopped", { tableNumber, items });
+    // completeEmployeeCall at employeeCallController.js    
+    socket.on("employeeCallHandled", () => {
+      log(socket, `호출 처리 완료`);
+      emitToRoles(["server"], "employeeCallPopped", {});
     });
 
     // 결제 활성화 (실무단 -> 손님 화면)
+    // setGlobalPaymentEnable at paymentController.js
     socket.on("activatePayment", () => {
       log(socket, `결제 활성화 `);
       emitToRoles(["customer"], "paymentActivated", {});
     });
 
     // 결제 비활성화 (실무단 -> 손님 화면)
+    // setGlobalPaymentEnable at paymentController.js
     socket.on("deactivatePayment", () => {
       log(socket, `결제 비활성화 `);
       emitToRoles(["customer"], "paymentDeactivated", {});
     });
 
     // 결제 완료 (실무단 확인 -> 실무단, 손님 화면 갱신)
-    socket.on("paymentCompleted", ({ tableNumber }) => {
-      log(socket, `결제 완료 - 테이블 ${tableNumber}`);
-      emitToRoles(["staff", "customer"], "refreshTableStatus", { tableNumber });
+    // finalizePayment at paymentController.js
+    socket.on("paymentCompleted", () => {
+      log(socket, `결제 완료`);
+      emitToRoles(["staff", "customer"], "refreshTableStatus", {});
     });
 
     // 연결 해제
