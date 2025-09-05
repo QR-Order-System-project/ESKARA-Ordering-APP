@@ -33,23 +33,27 @@ export const ManagerTableDetail = ({ table, onClose, onPayComplete }) => {
 
   return (
     <div className={styles.mainPanel}>
+      {/* 상단 타이틀 (테이블명) */}
+      <div className={styles.titleBar}>
+        <PageTitle title={name} Icon={FaMoneyBillWave} />
+      </div>
+
       {/* 주문 내역 + 합계 금액 */}
       <div className={styles.content}>
         <OrderList orders={safeOrders} />
+        <TotalPriceLabel label="주문" price={totalPrice} />
       </div>
 
-      <div className={styles.lowPanel}>
-        <TotalPriceLabel label="주문" price={totalPrice} />
-        <div className={styles.buttonRow}>
-          <button
-            type="button"
-            className={styles.payCompleteButton}
-            onClick={handlePay}
-            disabled={id == null}
-          >
-            결제완료
-          </button>
-        </div>
+      {/* 결제완료 버튼 */}
+      <div className={styles.buttonRow}>
+        <button
+          type="button"
+          className={styles.payCompleteButton}
+          onClick={handlePay}
+          disabled={id == null}
+        >
+          결제완료
+        </button>
       </div>
     </div>
   );
