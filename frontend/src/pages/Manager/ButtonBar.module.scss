@@ -1,0 +1,43 @@
+.mainPanel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  border: 2px solid #000;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+/* === 기본 버튼 스타일 === */
+/* '.Tab'의 스타일을 여기에 적용합니다 */
+.button {
+  display: flex;
+  height: 44px; /* 고정된 높이를 설정합니다 */
+  border: none; /* 개별 버튼의 테두리를 제거합니다 */
+  border-right: 2px solid #000; /* 오른쪽에 구분선을 추가합니다 */
+  background: #fff;
+  cursor: pointer;
+
+  /* 콘텐츠 가운데 정렬 */
+  align-items: center;
+  justify-content: center;
+
+  /* 폰트 스타일 */
+  font-family: Inter; /* 기존 코드에서 가져옴 */
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* === 마지막 버튼은 오른쪽 선 제거 === */
+.button:last-child {
+  border-right: none;
+}
+
+/* 첫 번째 자식 요소(:first-child) 규칙은 더 이상 필요 없습니다. */
+
+/* === 활성화 상태 === */
+/* '.Active'의 스타일을 여기에 적용합니다 */
+.active {
+  background: #d5a68b;
+  color: #fff;
+}

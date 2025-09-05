@@ -1,0 +1,86 @@
+/* pages/Manager/ManagerTableDetail.module.scss */
+
+/* === 메인 패널 (상세 화면 전체 컨테이너) === */
+.wrapper {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.mainPanel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+/* === 상단 타이틀 (고정) === */
+.titleBar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #ffffff;
+}
+
+/* === 주문 목록 (세로 스크롤 영역) === */
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
+  padding: 0 8px;
+
+  > *:only-child {
+    margin-bottom: 16px !important;
+  }
+}
+
+.lowPanel {
+  display: flex;
+  position: sticky;
+  bottom: 0;
+  flex-direction: column;
+  z-index: 20;
+}
+
+.buttonRow {
+  height: 60px;
+  background: #d5a68b;
+  color: white;
+  font-weight: 700;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: none;
+}
+
+.payCompleteButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: clamp(48px, 7.2vh, 58px);
+  margin: 0;
+
+  background-color: #d5a68b;
+  color: #ffffff;
+  border: none;
+
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+  font-size: clamp(16px, 4.5vw, 20px);
+  /* 원 스타일 유지, 필요시 cursor: pointer; */
+}
+
+/* === 작은 기기 대응 === */
+@media (max-width: 360px) {
+  .content {
+    gap: 6px;
+  }
+}

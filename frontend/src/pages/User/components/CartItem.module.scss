@@ -1,0 +1,65 @@
+.itemPanel {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+  border-bottom: 2px solid #000;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.name {
+  font-family: Inter;
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 6px; /* 제목과 가격 사이 간격 */
+}
+
+.bottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-family: Inter;
+  font-weight: 600;
+  font-size: 16px;
+  color: #7f7f7f;
+}
+
+.Counter {
+  display: flex;
+  align-items: center;
+  border: 2px solid #000;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 38px;
+
+  button {
+    width: 36px;                /* 버튼은 고정된 크기 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    background: #fff;
+    border: none;
+    cursor: pointer;
+  }
+
+  span {
+    min-width: 40px;            /* 숫자 칸은 여유 */
+    text-align: center;
+    font-weight: 700;
+    font-size: 16px;
+    border-left: 2px solid #000;
+    border-right: 2px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+}
+
