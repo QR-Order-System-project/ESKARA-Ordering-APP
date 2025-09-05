@@ -53,15 +53,15 @@ function socketHandler(io) {
     });
 
     // 결제 활성화 (실무단 -> 손님 화면)
-    socket.on("activatePayment", ({ tableNumber }) => {
-      log(socket, `결제 활성화 - 테이블 ${tableNumber}`);
-      emitToRoles(["customer"], "paymentActivated", { tableNumber });
+    socket.on("activatePayment", () => {
+      log(socket, `결제 활성화 `);
+      emitToRoles(["customer"], "paymentActivated", {});
     });
 
     // 결제 비활성화 (실무단 -> 손님 화면)
-    socket.on("deactivatePayment", ({ tableNumber }) => {
-      log(socket, `결제 비활성화 - 테이블 ${tableNumber}`);
-      emitToRoles(["customer"], "paymentDeactivated", { tableNumber });
+    socket.on("deactivatePayment", () => {
+      log(socket, `결제 비활성화 `);
+      emitToRoles(["customer"], "paymentDeactivated", {});
     });
 
     // 결제 완료 (실무단 확인 -> 실무단, 손님 화면 갱신)
