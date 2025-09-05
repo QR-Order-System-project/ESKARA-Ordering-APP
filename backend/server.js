@@ -5,6 +5,9 @@ const http = require('http');
 const { Server } = require('socket.io');
 
 const orderRoutes = require('./routes/orderRoutes');
+const menuRoutes = require('./routes/menuRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
+const employeeCallRoutes = require('./routes/employeeCallRoutes');
 const socketHandler = require('./sockets/socketHandler');
 const db = require('./firebase');
 
@@ -18,6 +21,9 @@ global.db = db;
 app.use(cors());
 app.use(express.json());
 app.use('/api/orders', orderRoutes);
+app.use('/api/menu', menuRoutes)
+app.use('/api/payments', paymentRoutes);
+app.use('/api/employee', employeeCallRoutes);
 
 socketHandler(io);
 
