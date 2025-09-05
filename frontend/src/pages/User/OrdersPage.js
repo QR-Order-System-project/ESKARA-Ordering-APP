@@ -8,22 +8,23 @@ import { BsClipboard } from "react-icons/bs";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { TotalPriceLabel } from "../../components/TotalPriceLabel";
 
+
 //TODO: 실제 주문 내역 DB에서 받아오기
 const dummyOrders = [
-  { id: 1, name: "두근두근, 사랑은 계란을 타고...", amount: 2, price: 0 },
-  { id: 2, name: "주점 인증샷 한잔해", amount: 1, price: 0 },
-  { id: 3, name: "불가마 어묵탕", amount: 2, price: 10000 },
-  { id: 4, name: "참숯가마 버팔로윙", amount: 1, price: 15000 },
-  { id: 5, name: "황토방 두부김치", amount: 5, price: 8000 },
-  { id: 6, name: "모듬 후르츄베릅", amount: 2, price: 8000 },
-  { id: 7, name: "도리도리토스뱅크 타코", amount: 3, price: 7000 },
-  { id: 8, name: "밥알 낭낭한 찜질방 식혜", amount: 1, price: 3000 },
-  { id: 9, name: "세빠지게 섞은 주전자 미숫가루", amount: 2, price: 5000 },
+    { id: 1, name: "두근두근, 사랑은 계란을 타고...", amount: 2, price: 0 },
+    { id: 2, name: "주점 인증샷 한잔해", amount: 1, price: 0 },
+    { id: 3, name: "불가마 어묵탕", amount: 2, price: 10000 },
+    { id: 4, name: "참숯가마 버팔로윙", amount: 1, price: 15000 },
+    { id: 5, name: "황토방 두부김치", amount: 5, price: 8000 },
+    { id: 6, name: "모듬 후르츄베릅", amount: 2, price: 8000 },
+    { id: 7, name: "도리도리토스뱅크 타코", amount: 3, price: 7000 },
+    { id: 8, name: "밥알 낭낭한 찜질방 식혜", amount: 1, price: 3000 },
+    { id: 9, name: "세빠지게 섞은 주전자 미숫가루", amount: 2, price: 5000 },
 ];
 
 export default function OrderPage() {
   const [toast, setToast] = useState(null);
-  const navigate = useNavigate();
+   const navigate = useNavigate();
 
   //TODO: 직원용 사이트에서 API로 받아와야함
   const isPaymentEnabled = true;
@@ -32,19 +33,13 @@ export default function OrderPage() {
     const accountNumber = "112-2218-9983-00 부산은행";
 
     if (!isPaymentEnabled) {
-      setToast({
-        message: "직원이 결제를 요청한 경우에 다시 시도해주세요.",
-        variant: "error",
-      });
+      setToast({ message: "직원이 결제를 요청한 경우에 다시 시도해주세요.", variant: "error" });
       return;
     }
 
     try {
       await navigator.clipboard.writeText(accountNumber);
-      setToast({
-        message: "계좌번호가 성공적으로 복사되었습니다!",
-        variant: "success",
-      });
+      setToast({ message: "계좌번호가 성공적으로 복사되었습니다!", variant: "success" });
     } catch (err) {
       setToast({ message: "클립보드 복사에 실패했습니다.", variant: "error" });
     }

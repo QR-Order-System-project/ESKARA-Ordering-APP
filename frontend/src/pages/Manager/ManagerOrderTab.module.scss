@@ -2,6 +2,8 @@
 
 /* === 페이지 래퍼 (뷰포트 고정, 바깥 스크롤 차단) === */
 .boardWrap {
+  height: 100dvh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   background: #ffffff;
@@ -25,6 +27,7 @@
 
   flex: 1 1 auto;
   min-height: 0;
+  height: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
@@ -33,17 +36,6 @@
 
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
-
-  &::-webkit-scrollbar {
-    height: 7px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #d5a68b;
-    border-radius: 10px;
-  }
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
 }
 
 /* === 칼럼 === */
@@ -53,13 +45,12 @@
   background: #ffffff;
   border: 2px solid #000000;
   border-radius: 10px;
-  overflow-y: auto;
+  overflow: auto;
   -webkit-overflow-scrolling: touch;
   min-width: 0;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  flex: 1 1 auto;
-  height: 100%;
+  max-height: 470px;
 }
 
 /* === 칼럼 헤더 (고정) === */
@@ -75,7 +66,6 @@
 }
 
 .columnTitle {
-  font-family: Inter;
   font-weight: 600;
   font-size: 20px;
   text-align: center;

@@ -1,11 +1,8 @@
 .page {
   display: flex;
-  flex: 1 1 auto;
-  min-height: 0;
-  min-width: 0;
+  height: auto;
   gap: 10px;
   flex-direction: column;
-  margin-top: 10px;
 }
 
 .list {
@@ -13,8 +10,7 @@
   gap: 10px;
   flex-direction: column;
   overflow: auto;
-  min-height: 0;
-  flex: 1 1 auto;
+  max-height: 450px;
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
   padding-right: 8px;
