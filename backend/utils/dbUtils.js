@@ -134,7 +134,10 @@ const finalizeAndClearOrder = async (tableNumber) => {
 
 
 module.exports = {
-  addOrderToDB,
+  addOrderToOrdersDB,
+  addMenuToMenuQueueDB,
+  deleteOrdersFromMenuQueueDB,
+  discountCountFromOrders,
   finalizeAndClearOrder,
   getTimeSlot,
   removeTableFromMenu,

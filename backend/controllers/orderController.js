@@ -1,11 +1,11 @@
 const { addOrderToOrdersDB, 
         addMenuToMenuQueueDB, 
         deleteOrdersFromMenuQueueDB, 
-        discountCountFromOrders 
+        discountCountFromOrders
       } = require('../utils/dbUtils');
 
-// 주문 완료 시 (e.g., POST /api/orders/complete)
-const completeOrder = async (req, res) => {
+// 주문 완료 시 (e.g., POST /api/orders/create)
+const createOrder = async (req, res) => {
     try {
         const { tableNumber, items } = req.body;
 
@@ -38,7 +38,7 @@ const cancelOrder = async (req, res) => {
 };
 
 
-// 요리 완료 시 (e.g., POST /api/menus/finish)
+// 요리 완료 시 (e.g., POST /api/menu/finish)
 const finishMenu = async (req, res) => {
     try {
         const { tableNumber, menu } = req.body;
@@ -54,9 +54,38 @@ const finishMenu = async (req, res) => {
 };
 
 
+
+// 메뉴큐 보여주기 (e.g., POST /api/menu/showMenuQueue)
+const showMenuQueue = async (req, res) => {
+
+    const menuQueuedict = {
+        "menu1": [],
+        "menu2": [],
+        "menu3": [],
+        "menu4": [],
+        "menu5": [],
+    };
+
+    const docRef = db.collection('queues').doc('menuQueue');
+    const docSnap = await docRef.get();
+
+    if (!docSnap.exists) {
+        return res.status(200).json(menuQueuedict); 
+    }
+
+    const dbData = docSnap.data();
+
+    for (const menuName in dbData) {
+        menuQueuedict[menuName] = dbData[menuName];
+    }
+
+    return res.status(200).json(menuQueuedict);
+}
+
 // 라우터 파일에서 사용할 수 있도록 함수들을 export 합니다.
 module.exports = {
-    completeOrder,
+    createOrder,
     cancelOrder,
-    finishMenu
+    finishMenu, 
+    showMenuQueue
 };

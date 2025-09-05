@@ -1,9 +1,12 @@
 const express = require('express');
-const { createOrder, finalizeOrder } = require('../controllers/orderController');
+const { createOrder, cancelOrder } = require('../controllers/orderController');
 
 const router = express.Router();
 
-router.post('/', createOrder);
-router.post('/finalize', finalizeOrder);
+// 주문 완료 
+router.post('/create', createOrder);
+
+// 주문 취소
+router.post('/cancel', cancelOrder);
 
 module.exports = router;
