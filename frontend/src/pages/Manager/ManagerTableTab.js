@@ -1,13 +1,13 @@
 // ManagerTableTab.jsx
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, useEffect } from "react";
 import styles from "./ManagerTableTab.module.scss";
 import { Table } from "./Table";
 import { ManagerTableDetail } from "./ManagerTableDetail";
 
 import { Modal } from "../../components/popups/Modal";
-import { BsCurrencyDollar } from "react-icons/bs";
-import { PageTitle } from "../../components/PageTitle";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
+import { FaMoneyBillWave } from "react-icons/fa";
+import { BsCurrencyDollar } from "react-icons/bs";
 
 /**
  * ManagerTableTab
@@ -19,7 +19,7 @@ import { CompactToastModal } from "../../components/popups/CompactToastModal";
 const fakeSaveBill = (payload) =>
   new Promise((resolve) => setTimeout(() => resolve(payload), 300));
 
-export const ManagerTableTab = () => {
+export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
   /* 테이블 목록 상태 */
   const [tables, setTables] = useState([
     {
@@ -138,7 +138,6 @@ export const ManagerTableTab = () => {
 
   /* 선택된 테이블 ID */
   const [selectedId, setSelectedId] = useState(null);
-
   /* 페이지 전용 모달 상태 */
   const [dialog, setDialog] = useState({
     open: false,
@@ -257,41 +256,24 @@ export const ManagerTableTab = () => {
     [tableMap, getTotal, openDialog, closeDialog, styles.confirmBody]
   );
 
+  useEffect(() => {
+    if (selectedTable) {
+      changeTitle(`테이블 ${selectedId}`, FaMoneyBillWave);
+    } else {
+      changeTitle("테이블 관리", BsCurrencyDollar);
+    }
+  }, [selectedTable]);
+
+  useEffect(() => {
+    if (resetSignal == null) return;
+    setSelectedId(null);
+    setDialog((d) => ({ ...d, open: false }));
+  }, [resetSignal]);
+
   return (
     <div className={styles.wrapper}>
-      {selectedTable === null ? (
-        <>
-          {/* 상단 타이틀 */}
-          <PageTitle title="테이블 관리" Icon={BsCurrencyDollar} />
-
-          {/* 테이블 목록 (스크롤 컨테이너 포함) */}
-          <div className={styles.mainPanel}>
-            <div className={styles.content}>
-              <div className={styles.tablePanel}>
-                {tables.map((t) => (
-                  <Table
-                    key={t.id}
-                    table={{ ...t, totalPrice: getTotal(t.orders) }}
-                    onClick={() => setSelectedId(t.id)}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* 하단 토글 버튼 (고정) */}
-          <div className={styles.footer}>
-            <button
-              type="button"
-              className={styles.payOnOffButton}
-              onClick={showToggleDialog}
-            >
-              {isPaymentActive ? "결제 비활성화" : "결제 활성화"}
-            </button>
-          </div>
-        </>
-      ) : (
-        /* 상세 화면 */
+      {selectedTable ? (
+        // 상세 화면
         <ManagerTableDetail
           table={{
             ...selectedTable,
@@ -300,9 +282,34 @@ export const ManagerTableTab = () => {
           onClose={() => setSelectedId(null)}
           onPayComplete={handlePayComplete}
         />
+      ) : (
+        // 목록 화면
+        <>
+          <div className={styles.mainPanel}>
+            <div className={styles.tablePanel}>
+              {tables.map((t) => (
+                <Table
+                  key={t.id}
+                  table={{ ...t, totalPrice: getTotal(t.orders) }}
+                  onClick={() => setSelectedId(t.id)}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.footer}>
+            <button
+              type="button"
+              className={styles.payOnOffButton}
+              onClick={showToggleDialog}
+            >
+              {`결제 ${isPaymentActive ? "비활성화" : "활성화"}`}
+            </button>
+          </div>
+        </>
       )}
 
-      {/* 단일 모달 (동적으로 타이틀/본문/확인 주입) */}
+      {/* 공용 모달/토스트는 항상 마지막에 두면 깔끔 */}
       <Modal
         open={dialog.open}
         onClose={closeDialog}

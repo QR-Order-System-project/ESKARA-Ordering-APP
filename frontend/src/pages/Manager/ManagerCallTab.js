@@ -1,8 +1,6 @@
 // pages/Manager/ManagerCallTab.jsx
 import { useState, useMemo } from "react";
 import styles from "./ManagerCallTab.module.scss";
-import { PageTitle } from "../../components/PageTitle";
-import { AiOutlineUser } from "react-icons/ai";
 import { Modal } from "../../components/popups/Modal";
 
 const initialCalls = [
@@ -36,6 +34,31 @@ const initialCalls = [
     tableNo: 24,
     requests: ["밑반찬 리필", "숟가락 1개"],
   },
+  {
+    id: 7,
+    tableNo: 24,
+    requests: ["밑반찬 리필", "숟가락 1개"],
+  },
+  {
+    id: 8,
+    tableNo: 24,
+    requests: ["밑반찬 리필", "숟가락 1개"],
+  },
+  {
+    id: 9,
+    tableNo: 24,
+    requests: ["밑반찬 리필", "숟가락 1개"],
+  },
+  {
+    id: 10,
+    tableNo: 24,
+    requests: ["밑반찬 리필", "숟가락 1개"],
+  },
+  {
+    id: 11,
+    tableNo: 24,
+    requests: ["밑반찬 리필", "숟가락 1개"],
+  },
 ];
 
 export const ManagerCallTab = () => {
@@ -57,7 +80,6 @@ export const ManagerCallTab = () => {
   return (
     <>
       <div className={styles.page}>
-        <PageTitle title="직원 호출" Icon={AiOutlineUser} />
         <div className={styles.list}>
           {sorted.map((call) => (
             <div

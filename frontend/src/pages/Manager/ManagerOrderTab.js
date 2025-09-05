@@ -1,8 +1,6 @@
 import { useCallback, useState } from "react";
 import styles from "./ManagerOrderTab.module.scss";
 import { Modal } from "../../components/popups/Modal";
-import { PageTitle } from "../../components/PageTitle";
-import { HiOutlineClipboardList } from "react-icons/hi";
 
 /**
  * ManagerOrderTab
@@ -90,21 +88,14 @@ export const ManagerOrderTab = () => {
 
   return (
     <>
-      {/* 상단 타이틀 */}
       <div className={styles.boardWrap}>
-        <div className={styles.titleBar}>
-          <PageTitle title="주문 관리" Icon={HiOutlineClipboardList} />
-        </div>
-
         <div className={styles.board} role="list">
           {Object.entries(data).map(([menu, tables]) => (
             <section className={styles.column} key={menu} role="listitem">
-              {/* 칼럼 헤더 */}
               <header className={styles.columnHeader}>
                 <span className={styles.columnTitle}>{menu}</span>
               </header>
 
-              {/* 카드 스택 */}
               <div className={styles.stack}>
                 {tables.map((t) => (
                   <button
@@ -116,17 +107,13 @@ export const ManagerOrderTab = () => {
                   </button>
                 ))}
 
-                {/* 비었을 때 */}
-                {tables.length === 0 && (
-                  <div className={styles.empty}></div>
-                )}
+                {tables.length === 0 && <div className={styles.empty}></div>}
               </div>
             </section>
           ))}
         </div>
       </div>
 
-      {/* 완료 확인 모달 (제목 두 줄 고정) */}
       <Modal
         open={open}
         title={
