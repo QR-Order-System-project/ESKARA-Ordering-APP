@@ -3,8 +3,7 @@
   top: 30px;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
-  max-width: calc(100% - 40px);
+  display: inline-flex;
   align-items: center;
   gap: 10px;
   border: none;
@@ -20,6 +19,9 @@
   text-align: center;
 
   z-index: 99999;
+  max-width: none;
+  white-space: nowrap;
+
 }
 
 @keyframes fadeIn {
