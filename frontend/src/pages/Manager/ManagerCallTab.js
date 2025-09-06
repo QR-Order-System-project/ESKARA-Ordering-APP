@@ -76,7 +76,7 @@ export const ManagerCallTab = () => {
   const confirmAndRemove = () => {
     if (!selected) return;
     setCalls((prev) => prev.filter((c) => c.id !== selected.id));
-    showToast({ message: "해당 직원호출이 완료되었습니다." });
+    showToast({ message: "해당 테이블의 직원호출이 완료되었습니다." });
     setSelected(null);
   };
 

@@ -101,7 +101,7 @@ export const ManagerOrderTab = () => {
       [menu]: (prev[menu] ?? []).filter((t) => t.id !== table.id),
     }));
     showToast({
-      message: "해당 주문이 삭제 되었습니다.",
+      message: "해당 테이블의 주문이 삭제 되었습니다.",
     });
     closeModal();
   }, [selected, closeModal]);
