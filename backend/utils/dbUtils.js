@@ -20,8 +20,11 @@ const addOrderToOrdersDB = async ({ tableNumber, items }) => {
   // 기존 주문을 가져와서 count 반영 
   const snapshot = await orderRef.get();
   let newOrderItems = snapshot.exists ? snapshot.data().items : {};
-  for (const [menu, count] of Object.entries(items)) {
-      newOrderItems[menu] = (newOrderItems[menu] || 0) + count;
+  for (const item of items) {
+    const menuName = item.menu;
+    const menuCount = item.count;
+    
+    newOrderItems[menuName] = (newOrderItems[menuName] || 0) + menuCount;
   }
 
   // 수정한 정보를 DB 에 반영
@@ -187,7 +190,6 @@ const getArchivedOrders = async (timeSlot = getTimeSlot()) => {
   }
 };
 
-//TODO : 함수 정의 필요. API 테스트를 위해 일단 주석 처리함. 
 module.exports = {
   addOrderToOrdersDB,
   addMenuToMenuQueueDB,
