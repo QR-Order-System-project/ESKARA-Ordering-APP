@@ -16,7 +16,7 @@ export default function CartItem({ id, name, price, qty, onUpdate, onRemove }) {
 
       {/* 가격 + 수량 조절 버튼 한 줄 */}
       <div className={styles.bottomRow}>
-        <span className={styles.price}>{(price * qty).toLocaleString()}원</span>
+        <span className={styles.price}>{price.toLocaleString()}원</span>
         <div className={styles.Counter}>
           <button onClick={() => handleChange(qty - 1)}>-</button>
           <span>{qty}</span>

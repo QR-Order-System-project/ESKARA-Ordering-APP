@@ -39,7 +39,7 @@ export const HomeButton = ({
       onClick={handleClick}
       {...rest}
     >
-      <TbHome size={24} />
+      <TbHome color="black" size={24} />
     </button>
   );
 };

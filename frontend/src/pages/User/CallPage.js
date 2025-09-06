@@ -46,7 +46,7 @@ export default function CallPage() {
     // TODO: 선택된 항목들(selectedItems)을 서버 API로 전송하는 로직
     console.log("직원 호출:", selectedItems);
 
-    setToast({ message: "직원호출이 성공적으로 접수되었습니다!.", variant: "success" });
+    setToast({ message: "직원호출이 성공적으로 접수되었습니다!", variant: "success" });
     setSelectedItems([]);
   };
 
@@ -78,11 +78,9 @@ export default function CallPage() {
             </div>
           </div>
 
-          <div className={styles.CallButtonWrapper}>
-            <button className={styles.CallButton} onClick={handleCallClick}>
+          <button className={styles.CallButton} onClick={handleCallClick}>
               호출하기
-            </button>
-          </div>
+          </button>
         </div>
       </div>
       
