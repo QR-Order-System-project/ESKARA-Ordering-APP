@@ -1,7 +1,8 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "./ManagerOrderTab.module.scss";
 import { Modal } from "../../components/popups/Modal";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
+import axios from "axios";
 
 /**
  * ManagerOrderTab
@@ -66,6 +67,21 @@ export const ManagerOrderTab = () => {
   const [toast, setToast] = useState(null);
   const showToast = ({ message, variant = "success" }) =>
     setToast({ message, variant, key: Date.now() });
+  const [menuQueue, setMenuQueue] = useState([]);
+
+  useEffect(() => {
+    const fetchMenuQueue = async () => {
+      try {
+        const res = await axios.get("/api/menu/showMenuQueue");
+        setMenuQueue(res.data);
+        console.log("메뉴 리스트:", res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchMenuQueue();
+  }, []);
 
   /* 카드 클릭 → 선택/모달 오픈 */
   const handleCardClick = useCallback((menu, table) => {
@@ -109,9 +125,9 @@ export const ManagerOrderTab = () => {
   return (
     <>
       <div className={styles.boardWrap}>
-        <div className={styles.board} role="list">
-          {Object.entries(data).map(([menu, tables]) => (
-            <section className={styles.column} key={menu} role="listitem">
+        <div className={styles.board}>
+          {Object.entries(menuQueue).map(([menu, tables]) => (
+            <section className={styles.column} key={menu}>
               <header className={styles.columnHeader}>
                 <span className={styles.columnTitle}>{menu}</span>
               </header>
@@ -142,7 +158,8 @@ export const ManagerOrderTab = () => {
             <span>처리하시겠습니까?</span>
           </div>
         }
-        onClose={removeTable}
+        onClose={closeModal}
+        onDismiss={removeTable}
         onConfirm={confirmTable}
         button1="삭제"
         button2="완료"

@@ -19,6 +19,7 @@ export const Modal = ({
   children,
   onClose,
   onConfirm,
+  onDismiss,
   lockScroll = true,
   dimmed = true,
   body,
@@ -69,7 +70,11 @@ export const Modal = ({
 
         {/* 하단 버튼 */}
         <div className={styles.footer}>
-          <button type="button" className={styles.btn} onClick={onClose}>
+          <button
+            type="button"
+            className={styles.btn}
+            onClick={onDismiss || onClose}
+          >
             {button1}
           </button>
           {onConfirm && (
