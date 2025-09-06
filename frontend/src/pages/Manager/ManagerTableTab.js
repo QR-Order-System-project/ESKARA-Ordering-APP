@@ -6,8 +6,8 @@ import { ManagerTableDetail } from "./ManagerTableDetail";
 
 import { Modal } from "../../components/popups/Modal";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
-import { FaMoneyBillWave } from "react-icons/fa";
 import { BsCurrencyDollar } from "react-icons/bs";
+import { TbMoneybag } from "react-icons/tb";
 
 /**
  * ManagerTableTab
@@ -199,8 +199,12 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
           : "고객의 결제 버튼이 활성화됩니다."}
       </p>
     );
+    const message = isPaymentActive
+      ? "결제 버튼이 비활성화 되었습니다."
+      : "결제 버튼이 활성화 되었습니다.";
     const onConfirm = () => {
       setIsPaymentActive((v) => !v);
+      showToast({ message });
       closeDialog();
     };
     openDialog({ title, body, onConfirm });
@@ -213,15 +217,18 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
   ]);
 
   const [toast, setToast] = useState(null);
-  const showToast = () =>
-    setToast({ message: "주문 내역이 존재하지 않습니다.", variant: "error" });
+  const showToast = ({ message, variant = "success" }) =>
+    setToast({ message, variant, key: Date.now() });
 
   /* 상세에서 '결제완료' 클릭 → 확인 모달 후 처리 */
   const handlePayComplete = useCallback(
     (tableId) => {
       const t = tableMap.get(tableId);
       if (!t || (t.orders?.length ?? 0) === 0) {
-        showToast();
+        showToast({
+          message: "주문 내역이 존재하지 않습니다.",
+          variant: "error",
+        });
         return;
       }
       openDialog({
@@ -248,6 +255,9 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
               )
             );
           } finally {
+            showToast({
+              message: "해당 테이블의 결제가 완료되었습니다.",
+            });
             closeDialog();
           }
         },
@@ -258,7 +268,7 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
 
   useEffect(() => {
     if (selectedTable) {
-      changeTitle(`테이블 ${selectedId}`, FaMoneyBillWave);
+      changeTitle(`테이블 ${selectedId}`, TbMoneybag);
     } else {
       changeTitle("테이블 관리", BsCurrencyDollar);
     }
