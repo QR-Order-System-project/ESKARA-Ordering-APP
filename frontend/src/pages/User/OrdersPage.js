@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { UserTopBar } from "./components/UserTopBar";
 import styles from "./OrdersPage.module.scss";
 import { PageTitle } from "../../components/PageTitle";
@@ -7,40 +7,67 @@ import { OrderList } from "../../components/OrderList";
 import { BsClipboard } from "react-icons/bs";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { TotalPriceLabel } from "../../components/TotalPriceLabel";
-
-//TODO: 실제 주문 내역 DB에서 받아오기
-const dummyOrders = [
-  { id: 1, name: "두근두근, 사랑은 계란을 타고...", amount: 2, price: 0 },
-  { id: 2, name: "주점 인증샷 한잔해", amount: 1, price: 0 },
-  { id: 3, name: "불가마 어묵탕", amount: 2, price: 10000 },
-  { id: 4, name: "참숯가마 버팔로윙", amount: 1, price: 15000 },
-  { id: 5, name: "황토방 두부김치", amount: 5, price: 8000 },
-  { id: 6, name: "모듬 후르츄베릅", amount: 2, price: 8000 },
-  { id: 7, name: "도리도리토스뱅크 타코", amount: 3, price: 7000 },
-  { id: 8, name: "밥알 낭낭한 찜질방 식혜", amount: 1, price: 3000 },
-  { id: 9, name: "세빠지게 섞은 주전자 미숫가루", amount: 2, price: 5000 },
-];
+import { getOrderDetails } from "../../api/orders";
+import { getPaymentDetail } from "../../api/payment";
+import { io } from "socket.io-client"; 
 
 export default function OrderPage() {
+  const [orderDetails, setOrderDetails] = useState({ items: [], totalAmount: 0, paymentAble: false, });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [toast, setToast] = useState(null);
   const navigate = useNavigate();
+  const { tableNumber } = useParams();
 
-  //TODO: 직원용 사이트에서 API로 받아와야함
-  const isPaymentEnabled = true;
+  const fetchOrderDetails = async () => {
+    try {
+      setIsLoading(true);
+      const data = await getPaymentDetail(tableNumber);
+      setOrderDetails(data);
+    } catch (err) {
+      setError("주문 내역을 불러오는 데 실패했습니다.");
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrderDetails();
+
+    const socket = io("http://localhost:3001"); // TODO: 배포 시 서버 주소로 변경
+
+    socket.on("refreshTableStatus", () => {
+      console.log("refreshTableStatus 이벤트 감지 → 주문내역 갱신");
+      fetchOrderDetails();
+    });
+
+    socket.on("paymentActivated", () => {
+      console.log("paymentActivated 이벤트 감지 → 결제 가능 상태로 변경");
+      setOrderDetails((prev) => ({ ...prev, paymentAble: true }));
+    });
+
+    socket.on("paymentDeactivated", () => {
+      console.log("paymentDeactivated 이벤트 감지 → 결제 불가 상태로 변경");
+      setOrderDetails((prev) => ({ ...prev, paymentAble: false }));
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [tableNumber]);
 
   const handlePayment = async () => {
-    const accountNumber = "112-2218-9983-00 부산은행";
-
-    if (!isPaymentEnabled) {
-      setToast({
-        message: "직원이 결제를 요청한 경우에 다시 시도해주세요.",
-        variant: "error",
-      });
-      return;
+    if (!orderDetails?.paymentAble) {   // 비활성화 상태면
+    setToast({
+      message: "직원이 결제를 요청한 경우에 다시 시도해주세요.",
+      variant: "error",
+    });
+    return;
     }
 
     try {
-      await navigator.clipboard.writeText(accountNumber);
+      await navigator.clipboard.writeText("3333-32-4717865 카카오뱅크");
       setToast({
         message: "계좌번호가 성공적으로 복사되었습니다!",
         variant: "success",
@@ -50,25 +77,35 @@ export default function OrderPage() {
     }
   };
 
-  const totalPrice = dummyOrders.reduce(
-    (sum, item) => sum + item.price * item.amount,
-    0
-  );
+  const formattedOrders = orderDetails.items.map(item => ({
+    name: item.menu,
+    amount: item.count,
+    price: item.price,
+    id: item.menu,
+  }));
 
-  const hasOrders = dummyOrders.length > 0;
+  const hasOrders = formattedOrders.length > 0;
 
   return (
     <>
       <div className={styles.Wrapper}>
         <div className={styles.MainPanel}>
           <div className={styles.TopBarWrapper}>
-            <UserTopBar tableNumber={99} />
+            <UserTopBar tableNumber={tableNumber} />
           </div>
           <PageTitle title="주문내역" Icon={BsClipboard} size={27} />
-          <OrderList orders={dummyOrders} />
+          
+            {isLoading ? (
+              <div className={styles.notice}>주문 내역을 불러오는 중...</div>
+            ) : error ? (
+              <div className={styles.notice}>{error}</div>
+            ) : (
+              <OrderList orders={formattedOrders} />
+            )}
+
 
           <div className={styles.PaymentBar}>
-            <TotalPriceLabel label="결제" price={totalPrice} />
+            <TotalPriceLabel label="결제" price={orderDetails.totalAmount} />
 
             <button
               className={styles.OrderButton}
@@ -76,7 +113,7 @@ export default function OrderPage() {
                 if (hasOrders) {
                   handlePayment();
                 } else {
-                  navigate("/user/main");
+                  navigate(`/user/main/${tableNumber}`);
                 }
               }}
             >
