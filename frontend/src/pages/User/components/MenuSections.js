@@ -4,8 +4,8 @@ import styles from "./MenuSections.module.scss";
 export default function MenuSections({ refs, data, onAdd }) {
   const sections = [
     { key: "event", title: "EVENT", items: data.event, ref: refs.eventRef },
-    { key: "main", title: "MAIN MENU", items: data.main, ref: refs.mainRef },
-    { key: "side", title: "SIDE MENU", items: data.side, ref: refs.sideRef },
+    { key: "main", title: "MAIN", items: data.main, ref: refs.mainRef },
+    { key: "side", title: "SIDE", items: data.side, ref: refs.sideRef },
     { key: "drink", title: "DRINK", items: data.drink, ref: refs.drinkRef },
   ];
 

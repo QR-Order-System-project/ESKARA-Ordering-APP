@@ -2,8 +2,8 @@ import styles from "./MenuBar.module.scss";
 
 const TABS = [
   { key: "event", label: "EVENT" },
-  { key: "main", label: "MAIN\nMENU" },
-  { key: "side", label: "SIDE\nMENU" },
+  { key: "main", label: "MAIN" },
+  { key: "side", label: "SIDE" },
   { key: "drink", label: "DRINK" },
 ];
 
