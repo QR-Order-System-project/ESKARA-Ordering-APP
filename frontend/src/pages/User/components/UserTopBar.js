@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { TbHome } from "react-icons/tb";
 import styles from "./UserTopBar.module.scss";
-
+//tableNumber을 url에서 받아온다.
 export default function UserTopBar({ tableNumber }) {
   const navigate = useNavigate();
   const currentLocation = useLocation();
