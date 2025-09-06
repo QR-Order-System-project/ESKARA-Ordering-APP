@@ -187,7 +187,7 @@ const getArchivedOrders = async (timeSlot = getTimeSlot()) => {
   }
 };
 
-
+//TODO : 함수 정의 필요. API 테스트를 위해 일단 주석 처리함. 
 module.exports = {
   addOrderToOrdersDB,
   addMenuToMenuQueueDB,
