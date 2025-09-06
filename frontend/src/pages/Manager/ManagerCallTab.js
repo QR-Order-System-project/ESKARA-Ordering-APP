@@ -2,6 +2,7 @@
 import { useState, useMemo } from "react";
 import styles from "./ManagerCallTab.module.scss";
 import { Modal } from "../../components/popups/Modal";
+import { CompactToastModal } from "../../components/popups/CompactToastModal";
 
 const initialCalls = [
   {
@@ -64,16 +65,18 @@ const initialCalls = [
 export const ManagerCallTab = () => {
   const [calls, setCalls] = useState(initialCalls);
   const [selected, setSelected] = useState(null);
+  const [toast, setToast] = useState(null);
+  const showToast = ({ message, variant = "success" }) =>
+    setToast({ message, variant, key: Date.now() });
 
-  // 오래된 순으로 정렬 (옵션)
   const sorted = useMemo(() => [...calls].sort((a, b) => a.id - b.id), [calls]);
 
-  // 이벤트 핸들러
   const openModal = (call) => setSelected(call);
   const closeModal = () => setSelected(null);
   const confirmAndRemove = () => {
     if (!selected) return;
     setCalls((prev) => prev.filter((c) => c.id !== selected.id));
+    showToast({ message: "해당 직원호출이 완료되었습니다." });
     setSelected(null);
   };
 
@@ -107,7 +110,6 @@ export const ManagerCallTab = () => {
         </div>
       </div>
 
-      {/* ✅ 모달 */}
       <Modal
         open={!!selected}
         title={
@@ -120,6 +122,15 @@ export const ManagerCallTab = () => {
         onConfirm={confirmAndRemove}
         body={`${selected?.tableNo}번 테이블 요청을 완료했는지 확인해주세요.`}
       />
+
+      {toast && (
+        <CompactToastModal
+          message={toast.message}
+          variant={toast.variant}
+          duration={1800}
+          onClose={() => setToast(null)}
+        />
+      )}
     </>
   );
 };
