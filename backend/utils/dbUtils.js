@@ -195,8 +195,6 @@ module.exports = {
   discountCountFromOrders,
   finalizeAndClearOrder,
   getTimeSlot,
-  removeTableFromMenu,
-  deleteTableMenuWithoutRecord,
   addOrderToArchive,
   deleteOrderFromOrders,
   getArchivedOrders
