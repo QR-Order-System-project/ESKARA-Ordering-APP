@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import styles from "./ManagerOrderTab.module.scss";
 import { Modal } from "../../components/popups/Modal";
+import { CompactToastModal } from "../../components/popups/CompactToastModal";
 
 /**
  * ManagerOrderTab
@@ -62,6 +63,9 @@ export const ManagerOrderTab = () => {
   const [data, setData] = useState(initialData);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null); // { menu, table }
+  const [toast, setToast] = useState(null);
+  const showToast = ({ message, variant = "success" }) =>
+    setToast({ message, variant, key: Date.now() });
 
   /* 카드 클릭 → 선택/모달 오픈 */
   const handleCardClick = useCallback((menu, table) => {
@@ -76,6 +80,19 @@ export const ManagerOrderTab = () => {
   }, []);
 
   /* 모달 확인 → 선택 항목 제거 */
+  const confirmTable = useCallback(() => {
+    if (!selected) return;
+    const { menu, table } = selected;
+    setData((prev) => ({
+      ...prev,
+      [menu]: (prev[menu] ?? []).filter((t) => t.id !== table.id),
+    }));
+    showToast({
+      message: "해당 테이블의 주문이 완료되었습니다.",
+    });
+    closeModal();
+  }, [selected, closeModal]);
+
   const removeTable = useCallback(() => {
     if (!selected) return;
     const { menu, table } = selected;
@@ -83,6 +100,9 @@ export const ManagerOrderTab = () => {
       ...prev,
       [menu]: (prev[menu] ?? []).filter((t) => t.id !== table.id),
     }));
+    showToast({
+      message: "해당 테이블의 주문이 삭제 되었습니다.",
+    });
     closeModal();
   }, [selected, closeModal]);
 
@@ -122,12 +142,21 @@ export const ManagerOrderTab = () => {
             <span>처리하시겠습니까?</span>
           </div>
         }
-        onClose={closeModal}
-        onConfirm={removeTable}
+        onClose={removeTable}
+        onConfirm={confirmTable}
         button1="삭제"
         button2="완료"
         body={`${selected?.table?.label} - ${selected?.menu}`}
       />
+
+      {toast && (
+        <CompactToastModal
+          message={toast.message}
+          variant={toast.variant}
+          duration={1800}
+          onClose={() => setToast(null)}
+        />
+      )}
     </>
   );
 };
