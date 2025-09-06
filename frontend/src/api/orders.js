@@ -9,3 +9,13 @@ export const createOrder = async (orderData) => {
     throw error;
   }
 };
+
+export const getOrderDetails = async (tableNumber) => {
+  try {
+    const response = await client.get(`/api/payments/detail/${tableNumber}`);
+    return response.data;
+  } catch (error) {
+    console.error("주문 내역 상세 조회 API 호출 중 에러 발생:", error);
+    throw error;
+  }
+};
