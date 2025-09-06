@@ -1,5 +1,5 @@
 const db = require("../firebase");
-const { getTimeSlot } = require("./utils/dbUtils");
+const { getTimeSlot } = require("../utils/dbUtils");
 
 // 직원 호출 생성
 const callEmployee = async (req, res) => {

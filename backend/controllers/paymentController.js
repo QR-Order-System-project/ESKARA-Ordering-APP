@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const db = require("../firebase");
-const { getTimeSlot } = require("./utils");
+const { getTimeSlot } = require("../utils/dbUtils");
 
 // 전체 테이블 결제 현황 조회
 const getAllTableStatus = async (req, res) => {
