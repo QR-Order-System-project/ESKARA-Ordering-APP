@@ -14,7 +14,7 @@ export default function UserTopBar({ tableNumber }) {
           className={styles.HomeButton}
           onClick={() => navigate("/user/main")}
         >
-          <TbHome />
+          <TbHome color="black" />
         </button>
         <button className={styles.TableLabel} disabled>
           테이블 {tableNumber ?? "N"}

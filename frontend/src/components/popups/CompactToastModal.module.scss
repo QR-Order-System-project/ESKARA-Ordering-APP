@@ -12,12 +12,15 @@
   cursor: pointer;
   animation: fadeIn 200ms ease-out;
 
-  font-family: Inter;
+  font-family: 'Inter';
   font-weight: 500;
   font-size: 16px;
   line-height: 1.2;
+  text-align: center;
 
   z-index: 99999;
+  width: max-content;
+  white-space: nowrap;
 }
 
 @keyframes fadeIn {
@@ -38,6 +41,7 @@
 }
 
 .text {
+  display: inline-block;
   white-space: nowrap;
 }
 
