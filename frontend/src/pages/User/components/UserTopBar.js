@@ -1,18 +1,18 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { TbHome } from "react-icons/tb";
 import styles from "./UserTopBar.module.scss";
-
-//TODO: 테이블 번호 받아오기
-export default function UserTopBar({ tableNumber }) {
+//tableNumber을 url에서 받아온다.
+export default function UserTopBar() {
   const navigate = useNavigate();
   const currentLocation = useLocation();
+  const { tableNumber } = useParams();
 
   return (
     <div className={styles.TopBar}>
       <div className={styles.LeftGroup}>
         <button
           className={styles.HomeButton}
-          onClick={() => navigate("/user/main")}
+          onClick={() => navigate(`/user/main/${tableNumber}`)}
         >
           <TbHome color="black" />
         </button>
@@ -24,17 +24,17 @@ export default function UserTopBar({ tableNumber }) {
       <div className={styles.RightGroup}>
         <button
           className={`${styles.CallManagerButton} ${
-            currentLocation.pathname === "/user/call" ? styles.active : ""
+            currentLocation.pathname === `/user/call/${tableNumber}` ? styles.active : ""
           }`}
-          onClick={() => navigate("/user/call")}
+          onClick={() => navigate(`/user/call/${tableNumber}`)}
         >
           직원호출
         </button>
         <button
           className={`${styles.OrderListButton} ${
-            currentLocation.pathname === "/user/orders" ? styles.active : ""
+            currentLocation.pathname === `/user/orders/${tableNumber}` ? styles.active : ""
           }`}
-          onClick={() => navigate("/user/orders")}
+          onClick={() => navigate(`/user/orders/${tableNumber}`)}
         >
           주문내역
         </button>
