@@ -1,4 +1,5 @@
 import { useRef, useState, useLayoutEffect, useEffect } from "react";
+import { useParams } from "react-router";
 import { MenuBar } from "./components/MenuBar";
 import styles from "./MainPage.module.scss";
 import MainBanner from "./assets/banner.png";
@@ -8,6 +9,7 @@ import { menus } from "./data/menus";
 import { CartBar } from "./components/CartBar";
 
 export const MainPage = () => {
+  const { tableNumber } = useParams();
   const topRef = useRef(null);
   const eventRef = useRef(null);
   const mainRef = useRef(null);
@@ -125,7 +127,7 @@ export const MainPage = () => {
     <div className={styles.Wrapper}>
       <div className={styles.MainPanel}>
         <div ref={topRef} className={styles.TopBarWrapper}>
-          <UserTopBar tableNumber={99} />
+          <UserTopBar tableNumber={tableNumber} />
         </div>
         <div ref={scrollAreaRef} className={styles.MenuScrollArea}>
           <div className={styles.Banner}>

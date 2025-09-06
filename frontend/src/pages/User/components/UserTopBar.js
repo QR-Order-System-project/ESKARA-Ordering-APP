@@ -2,7 +2,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { TbHome } from "react-icons/tb";
 import styles from "./UserTopBar.module.scss";
 
-//TODO: 테이블 번호 받아오기
 export default function UserTopBar({ tableNumber }) {
   const navigate = useNavigate();
   const currentLocation = useLocation();

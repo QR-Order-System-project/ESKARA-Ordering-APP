@@ -11,7 +11,7 @@ function App() {
     <CartProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/user/main" element={<MainPage />} />
+          <Route path="/user/main/:tableNumber" element={<MainPage />} />
           <Route path="/manager" element={<ManagerMain />} />
           <Route path="/user/call" element={<CallPage />} />
           <Route path="/user/orders" element={<OrdersPage />} />
