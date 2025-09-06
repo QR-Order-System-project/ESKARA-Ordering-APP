@@ -40,6 +40,12 @@
 /* === 로고 묶음 === */
 .logoPanel {
   display: flex;
+  gap: 8px;
+}
+
+.logo {
+  height: 47px;
+  width: 47px;
 }
 
 /* === 콘텐츠 스크롤 영역 === */

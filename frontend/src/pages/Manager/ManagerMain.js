@@ -49,6 +49,7 @@ export const ManagerMain = () => {
           <div className={styles.topBar}>
             <HomeButton onClick={handleHomeClick} />
             <div className={styles.logoPanel}>
+              <img src="/icons/swlogo.svg" alt="SW 로고" className={styles.swLogo} />
               <img src="/icons/logo.svg" alt="로고" className={styles.logo} />
             </div>
           </div>
