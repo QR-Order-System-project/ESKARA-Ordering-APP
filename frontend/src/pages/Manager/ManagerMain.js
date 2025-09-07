@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { HomeButton } from "../../components/HomeButton";
 import { ButtonBar } from "./ButtonBar";
 import styles from "./ManagerMain.module.scss";
@@ -8,6 +8,7 @@ import { ManagerCallTab } from "./ManagerCallTab";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { PageTitle } from "../../components/PageTitle";
 import { BsCurrencyDollar } from "react-icons/bs";
+import axios from "axios";
 
 export const ManagerMain = () => {
   const [active, setActive] = useState("TABLE");
@@ -40,6 +41,22 @@ export const ManagerMain = () => {
       setHeader({ title: "테이블 관리", Icon: BsCurrencyDollar });
     }
   }, [active]);
+
+  const fetchCall = useCallback(async () => {
+    try {
+      const res = await axios.get("/api/employee/calls");
+      const list = Array.isArray(res.data) ? res.data : [];
+      setHasCall(list.length > 0);
+      console.log("직원호출 수:", list.length);
+    } catch (err) {
+      console.error("직원호출 정보 불러오기 실패:", err);
+      setHasCall(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCall();
+  });
 
   const [toast, setToast] = useState(null);
 
