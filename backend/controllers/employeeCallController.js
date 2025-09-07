@@ -15,12 +15,13 @@ const callEmployee = async (req, res) => {
     currentCalls.push({ tableNumber, items });
 
     await employeeCall.set({ details: currentCalls });
+
     global.io.emit("employeeCallUpdated");
 
     return res.status(200).json({ message: "직원 호출 요청이 등록되었습니다." });
   } catch (err) {
-    console.error("직원 호출 생성 실패:", err);
-    return res.status(500).json({ message: "직원 호출 요청 실패" });
+    console.error("직원 호출 생성 실패:", err.message, err.code, err.stack);
+  return res.status(500).json({ message: "직원 호출 요청 실패", error: err.message });
   }
 };
 

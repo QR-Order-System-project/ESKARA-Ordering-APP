@@ -34,11 +34,13 @@ export const ManagerCallTab = ({ onCallsChange }) => {
         items: selected.items,
       });
       console.log("직원호출 완료");
+      showToast({ message: "해당 테이블의 직원호출이 완료되었습니다." });
       fetchCall();
     } catch (err) {
       console.error("직원호출 완료 처리 실패:", err);
+      showToast({ message: "호출 완료 처리 실패", variant: "error" });
     }
-  }, []);
+  }, [fetchCall]);
 
   useEffect(() => {
     fetchCall();
@@ -50,7 +52,6 @@ export const ManagerCallTab = ({ onCallsChange }) => {
     };
 
     socket.on("employeeCallUpdated", handleCallUpdate);
-
     return () => {
       socket.off("employeeCallUpdated", handleCallUpdate);
       socket.disconnect();
@@ -61,9 +62,8 @@ export const ManagerCallTab = ({ onCallsChange }) => {
   const closeModal = () => setSelected(null);
   const confirmAndRemove = () => {
     if (!selected) return;
-    completeCall(selected);
-    showToast({ message: "해당 테이블의 직원호출이 완료되었습니다." });
-    setSelected(null);
+      completeCall(selected);
+      setSelected(null);
   };
 
   return (
