@@ -102,7 +102,7 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
   /* id → 테이블 매핑 */
   const tableMap = useMemo(() => {
     const m = new Map();
-    for (const t of tables) m.set(t.id, t);
+    for (const t of tables) m.set(t.tableNumber, t);
     return m;
   }, [tables]);
 
@@ -202,7 +202,7 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
             <div className={styles.tablePanel}>
               {tables.map((t) => (
                 <Table
-                  key={t.id}
+                  key={t.tableNumber}
                   table={{ ...t, totalPrice: t.totalAmount }}
                   onClick={() => setSelectedId(t.tableNumber)}
                 />
