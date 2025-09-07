@@ -9,6 +9,7 @@ import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { PageTitle } from "../../components/PageTitle";
 import { BsCurrencyDollar } from "react-icons/bs";
 import axios from "axios";
+import { requestFcmToken, listenToMessages } from "../../fcm";
 
 export const ManagerMain = () => {
   const [active, setActive] = useState("TABLE");
@@ -55,8 +56,12 @@ export const ManagerMain = () => {
   }, []);
 
   useEffect(() => {
-    fetchCall();
-  });
+    requestFcmToken("server");
+
+    listenToMessages(() => {
+      fetchCall(); // 알림 오면 호출 배지 갱신
+    });
+  }, [fetchCall]);
 
   const [toast, setToast] = useState(null);
 
