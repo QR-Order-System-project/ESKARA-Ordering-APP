@@ -8,7 +8,7 @@ import { BsClipboard } from "react-icons/bs";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { TotalPriceLabel } from "../../components/TotalPriceLabel";
 import { getOrderDetails } from "../../api/orders";
-import { getPaymentDetail } from "../../api/payment";
+import { getPaymentDetail, getPaymentAble } from "../../api/payment";
 import { io } from "socket.io-client"; 
 
 export default function OrderPage() {
@@ -22,8 +22,16 @@ export default function OrderPage() {
   const fetchOrderDetails = async () => {
     try {
       setIsLoading(true);
-      const data = await getPaymentDetail(tableNumber);
-      setOrderDetails(data);
+      const [detailsData, isPaymentAble] = await Promise.all([
+        getPaymentDetail(tableNumber),
+        getPaymentAble(),
+      ]);
+
+      setOrderDetails({
+        items: detailsData.items,
+        totalAmount: detailsData.totalAmount,
+        paymentAble: isPaymentAble,
+      });
     } catch (err) {
       setError("주문 내역을 불러오는 데 실패했습니다.");
       console.error(err);
