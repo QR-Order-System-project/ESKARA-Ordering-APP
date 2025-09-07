@@ -15,6 +15,7 @@ export const ManagerMain = () => {
     title: "테이블 관리",
     Icon: BsCurrencyDollar,
   });
+  const [hasCall, setHasCall] = useState(false);
 
   const [tableReset, setTableReset] = useState(0);
 
@@ -49,12 +50,20 @@ export const ManagerMain = () => {
           <div className={styles.topBar}>
             <HomeButton onClick={handleHomeClick} />
             <div className={styles.logoPanel}>
-              <img src="/icons/swlogo.svg" alt="SW 로고" className={styles.swLogo} />
+              <img
+                src="/icons/swlogo.svg"
+                alt="SW 로고"
+                className={styles.swLogo}
+              />
               <img src="/icons/logo.svg" alt="로고" className={styles.logo} />
             </div>
           </div>
 
-          <ButtonBar value={active} onChange={handleTabChange} />
+          <ButtonBar
+            value={active}
+            onChange={handleTabChange}
+            badges={{ CALL: hasCall }}
+          />
           <PageTitle title={header.title} Icon={header.Icon} />
         </div>
 
@@ -66,7 +75,11 @@ export const ManagerMain = () => {
             />
           )}
           {active === "ORDER" && <ManagerOrderTab />}
-          {active === "CALL" && <ManagerCallTab />}
+          {active === "CALL" && (
+            <ManagerCallTab
+              onCallsChange={(list) => setHasCall(list.length > 0)}
+            />
+          )}
         </div>
       </div>
 

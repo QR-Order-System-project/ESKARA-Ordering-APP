@@ -5,7 +5,7 @@ import { Modal } from "../../components/popups/Modal";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import axios from "axios";
 
-export const ManagerCallTab = () => {
+export const ManagerCallTab = ({ onCallsChange }) => {
   const [calls, setCalls] = useState([]);
   const [selected, setSelected] = useState(null);
   const [toast, setToast] = useState(null);
@@ -15,13 +15,16 @@ export const ManagerCallTab = () => {
   const fetchCall = useCallback(async () => {
     try {
       const res = await axios.get("/api/employee/calls");
-      setCalls(res.data ?? []);
-      console.log("직원호출 정보: ", res.data);
+      const list = Array.isArray(res.data) ? res.data : [];
+      setCalls(list);
+      onCallsChange?.(list);
+      console.log("직원호출 정보:", list);
     } catch (err) {
       console.error("직원호출 정보 불러오기 실패:", err);
       setCalls([]);
+      onCallsChange?.([]);
     }
-  }, []);
+  }, [onCallsChange]);
 
   const completeCall = useCallback(async (selected) => {
     try {

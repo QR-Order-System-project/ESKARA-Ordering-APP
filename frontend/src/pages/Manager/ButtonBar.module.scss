@@ -42,3 +42,18 @@
   background: #d5a68b;
   color: #fff;
 }
+
+.labelWrap {
+  position: relative;
+  display: inline-block;
+}
+
+.redDot {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  width: 8px;
+  height: 8px;
+  background-color: #ff3b30;
+  border-radius: 50%;
+}
