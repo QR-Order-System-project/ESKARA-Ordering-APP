@@ -62,12 +62,20 @@ export const ManagerTableDetail = ({ tableNum }) => {
       }
     });
 
-  return () => {
-    socket.off("menuQueueUpdated");
-    socket.off("orderCancellationUpdated");
-    socket.disconnect();
-  };
-}, [fetchTableDetail, tableNum]);
+    socket.on("refreshTableStatus", (data) => {
+      if (Number(data.tableNumber) === Number(tableNum)) {
+        console.log(`[실시간] 현재 테이블(${tableNum}) 결제 완료!`);
+        fetchTableDetail();
+      }
+    });
+
+    return () => {
+      socket.off("menuQueueUpdated");
+      socket.off("orderCancellationUpdated");
+      socket.off("refreshTableStatus");
+      socket.disconnect();
+    };
+  }, [fetchTableDetail, tableNum]);
 
   const items = Array.isArray(tableDetail?.items) ? tableDetail.items : [];
   const formattedOrders = useMemo(

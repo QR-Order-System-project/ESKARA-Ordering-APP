@@ -129,7 +129,7 @@ const finalizePayment = async (req, res) => {
 
     // oreders에서 주문 목록에서 제거
     await deleteOrderFromOrders({ timeSlot, tableNumber });
-
+    global.io.emit("refreshTableStatus", { tableNumber });
     return res.status(200).json({ message: "결제 완료되었습니다." });
   } catch (err) {
     console.error("결제 처리 중 오류 발생:", err);
@@ -147,6 +147,7 @@ const setGlobalPaymentEnable = async (req, res) => {
 
     const ref = db.collection("globalSettings").doc("payment");
     await ref.set({ paymentAble });
+    global.io.emit('globalPaymentStatusChanged', { paymentAble });
 
     return res.status(200).json({
       message: `결제 활성화 상태가 ${paymentAble}로 설정되었습니다.`,

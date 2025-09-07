@@ -9,7 +9,7 @@ import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { TotalPriceLabel } from "../../components/TotalPriceLabel";
 import { getOrderDetails } from "../../api/orders";
 import { getPaymentDetail, getPaymentAble } from "../../api/payment";
-import { io } from "socket.io-client"; 
+import { socket } from "../../socket";
 
 export default function OrderPage() {
   const [orderDetails, setOrderDetails] = useState({ items: [], totalAmount: 0, paymentAble: false, });
@@ -42,23 +42,18 @@ export default function OrderPage() {
 
   useEffect(() => {
     fetchOrderDetails();
-
-    const socket = io("http://localhost:3001"); // TODO: 배포 시 서버 주소로 변경
+    socket.connect();
 
     socket.on("refreshTableStatus", () => {
       console.log("refreshTableStatus 이벤트 감지 → 주문내역 갱신");
       fetchOrderDetails();
     });
 
-    socket.on("paymentActivated", () => {
-      console.log("paymentActivated 이벤트 감지 → 결제 가능 상태로 변경");
-      setOrderDetails((prev) => ({ ...prev, paymentAble: true }));
-    });
-
-    socket.on("paymentDeactivated", () => {
-      console.log("paymentDeactivated 이벤트 감지 → 결제 불가 상태로 변경");
-      setOrderDetails((prev) => ({ ...prev, paymentAble: false }));
-    });
+    const handleGlobalPaymentChange = (data) => {
+      console.log("[실시간] 전역 결제 상태 변경 감지!", data.paymentAble);
+      setOrderDetails((prev) => ({ ...prev, paymentAble: data.paymentAble }));
+    };
+    socket.on("globalPaymentStatusChanged", handleGlobalPaymentChange);
 
     socket.on("orderCancellationUpdated", (canceledOrder) => {
       if (canceledOrder.tableNumber === parseInt(tableNumber, 10)) {
@@ -66,11 +61,9 @@ export default function OrderPage() {
         fetchOrderDetails();
       }
     });
-
     return () => {
       socket.off("refreshTableStatus");
-      socket.off("paymentActivated");
-      socket.off("paymentDeactivated");
+      socket.off("globalPaymentStatusChanged", handleGlobalPaymentChange);
       socket.off("orderCancellationUpdated");
       socket.disconnect();
     };
