@@ -9,11 +9,12 @@ const TABS = [
   { label: "CALL", title: "직원 호출", Icon: AiOutlineUser },
 ];
 
-export const ButtonBar = ({ value, onChange }) => (
+export const ButtonBar = ({ value, onChange, badges = {} }) => (
   <div className={styles.mainPanel}>
     {TABS.map((tab) => {
       const { label } = tab;
       const isActive = value === label;
+      const showDot = Boolean(badges[label]);
 
       return (
         <button
@@ -22,7 +23,10 @@ export const ButtonBar = ({ value, onChange }) => (
           className={`${styles.button} ${isActive ? styles.active : ""}`}
           onClick={() => onChange?.(tab)}
         >
-          {label}
+          <span className={styles.labelWrap}>
+            {label}
+            {showDot && <span className={styles.redDot} />}
+          </span>
         </button>
       );
     })}
