@@ -15,6 +15,7 @@ const callEmployee = async (req, res) => {
     currentCalls.push({ tableNumber, items });
 
     await employeeCall.set({ details: currentCalls });
+    global.io.emit("employeeCallUpdated");
 
     return res.status(200).json({ message: "직원 호출 요청이 등록되었습니다." });
   } catch (err) {
@@ -65,6 +66,7 @@ const completeEmployeeCall = async (req, res) => {
     if (idx !== -1) {
       details.splice(idx, 1);
       await employeeCall.set({ details });
+      global.io.emit("employeeCallUpdated");
       return res.status(200).json({ message: "직원 호출 요청이 완료 처리되었습니다." });
     } else {
       return res.status(404).json({ message: "해당 요청을 찾을 수 없습니다." });

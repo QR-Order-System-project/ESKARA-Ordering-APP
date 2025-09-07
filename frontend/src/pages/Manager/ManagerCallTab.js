@@ -4,6 +4,7 @@ import styles from "./ManagerCallTab.module.scss";
 import { Modal } from "../../components/popups/Modal";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import axios from "axios";
+import { socket } from "../../socket";
 
 export const ManagerCallTab = ({ onCallsChange }) => {
   const [calls, setCalls] = useState([]);
@@ -41,6 +42,19 @@ export const ManagerCallTab = ({ onCallsChange }) => {
 
   useEffect(() => {
     fetchCall();
+    socket.connect();
+
+    const handleCallUpdate = () => {
+      console.log("[실시간] 직원 호출 목록 갱신!");
+      fetchCall();
+    };
+
+    socket.on("employeeCallUpdated", handleCallUpdate);
+
+    return () => {
+      socket.off("employeeCallUpdated", handleCallUpdate);
+      socket.disconnect();
+    };
   }, [fetchCall]);
 
   const openModal = (call) => setSelected(call);

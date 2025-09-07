@@ -46,7 +46,6 @@ export default function CallPage() {
 
     try {
       await callEmployee(callData);
-      socket.emit("employeeCalled", callData);
 
       setToast({
         message: "직원호출이 성공적으로 접수되었습니다!",
