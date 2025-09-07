@@ -1,81 +1,50 @@
 // pages/Manager/ManagerCallTab.jsx
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import styles from "./ManagerCallTab.module.scss";
 import { Modal } from "../../components/popups/Modal";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
-
-const initialCalls = [
-  {
-    id: 1,
-    tableNo: 12,
-    requests: ["젓가락 2세트", "숟가락 추가", "물 리필"],
-  },
-  {
-    id: 2,
-    tableNo: 30,
-    requests: ["앞접시 3개", "키친타올"],
-  },
-  {
-    id: 3,
-    tableNo: 9,
-    requests: ["티슈", "얼음컵 2개", "물 리필"],
-  },
-  {
-    id: 4,
-    tableNo: 15,
-    requests: ["포크 1개"],
-  },
-  {
-    id: 5,
-    tableNo: 24,
-    requests: ["밑반찬 리필", "숟가락 1개"],
-  },
-  {
-    id: 6,
-    tableNo: 24,
-    requests: ["밑반찬 리필", "숟가락 1개"],
-  },
-  {
-    id: 7,
-    tableNo: 24,
-    requests: ["밑반찬 리필", "숟가락 1개"],
-  },
-  {
-    id: 8,
-    tableNo: 24,
-    requests: ["밑반찬 리필", "숟가락 1개"],
-  },
-  {
-    id: 9,
-    tableNo: 24,
-    requests: ["밑반찬 리필", "숟가락 1개"],
-  },
-  {
-    id: 10,
-    tableNo: 24,
-    requests: ["밑반찬 리필", "숟가락 1개"],
-  },
-  {
-    id: 11,
-    tableNo: 24,
-    requests: ["밑반찬 리필", "숟가락 1개"],
-  },
-];
+import axios from "axios";
 
 export const ManagerCallTab = () => {
-  const [calls, setCalls] = useState(initialCalls);
+  const [calls, setCalls] = useState([]);
   const [selected, setSelected] = useState(null);
   const [toast, setToast] = useState(null);
   const showToast = ({ message, variant = "success" }) =>
     setToast({ message, variant, key: Date.now() });
 
-  const sorted = useMemo(() => [...calls].sort((a, b) => a.id - b.id), [calls]);
+  const fetchCall = useCallback(async () => {
+    try {
+      const res = await axios.get("/api/employee/calls");
+      setCalls(res.data ?? []);
+      console.log("직원호출 정보: ", res.data);
+    } catch (err) {
+      console.error("직원호출 정보 불러오기 실패:", err);
+      setCalls([]);
+    }
+  }, []);
+
+  const completeCall = useCallback(async (selected) => {
+    try {
+      await axios.post("/api/employee/complete", {
+        tableNumber: selected.tableNumber,
+        items: selected.items,
+      });
+      console.log("직원호출 완료");
+      fetchCall();
+    } catch (err) {
+      console.error("직원호출 완료 처리 실패:", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCall();
+  }, [fetchCall]);
 
   const openModal = (call) => setSelected(call);
   const closeModal = () => setSelected(null);
   const confirmAndRemove = () => {
     if (!selected) return;
-    setCalls((prev) => prev.filter((c) => c.id !== selected.id));
+    completeCall(selected);
     showToast({ message: "해당 테이블의 직원호출이 완료되었습니다." });
     setSelected(null);
   };
@@ -84,18 +53,18 @@ export const ManagerCallTab = () => {
     <>
       <div className={styles.page}>
         <div className={styles.list}>
-          {sorted.map((call) => (
+          {calls.map((call, idx) => (
             <div
-              key={call.id}
+              key={idx}
               className={styles.card}
-              onClick={() => openModal(call)} // ✅ 클릭 시 모달 열림
+              onClick={() => openModal(call)}
             >
               <div className={styles.table}>
                 <span className={styles.tableNo}>테이블</span>
-                <span className={styles.tableNo}>{call.tableNo}</span>
+                <span className={styles.tableNo}>{call.tableNumber}</span>
               </div>
               <div className={styles.requests}>
-                {call.requests.map((req, idx) => (
+                {call.items.map((req, idx) => (
                   <span key={idx} className={styles.requestItem}>
                     {req}
                   </span>
@@ -104,7 +73,7 @@ export const ManagerCallTab = () => {
             </div>
           ))}
 
-          {sorted.length === 0 && (
+          {calls.length === 0 && (
             <div className={styles.empty}>현재 대기 중인 요청이 없습니다.</div>
           )}
         </div>
@@ -120,7 +89,7 @@ export const ManagerCallTab = () => {
         }
         onClose={closeModal}
         onConfirm={confirmAndRemove}
-        body={`${selected?.tableNo}번 테이블 요청을 완료했는지 확인해주세요.`}
+        body={`${selected?.tableNumber}번 테이블 요청을 완료했는지 확인해주세요.`}
       />
 
       {toast && (
