@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserTopBar } from "./components/UserTopBar";
 import styles from "./CartPage.module.scss";
@@ -9,6 +9,7 @@ import { TotalPriceLabel } from "../../components/TotalPriceLabel";
 import CartItem from "./components/CartItem";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { createOrder } from "../../api/orders"
+import { socket } from "../../socket";
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -16,6 +17,13 @@ export default function CartPage() {
   const [toast, setToast] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { tableNumber } = useParams();
+
+  useEffect(() => {
+    socket.connect();
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   const totalPrice = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
@@ -38,6 +46,8 @@ export default function CartPage() {
     try {
       const result = await createOrder(orderData);
       console.log("주문 성공:", result);
+      console.log("Socket으로 'newOrderPlaced' 이벤트를 전송합니다.");
+      socket.emit("newOrderPlaced", orderData);
 
       clearCart();
       setToast({

@@ -3,11 +3,12 @@ import styles from "./ManagerOrderTab.module.scss";
 import { Modal } from "../../components/popups/Modal";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import axios from "axios";
+import { socket } from "../../socket";
 
 const MENU_ORDER = [
   "도리도리토스뱅크 타코",
   "두근두근, 사랑은 계란을 타고...",
-  "모듬 후르츄베링",
+  "모듬 후르츄베릅",
   "밥알 낭낭한 찜질방 식혜",
   "불가마 어묵탕",
   "세빠지게 섞은 주전자 미숫가루",
@@ -39,6 +40,17 @@ export const ManagerOrderTab = () => {
 
   useEffect(() => {
     fetchMenuQueue();
+    socket.connect();
+    socket.on("menuQueueUpdated", fetchMenuQueue);
+    socket.on("orderCancellationUpdated", fetchMenuQueue);
+    socket.on("menuQueuePopped", fetchMenuQueue);
+
+    return () => {
+      socket.off("menuQueueUpdated");
+      socket.off("orderCancellationUpdated");
+      socket.off("menuQueuePopped");
+      socket.disconnect();
+    };
   }, [fetchMenuQueue]);
 
   const handleCardClick = useCallback((menu, table, index) => {
@@ -53,15 +65,14 @@ export const ManagerOrderTab = () => {
 
   const removeTable = useCallback(async () => {
     if (!selected) return;
-    const { menu, index, table } = selected;
-    console.log("삭제:", menu, table);
+    const { menu, table } = selected;
+
     try {
       await axios.post("/api/orders/cancel", {
         tableNumber: table,
-        menu,
+        menu: menu,
       });
       showToast({ message: "해당 테이블의 주문이 삭제 되었습니다." });
-      await fetchMenuQueue();
     } catch (err) {
       console.error("cancel 실패:", err);
       showToast({ message: "삭제 중 오류가 발생했습니다.", variant: "error" });
@@ -73,17 +84,20 @@ export const ManagerOrderTab = () => {
   const confirmTable = useCallback(async () => {
     if (!selected) return;
     const { menu, table } = selected;
-    try {
-      await axios.post("/api/menu/finish", { tableNumber: table, menu });
-      showToast({ message: "해당 테이블의 주문이 완료되었습니다." });
-      await fetchMenuQueue();
-    } catch (err) {
-      console.error("finish 실패:", err);
-      showToast({ message: "처리 중 오류가 발생했습니다.", variant: "error" });
-    } finally {
-      closeModal();
-    }
-  }, [selected, fetchMenuQueue, closeModal]);
+
+   try {
+    await axios.post("/api/menu/finish", {
+      tableNumber: table,
+      menu: menu,
+    });
+    showToast({ message: "해당 테이블의 주문이 완료되었습니다." });
+  } catch (err) {
+    console.error("finish 실패:", err);
+    showToast({ message: "처리 중 오류가 발생했습니다.", variant: "error" });
+  } finally {
+    closeModal();
+  }
+}, [selected, closeModal]);
 
   return (
     <>

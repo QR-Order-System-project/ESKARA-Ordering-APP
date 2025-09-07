@@ -60,7 +60,18 @@ export default function OrderPage() {
       setOrderDetails((prev) => ({ ...prev, paymentAble: false }));
     });
 
+    socket.on("orderCancellationUpdated", (canceledOrder) => {
+      if (canceledOrder.tableNumber === parseInt(tableNumber, 10)) {
+        console.log("주문이 취소되었습니다. 목록을 새로고침합니다.");
+        fetchOrderDetails();
+      }
+    });
+
     return () => {
+      socket.off("refreshTableStatus");
+      socket.off("paymentActivated");
+      socket.off("paymentDeactivated");
+      socket.off("orderCancellationUpdated");
       socket.disconnect();
     };
   }, [tableNumber]);
