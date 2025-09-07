@@ -25,7 +25,7 @@ export async function requestFcmToken(role) {
     if (token) {
       console.log("FCM 토큰:", token);
       // 서버에 토큰 등록
-      await fetch("http://localhost:3001/api/fcm/register", {
+      await fetch("http://https://eskara-ordering-app.onrender.com/api/fcm/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ role, token }),
