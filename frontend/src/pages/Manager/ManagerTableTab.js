@@ -3,7 +3,7 @@ import { useMemo, useState, useCallback, useEffect } from "react";
 import styles from "./ManagerTableTab.module.scss";
 import { Table } from "./Table";
 import { ManagerTableDetail } from "./ManagerTableDetail";
-import axios from "axios";
+import client from "../../api/client";
 import { Modal } from "../../components/popups/Modal";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { BsCurrencyDollar } from "react-icons/bs";
@@ -26,7 +26,7 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
 
   const fetchTableData = useCallback(async () => {
   try {
-    const res = await axios.get("/api/payments/status");
+    const res = await client.get("/api/payments/status");
 
     let data = [];
     if (Array.isArray(res.data)) {
@@ -47,7 +47,7 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
    useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const res = await axios.get("/api/payments/global-payment/get");
+        const res = await client.get("/api/payments/global-payment/get");
         setIsPaymentActive(res.data.paymentAble);
         console.log("초기 결제 활성화 상태:", res.data.paymentAble);
       } catch (err) {
@@ -131,7 +131,7 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
 
   const switchPaymentStatus = useCallback(async () => {
     try {
-      const res = await axios.post("/api/payments/global-payment/set", {
+      const res = await client.post("/api/payments/global-payment/set", {
         paymentAble: !isPaymentActive,
       });
 

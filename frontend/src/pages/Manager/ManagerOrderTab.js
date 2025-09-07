@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import styles from "./ManagerOrderTab.module.scss";
 import { Modal } from "../../components/popups/Modal";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
-import axios from "axios";
+import client from "../../api/client";
 import { socket } from "../../socket";
 
 const MENU_ORDER = [
@@ -30,7 +30,7 @@ export const ManagerOrderTab = () => {
 
   const fetchMenuQueue = useCallback(async () => {
     try {
-      const res = await axios.get("/api/menu/showMenuQueue");
+      const res = await client.get("/api/menu/showMenuQueue");
       setMenuQueue(res.data);
       console.log("메뉴 리스트:", res.data);
     } catch (err) {
@@ -68,7 +68,7 @@ export const ManagerOrderTab = () => {
     const { menu, table } = selected;
 
     try {
-      await axios.post("/api/orders/cancel", {
+      await client.post("/api/orders/cancel", {
         tableNumber: table,
         menu: menu,
       });
@@ -86,7 +86,7 @@ export const ManagerOrderTab = () => {
     const { menu, table } = selected;
 
    try {
-    await axios.post("/api/menu/finish", {
+    await client.post("/api/menu/finish", {
       tableNumber: table,
       menu: menu,
     });
