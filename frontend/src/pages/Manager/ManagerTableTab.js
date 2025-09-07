@@ -25,14 +25,24 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
   const [tables, setTables] = useState([]);
 
   const fetchTableData = useCallback(async () => {
-    try {
-      const res = await axios.get("/api/payments/status");
-      setTables(res.data);
-      console.log("결제 상태:", res.data);
-    } catch (err) {
-      console.error("결제 상태 불러오기 실패:", err);
+  try {
+    const res = await axios.get("/api/payments/status");
+
+    let data = [];
+    if (Array.isArray(res.data)) {
+      data = res.data; // 배열이면 그대로
+    } else if (res.data && typeof res.data === "object") {
+      data = Object.values(res.data); // 객체면 values 뽑아서 배열로 변환
     }
-  }, []);
+
+    setTables(data);
+    console.log("결제 상태:", data);
+  } catch (err) {
+    console.error("결제 상태 불러오기 실패:", err);
+    setTables([]); // 실패하면 빈 배열
+  }
+}, []);
+
 
    useEffect(() => {
     const fetchInitialData = async () => {
