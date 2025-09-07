@@ -31,12 +31,12 @@ function socketHandler(io) {
       emitToRoles(["chef", "server", "customer", "staff"], "menuQueueUpdated", { tableNumber, items });
 
       // 주문 메뉴 이름 추출
-      const itemNames = items.map(item => item.menu).join(", ");
+      // const itemNames = items.map(item => item.menu).join(", ");
 
       // FCM 푸시 알림
-      const message = `테이블 ${tableNumber}에서 주문: ${itemNames}`;
-      await sendFCMToRole("chef", "새 주문 도착", message);
-      await sendFCMToRole("server", "새 주문 도착", message);
+      // const message = `테이블 ${tableNumber}에서 주문: ${itemNames}`;
+      // await sendFCMToRole("chef", "새 주문 도착", message);
+      // await sendFCMToRole("server", "새 주문 도착", message);
     });
 
     // 요리 완료 (서버 -> 요리사/서버 화면 갱신)
