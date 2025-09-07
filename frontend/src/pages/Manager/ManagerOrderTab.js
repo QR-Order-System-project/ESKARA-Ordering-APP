@@ -1,136 +1,117 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "./ManagerOrderTab.module.scss";
 import { Modal } from "../../components/popups/Modal";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
+import axios from "axios";
 
-/**
- * ManagerOrderTab
- * - 메뉴별로 대기 중인 테이블을 칼럼/카드 형태로 표시
- * - 카드 클릭 시 완료 확인 모달을 띄우고, 확인하면 해당 항목을 제거
- */
-
-// 초기 더미 데이터 (API 연동 전 사용)
-const initialData = {
-  아메리카노: [
-    { id: 1, label: "테이블 01" },
-    { id: 2, label: "테이블 07" },
-    { id: 3, label: "테이블 12" },
-    { id: 4, label: "테이블 12" },
-    { id: 5, label: "테이블 12" },
-    { id: 6, label: "테이블 12" },
-    { id: 7, label: "테이블 12" },
-    { id: 8, label: "테이블 12" },
-    { id: 9, label: "테이블 12" },
-    { id: 10, label: "테이블 12" },
-    { id: 11, label: "테이블 12" },
-    { id: 12, label: "테이블 12" },
-  ],
-  카페라떼: [
-    { id: 4, label: "테이블 03" },
-    { id: 5, label: "테이블 09" },
-  ],
-  카푸치노: [
-    { id: 6, label: "테이블 05" },
-    { id: 7, label: "테이블 11" },
-  ],
-  바닐라라떼: [
-    { id: 8, label: "테이블 02" },
-    { id: 9, label: "테이블 14" },
-  ],
-  카라멜마키아또: [
-    { id: 10, label: "테이블 06" },
-    { id: 11, label: "테이블 10" },
-    { id: 12, label: "테이블 21" },
-  ],
-  초코프라푸치노: [{ id: 13, label: "테이블 04" }],
-  그린티라떼: [
-    { id: 14, label: "테이블 08" },
-    { id: 15, label: "테이블 16" },
-  ],
-  복숭아아이스티: [{ id: 16, label: "테이블 13" }],
-  레몬에이드: [
-    { id: 17, label: "테이블 15" },
-    { id: 18, label: "테이블 20" },
-  ],
-  핫초코: [
-    { id: 19, label: "테이블 18" },
-    { id: 20, label: "테이블 22" },
-  ],
-};
+const MENU_ORDER = [
+  "도리도리토스뱅크 타코",
+  "두근두근, 사랑은 계란을 타고...",
+  "모듬 후르츄베링",
+  "밥알 낭낭한 찜질방 식혜",
+  "불가마 어묵탕",
+  "세빠지게 섞은 주전자 미숫가루",
+  "소프트아이스크림과 뻥튀기",
+  "주점 인증샷 한잔해",
+  "찜질베개 토스트(안 딱딱함)",
+  "참숯가마 버팔로윙",
+  "황토방 두부김치",
+];
 
 export const ManagerOrderTab = () => {
-  /* 상태: 데이터, 모달 열림, 선택 항목 */
-  const [data, setData] = useState(initialData);
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(null); // { menu, table }
+  const [selected, setSelected] = useState(null);
   const [toast, setToast] = useState(null);
   const showToast = ({ message, variant = "success" }) =>
     setToast({ message, variant, key: Date.now() });
 
-  /* 카드 클릭 → 선택/모달 오픈 */
-  const handleCardClick = useCallback((menu, table) => {
-    setSelected({ menu, table });
+  const [menuQueue, setMenuQueue] = useState({});
+
+  const fetchMenuQueue = useCallback(async () => {
+    try {
+      const res = await axios.get("/api/menu/showMenuQueue");
+      setMenuQueue(res.data);
+      console.log("메뉴 리스트:", res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchMenuQueue();
+  }, [fetchMenuQueue]);
+
+  const handleCardClick = useCallback((menu, table, index) => {
+    setSelected({ menu, table, index });
     setOpen(true);
   }, []);
 
-  /* 모달 닫기 */
   const closeModal = useCallback(() => {
     setOpen(false);
     setSelected(null);
   }, []);
 
-  /* 모달 확인 → 선택 항목 제거 */
-  const confirmTable = useCallback(() => {
+  const removeTable = useCallback(async () => {
     if (!selected) return;
-    const { menu, table } = selected;
-    setData((prev) => ({
-      ...prev,
-      [menu]: (prev[menu] ?? []).filter((t) => t.id !== table.id),
-    }));
-    showToast({
-      message: "해당 테이블의 주문이 완료되었습니다.",
-    });
-    closeModal();
+    const { menu, index, table } = selected;
+    console.log("삭제:", menu, table);
+    try {
+      await axios.post("/api/orders/cancel", {
+        tableNumber: table,
+        menu,
+      });
+      showToast({ message: "해당 테이블의 주문이 삭제 되었습니다." });
+      await fetchMenuQueue();
+    } catch (err) {
+      console.error("cancel 실패:", err);
+      showToast({ message: "삭제 중 오류가 발생했습니다.", variant: "error" });
+    } finally {
+      closeModal();
+    }
   }, [selected, closeModal]);
 
-  const removeTable = useCallback(() => {
+  const confirmTable = useCallback(async () => {
     if (!selected) return;
     const { menu, table } = selected;
-    setData((prev) => ({
-      ...prev,
-      [menu]: (prev[menu] ?? []).filter((t) => t.id !== table.id),
-    }));
-    showToast({
-      message: "해당 테이블의 주문이 삭제 되었습니다.",
-    });
-    closeModal();
-  }, [selected, closeModal]);
+    try {
+      await axios.post("/api/menu/finish", { tableNumber: table, menu });
+      showToast({ message: "해당 테이블의 주문이 완료되었습니다." });
+      await fetchMenuQueue();
+    } catch (err) {
+      console.error("finish 실패:", err);
+      showToast({ message: "처리 중 오류가 발생했습니다.", variant: "error" });
+    } finally {
+      closeModal();
+    }
+  }, [selected, fetchMenuQueue, closeModal]);
 
   return (
     <>
       <div className={styles.boardWrap}>
-        <div className={styles.board} role="list">
-          {Object.entries(data).map(([menu, tables]) => (
-            <section className={styles.column} key={menu} role="listitem">
-              <header className={styles.columnHeader}>
-                <span className={styles.columnTitle}>{menu}</span>
-              </header>
+        <div className={styles.board}>
+          {MENU_ORDER.map((menu) => {
+            const tables = menuQueue[menu] ?? [];
+            return (
+              <section className={styles.column} key={menu}>
+                <header className={styles.columnHeader}>
+                  <span className={styles.columnTitle}>{menu}</span>
+                </header>
 
-              <div className={styles.stack}>
-                {tables.map((t) => (
-                  <button
-                    key={t.id}
-                    className={styles.card}
-                    onClick={() => handleCardClick(menu, t)}
-                  >
-                    {t.label}
-                  </button>
-                ))}
-
-                {tables.length === 0 && <div className={styles.empty}></div>}
-              </div>
-            </section>
-          ))}
+                <div className={styles.stack}>
+                  {tables.map((t, idx) => (
+                    <button
+                      key={`${menu}-${idx}-${t}`}
+                      className={styles.card}
+                      onClick={() => handleCardClick(menu, t, idx)}
+                    >
+                      테이블 {t}
+                    </button>
+                  ))}
+                  {tables.length === 0 && <div className={styles.empty} />}
+                </div>
+              </section>
+            );
+          })}
         </div>
       </div>
 
@@ -142,11 +123,12 @@ export const ManagerOrderTab = () => {
             <span>처리하시겠습니까?</span>
           </div>
         }
-        onClose={removeTable}
+        onClose={closeModal}
+        onDismiss={removeTable}
         onConfirm={confirmTable}
         button1="삭제"
         button2="완료"
-        body={`${selected?.table?.label} - ${selected?.menu}`}
+        body={`테이블 ${selected?.table ?? ""} - ${selected?.menu ?? ""}`}
       />
 
       {toast && (
