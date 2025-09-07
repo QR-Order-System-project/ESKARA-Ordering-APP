@@ -29,15 +29,15 @@ const getAllTableStatus = async (req, res) => {
       const tableNumber = i;
       const items = existingOrders[tableNumber] || {};
 
-      let totalAmout = 0;
+      let totalAmount = 0;
       for (const [menu, count] of Object.entries(items)) {
-        totalAmout += (menuPrice[menu] || 0) * count;
+        totalAmount += (menuPrice[menu] || 0) * count;
       }
 
       statusList.push({
         tableNumber,
-        totalAmout,
-        payed: totalAmout === 0,
+        totalAmount,
+        payed: totalAmount === 0,
       });
     }
 
