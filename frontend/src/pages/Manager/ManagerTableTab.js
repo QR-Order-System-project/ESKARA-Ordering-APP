@@ -8,6 +8,7 @@ import { Modal } from "../../components/popups/Modal";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { TbMoneybag } from "react-icons/tb";
+import { socket } from "../../socket";
 
 /**
  * ManagerTableTab
@@ -33,9 +34,44 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
     }
   }, []);
 
-  useEffect(() => {
+   useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        const res = await axios.get("/api/payments/global-payment/get");
+        setIsPaymentActive(res.data.paymentAble);
+        console.log("초기 결제 활성화 상태:", res.data.paymentAble);
+      } catch (err) {
+        console.error("결제 활성화 불러오기 실패:", err);
+      }
+    };
+
     fetchTableData();
-  }, [resetSignal]);
+    fetchInitialData();
+    socket.connect();
+
+    const refreshTables = (data) => {
+      console.log("[실시간] 테이블 목록 갱신 신호 수신!", data);
+      fetchTableData();
+    };
+
+    const handleGlobalPaymentStatusChange = (data) => {
+      console.log('[실시간] 전역 결제 상태 변경 수신!', data.paymentAble);
+      setIsPaymentActive(data.paymentAble);
+    };
+
+    socket.on("menuQueueUpdated", refreshTables);
+    socket.on("orderCancellationUpdated", refreshTables);
+    socket.on("refreshTableStatus", refreshTables);
+    socket.on("globalPaymentStatusChanged", handleGlobalPaymentStatusChange);
+
+    return () => {
+      socket.off("menuQueueUpdated", refreshTables);
+      socket.off("orderCancellationUpdated", refreshTables);
+      socket.off("refreshTableStatus", refreshTables);
+      socket.off("globalPaymentStatusChanged", handleGlobalPaymentStatusChange);
+      socket.disconnect();
+    };
+  }, [fetchTableData]);
 
   /* 선택된 테이블 ID */
   const [selectedId, setSelectedId] = useState(null);
@@ -82,20 +118,6 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
 
   /* 결제 버튼 비/활성 토글 */
   const [isPaymentActive, setIsPaymentActive] = useState(true);
-
-  const fetchPaymentStatus = useCallback(async () => {
-    try {
-      const res = await axios.get("/api/payments/global-payment/get");
-      setIsPaymentActive(res.data.paymentAble);
-      console.log("결제 활성화:", res.data.paymentAble);
-    } catch (err) {
-      console.error("결제 활성화 불러오기 실패:", err);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchPaymentStatus();
-  }, []);
 
   const switchPaymentStatus = useCallback(async () => {
     try {
@@ -181,7 +203,7 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
               {tables.map((t) => (
                 <Table
                   key={t.id}
-                  table={{ ...t, totalPrice: getTotal(t.orders) }}
+                  table={{ ...t, totalPrice: t.totalAmount }}
                   onClick={() => setSelectedId(t.tableNumber)}
                 />
               ))}

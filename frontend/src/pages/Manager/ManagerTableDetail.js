@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { Modal } from "../../components/popups/Modal";
+import { socket } from "../../socket";
 
 export const ManagerTableDetail = ({ tableNum }) => {
   const [tableDetail, setTableDetail] = useState(null);
@@ -45,7 +46,36 @@ export const ManagerTableDetail = ({ tableNum }) => {
 
   useEffect(() => {
     fetchTableDetail();
-  }, [fetchTableDetail]);
+    socket.connect();
+
+    socket.on("menuQueueUpdated", (newOrder) => {
+      if (newOrder.tableNumber === tableNum) {
+        console.log(`[실시간] 현재 테이블(${tableNum})에 새 주문! 갱신합니다.`);
+        fetchTableDetail();
+     }
+    });
+
+    socket.on("orderCancellationUpdated", (canceledOrder) => {
+      if (canceledOrder.tableNumber === tableNum) {
+        console.log(`[실시간] 현재 테이블(${tableNum})의 주문 취소! 갱신합니다.`);
+        fetchTableDetail();
+      }
+    });
+
+    socket.on("refreshTableStatus", (data) => {
+      if (Number(data.tableNumber) === Number(tableNum)) {
+        console.log(`[실시간] 현재 테이블(${tableNum}) 결제 완료!`);
+        fetchTableDetail();
+      }
+    });
+
+    return () => {
+      socket.off("menuQueueUpdated");
+      socket.off("orderCancellationUpdated");
+      socket.off("refreshTableStatus");
+      socket.disconnect();
+    };
+  }, [fetchTableDetail, tableNum]);
 
   const items = Array.isArray(tableDetail?.items) ? tableDetail.items : [];
   const formattedOrders = useMemo(

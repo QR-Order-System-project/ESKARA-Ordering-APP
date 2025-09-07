@@ -43,7 +43,7 @@ function socketHandler(io) {
     // menuQueue 삭제, menuQueue 보여주기
     socket.on("orderServedOrCanceled", () => {
       log(socket, `요리 완료`);
-      emitToRoles(["chef", "server"], "menuQueuePopped", { tableNumber, menu });
+      emitToRoles(["chef", "server"], "menuQueuePopped", {});
     });
 
     // 주문 취소 (서버 -> 요리사/서버/손님/실무단 화면)

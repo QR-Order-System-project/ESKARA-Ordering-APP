@@ -12,7 +12,7 @@ const createOrder = async (req, res) => {
 
         await addOrderToOrdersDB({ tableNumber, items });
         await addMenuToMenuQueueDB({ tableNumber, items });
-
+        global.io.emit("menuQueueUpdated", { tableNumber, items });
         res.status(200).json({ message: '주문이 성공적으로 완료되었습니다.' });
 
     } catch (error) {
@@ -29,7 +29,7 @@ const cancelOrder = async (req, res) => {
 
         await deleteOrdersFromMenuQueueDB({ tableNumber, menu });
         await discountCountFromOrders({ tableNumber, menu });
-
+        global.io.emit("orderCancellationUpdated", { tableNumber, menu });
         res.status(200).json({ message: '주문이 성공적으로 취소되었습니다.' });
 
     } catch (error) {
@@ -45,7 +45,7 @@ const finishMenu = async (req, res) => {
         const { tableNumber, menu } = req.body;
 
         await deleteOrdersFromMenuQueueDB({ tableNumber, menu });
-
+        global.io.emit("menuQueuePopped", { tableNumber, menu });
         res.status(200).json({ message: '요리가 완료 처리되었습니다.' });
 
     } catch (error) {
