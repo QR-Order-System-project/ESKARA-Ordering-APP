@@ -10,21 +10,22 @@ import styles from "./Table.module.scss";
  * - isActive: 선택 여부 (스타일 강조)
  * - onClick: 클릭 핸들러
  */
-export const Table = ({ table, isActive, onClick }) => {
-  const { name, totalPrice } = table;
+export const Table = ({ table, onClick }) => {
+  const { tableNumber } = table;
+  const totalAmount = table.totalAmount ?? 0;
 
   return (
     <div
-      className={`${styles.tablePanel} ${isActive ? styles.active : ""}`}
+      className={styles.tablePanel}
       onClick={onClick}
       role="button"
       tabIndex={0}
     >
       {/* 테이블 이름 */}
-      <div className={styles.tableName}>{name}</div>
+      <div className={styles.tableName}>테이블 {tableNumber}</div>
 
       {/* 총 금액 */}
-      <div className={styles.tablePrice}>{totalPrice.toLocaleString()}원</div>
+      <div className={styles.tablePrice}>{totalAmount.toLocaleString()}원</div>
     </div>
   );
 };

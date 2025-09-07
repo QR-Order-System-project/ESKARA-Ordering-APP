@@ -8,6 +8,6 @@ export const getPaymentDetail = async (tableNumber) => {
 
 // 손님: 결제 활성화 여부 확인
 export const getPaymentAble = async () => {
-  const response = await client.get("/api/payment/global-payment/get");
+  const response = await client.get("/api/payments/global-payment/get");
   return response.data.paymentAble;
 };

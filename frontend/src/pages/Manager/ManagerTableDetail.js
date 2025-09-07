@@ -1,56 +1,144 @@
 import { OrderList } from "../../components/OrderList";
-import { PageTitle } from "../../components/PageTitle";
 import { TotalPriceLabel } from "../../components/TotalPriceLabel";
-import { FaMoneyBillWave } from "react-icons/fa";
 import styles from "./ManagerTableDetail.module.scss";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import axios from "axios";
+import { CompactToastModal } from "../../components/popups/CompactToastModal";
+import { Modal } from "../../components/popups/Modal";
 
-/**
- * ManagerTableDetail
- * - 단일 테이블의 상세 주문 내역을 표시
- * - 주문 목록, 총 금액, 결제완료 버튼, 뒤로가기 버튼 포함
- *
- * Props
- * - table: { id, name, totalPrice, orders } 테이블 정보
- * - onClose: 뒤로가기 클릭 핸들러
- * - onPayComplete: 결제완료 시 호출 (id 전달)
- */
-export const ManagerTableDetail = ({ table, onClose, onPayComplete }) => {
-  // 안전한 디폴트 구조 분해
-  const {
-    id = null,
-    name = "테이블",
-    totalPrice = 0,
-    orders = [],
-  } = table ?? {};
+export const ManagerTableDetail = ({ tableNum }) => {
+  const [tableDetail, setTableDetail] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [dialog, setDialog] = useState({
+    open: false,
+    title: null,
+    body: null,
+    onConfirm: null,
+  });
+  const [loading, setLoading] = useState(false);
 
-  const safeOrders = Array.isArray(orders) ? orders : [];
+  const showToast = useCallback(
+    ({ message, variant = "success" }) =>
+      setToast({ message, variant, key: Date.now() }),
+    []
+  );
+  const openDialog = useCallback(
+    (cfg) => setDialog({ open: true, ...cfg }),
+    []
+  );
+  const closeDialog = useCallback(
+    () => setDialog((d) => ({ ...d, open: false })),
+    []
+  );
 
-  /* 결제 버튼 클릭 */
-  const handlePay = () => {
-    if (id == null) return;
-    onPayComplete?.(id);
-  };
+  const fetchTableDetail = useCallback(async () => {
+    if (tableNum == null) return;
+    setTableDetail(null);
+    try {
+      const res = await axios.get(`/api/payments/detail/${tableNum}`);
+      setTableDetail(res.data);
+    } catch (err) {
+      console.error("테이블 상세 정보 불러오기 실패:", err);
+      setTableDetail({ tableNumber: tableNum, items: [], totalAmount: 0 });
+    }
+  }, [tableNum]);
+
+  useEffect(() => {
+    fetchTableDetail();
+  }, [fetchTableDetail]);
+
+  const items = Array.isArray(tableDetail?.items) ? tableDetail.items : [];
+  const formattedOrders = useMemo(
+    () =>
+      items.map((item, idx) => ({
+        name: item.menu,
+        amount: item.count,
+        price: item.price,
+        id: `${item.menu}-${idx}`,
+      })),
+    [items]
+  );
+  const hasOrders = items.length > 0;
+  const total = tableDetail?.totalAmount ?? 0;
+
+  const handlePayComplete = useCallback(() => {
+    if (!hasOrders) {
+      showToast({
+        message: "주문 내역이 존재하지 않습니다.",
+        variant: "error",
+      });
+      return;
+    }
+    openDialog({
+      title: (
+        <div className={styles.titleLines}>
+          <span>해당 테이블을 결제완료</span>
+          <span>처리하시겠습니까?</span>
+        </div>
+      ),
+      body: "총 주문금액과 이체금액을 확인해주세요.",
+      onConfirm: async () => {
+        setLoading(true);
+        try {
+          await axios.post("/api/payments/finalize", {
+            tableNumber: tableDetail.tableNumber,
+          });
+          showToast({ message: "해당 테이블의 결제가 완료되었습니다." });
+          await fetchTableDetail();
+        } catch (err) {
+          console.error("결제 실패:", err);
+          showToast({ message: "결제 처리에 실패했습니다.", variant: "error" });
+        } finally {
+          setLoading(false);
+          closeDialog();
+        }
+      },
+    });
+  }, [
+    hasOrders,
+    tableDetail,
+    openDialog,
+    closeDialog,
+    showToast,
+    fetchTableDetail,
+  ]);
 
   return (
     <div className={styles.mainPanel}>
-      {/* 주문 내역 + 합계 금액 */}
       <div className={styles.content}>
-        <OrderList orders={safeOrders} />
+        <OrderList orders={formattedOrders} />
       </div>
 
       <div className={styles.lowPanel}>
-        <TotalPriceLabel label="주문" price={totalPrice} />
+        <TotalPriceLabel label="주문" price={total} />
         <div className={styles.buttonRow}>
           <button
             type="button"
             className={styles.payCompleteButton}
-            onClick={handlePay}
-            disabled={id == null}
+            onClick={handlePayComplete}
           >
             결제완료
           </button>
         </div>
       </div>
+
+      <Modal
+        open={dialog.open}
+        onClose={closeDialog}
+        onConfirm={dialog.onConfirm}
+        title={dialog.title}
+        dimmed
+        body={dialog.body}
+      />
+
+      {toast && (
+        <CompactToastModal
+          message={toast.message}
+          variant={toast.variant}
+          duration={1800}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 };
