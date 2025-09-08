@@ -10,7 +10,7 @@ router.post('/finish', finishMenu);
 router.get('/showMenuQueue', showMenuQueue);
 
 // 메뉴 큐 채우기 (초기화용, 필요시 사용)
-router.get('/fillMenuQueue', fillMenuQueue);
+router.post('/fillMenuQueue', fillMenuQueue);
 
 
 module.exports = router;
