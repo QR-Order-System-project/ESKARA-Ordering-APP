@@ -8,7 +8,7 @@ import { ManagerCallTab } from "./ManagerCallTab";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { PageTitle } from "../../components/PageTitle";
 import { BsCurrencyDollar } from "react-icons/bs";
-import axios from "axios";
+import client from "../../api/client";
 import { requestFcmToken, listenToMessages } from "../../fcm";
 
 export const ManagerMain = () => {
@@ -45,7 +45,7 @@ export const ManagerMain = () => {
 
   const fetchCall = useCallback(async () => {
     try {
-      const res = await axios.get("/api/employee/calls");
+      const res = await client.get("/api/employee/calls");
       const list = Array.isArray(res.data) ? res.data : [];
       setHasCall(list.length > 0);
       console.log("직원호출 수:", list.length);

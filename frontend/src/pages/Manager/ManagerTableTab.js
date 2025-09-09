@@ -3,7 +3,7 @@ import { useMemo, useState, useCallback, useEffect } from "react";
 import styles from "./ManagerTableTab.module.scss";
 import { Table } from "./Table";
 import { ManagerTableDetail } from "./ManagerTableDetail";
-import axios from "axios";
+import client from "../../api/client";
 import { Modal } from "../../components/popups/Modal";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { BsCurrencyDollar } from "react-icons/bs";
@@ -25,19 +25,29 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
   const [tables, setTables] = useState([]);
 
   const fetchTableData = useCallback(async () => {
-    try {
-      const res = await axios.get("/api/payments/status");
-      setTables(res.data);
-      console.log("결제 상태:", res.data);
-    } catch (err) {
-      console.error("결제 상태 불러오기 실패:", err);
+  try {
+    const res = await client.get("/api/payments/status");
+
+    let data = [];
+    if (Array.isArray(res.data)) {
+      data = res.data; // 배열이면 그대로
+    } else if (res.data && typeof res.data === "object") {
+      data = Object.values(res.data); // 객체면 values 뽑아서 배열로 변환
     }
-  }, []);
+
+    setTables(data);
+    console.log("결제 상태:", data);
+  } catch (err) {
+    console.error("결제 상태 불러오기 실패:", err);
+    setTables([]); // 실패하면 빈 배열
+  }
+}, []);
+
 
    useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const res = await axios.get("/api/payments/global-payment/get");
+        const res = await client.get("/api/payments/global-payment/get");
         setIsPaymentActive(res.data.paymentAble);
         console.log("초기 결제 활성화 상태:", res.data.paymentAble);
       } catch (err) {
@@ -102,7 +112,7 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
   /* id → 테이블 매핑 */
   const tableMap = useMemo(() => {
     const m = new Map();
-    for (const t of tables) m.set(t.id, t);
+    for (const t of tables) m.set(t.tableNumber, t);
     return m;
   }, [tables]);
 
@@ -121,7 +131,7 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
 
   const switchPaymentStatus = useCallback(async () => {
     try {
-      const res = await axios.post("/api/payments/global-payment/set", {
+      const res = await client.post("/api/payments/global-payment/set", {
         paymentAble: !isPaymentActive,
       });
 
@@ -202,7 +212,7 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
             <div className={styles.tablePanel}>
               {tables.map((t) => (
                 <Table
-                  key={t.id}
+                  key={t.tableNumber}
                   table={{ ...t, totalPrice: t.totalAmount }}
                   onClick={() => setSelectedId(t.tableNumber)}
                 />

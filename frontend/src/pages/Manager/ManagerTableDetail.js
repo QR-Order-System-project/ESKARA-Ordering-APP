@@ -2,7 +2,7 @@ import { OrderList } from "../../components/OrderList";
 import { TotalPriceLabel } from "../../components/TotalPriceLabel";
 import styles from "./ManagerTableDetail.module.scss";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import axios from "axios";
+import client from "../../api/client"; 
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { Modal } from "../../components/popups/Modal";
 import { socket } from "../../socket";
@@ -36,7 +36,7 @@ export const ManagerTableDetail = ({ tableNum }) => {
     if (tableNum == null) return;
     setTableDetail(null);
     try {
-      const res = await axios.get(`/api/payments/detail/${tableNum}`);
+      const res = await client.get(`/api/payments/detail/${tableNum}`);
       setTableDetail(res.data);
     } catch (err) {
       console.error("테이블 상세 정보 불러오기 실패:", err);
@@ -110,7 +110,7 @@ export const ManagerTableDetail = ({ tableNum }) => {
       onConfirm: async () => {
         setLoading(true);
         try {
-          await axios.post("/api/payments/finalize", {
+          await client.post("/api/payments/finalize", {
             tableNumber: tableDetail.tableNumber,
           });
           showToast({ message: "해당 테이블의 결제가 완료되었습니다." });
