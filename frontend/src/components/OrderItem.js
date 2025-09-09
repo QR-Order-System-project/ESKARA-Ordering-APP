@@ -12,7 +12,7 @@ export const OrderItem = ({ order }) => {
         <div className={styles.orderName}>{name}</div>
         <div className={styles.orderAmount}>X{amount}</div>
       </div>
-      <div className={styles.price}>{(price * amount).toLocaleString()}원</div>
+      <div className={styles.price}>{(price).toLocaleString()}원</div>
     </div>
   );
 };
