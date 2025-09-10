@@ -11,6 +11,8 @@ const employeeCallRoutes = require('./routes/employeeCallRoutes');
 const fcmRoutes = require('./routes/fcmRoutes');
 const socketHandler = require('./sockets/socketHandler');
 const db = require('./firebase');
+const { fillMenuQueue } = require('./controllers/orderController');
+const { initMenuQueueWatcher } = require("./controllers/queueWatcher");
 
 const app = express();
 const server = http.createServer(app);
@@ -28,6 +30,16 @@ app.use('/api/employee', employeeCallRoutes);
 app.use("/api/fcm", fcmRoutes);
 
 socketHandler(io);
+initMenuQueueWatcher();
+
+(async () => {
+  try {
+    await fillMenuQueue();
+    console.log("✅ menuQueue 초기화 완료");
+  } catch (err) {
+    console.error("❌ menuQueue 초기화 실패:", err);
+  }
+})();
 
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => console.log(`서버 실행 중: http://localhost:${PORT}`));

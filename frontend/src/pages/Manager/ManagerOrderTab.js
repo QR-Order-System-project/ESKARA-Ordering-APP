@@ -2,21 +2,20 @@ import { useCallback, useEffect, useState } from "react";
 import styles from "./ManagerOrderTab.module.scss";
 import { Modal } from "../../components/popups/Modal";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
-import axios from "axios";
+import client from "../../api/client";
 import { socket } from "../../socket";
 
 const MENU_ORDER = [
-  "도리도리토스뱅크 타코",
-  "두근두근, 사랑은 계란을 타고...",
-  "모듬 후르츄베릅",
-  "밥알 낭낭한 찜질방 식혜",
-  "불가마 어묵탕",
-  "세빠지게 섞은 주전자 미숫가루",
-  "소프트아이스크림과 뻥튀기",
-  "주점 인증샷 한잔해",
-  "찜질베개 토스트(안 딱딱함)",
+  "불가마 짬뽕탕",
   "참숯가마 버팔로윙",
   "황토방 두부김치",
+  "찜질베개 토스트",
+  "소프트 아이스크림과 뻥튀기",
+  "도리토스 타코",
+  "모듬 후르츠",
+  "찜질방 식혜",
+  "주전자 미숫가루",
+  "시원한 물 1L"
 ];
 
 export const ManagerOrderTab = () => {
@@ -30,7 +29,7 @@ export const ManagerOrderTab = () => {
 
   const fetchMenuQueue = useCallback(async () => {
     try {
-      const res = await axios.get("/api/menu/showMenuQueue");
+      const res = await client.get("/api/menu/showMenuQueue");
       setMenuQueue(res.data);
       console.log("메뉴 리스트:", res.data);
     } catch (err) {
@@ -40,8 +39,11 @@ export const ManagerOrderTab = () => {
 
   useEffect(() => {
     fetchMenuQueue();
-    socket.connect();
-    socket.on("menuQueueUpdated", fetchMenuQueue);
+    
+    socket.on("menuQueueUpdated", (data) => {
+      console.log("[클라 수신] menuQueueUpdated:", data);
+      setMenuQueue(data);
+    });
     socket.on("orderCancellationUpdated", fetchMenuQueue);
     socket.on("menuQueuePopped", fetchMenuQueue);
 
@@ -49,7 +51,6 @@ export const ManagerOrderTab = () => {
       socket.off("menuQueueUpdated");
       socket.off("orderCancellationUpdated");
       socket.off("menuQueuePopped");
-      socket.disconnect();
     };
   }, [fetchMenuQueue]);
 
@@ -68,7 +69,7 @@ export const ManagerOrderTab = () => {
     const { menu, table } = selected;
 
     try {
-      await axios.post("/api/orders/cancel", {
+      await client.post("/api/orders/cancel", {
         tableNumber: table,
         menu: menu,
       });
@@ -86,7 +87,7 @@ export const ManagerOrderTab = () => {
     const { menu, table } = selected;
 
    try {
-    await axios.post("/api/menu/finish", {
+    await client.post("/api/menu/finish", {
       tableNumber: table,
       menu: menu,
     });

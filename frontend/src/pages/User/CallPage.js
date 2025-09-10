@@ -8,7 +8,7 @@ import { CompactToastModal } from "../../components/popups/CompactToastModal";
 import { callEmployee } from "../../api/call";
 import { socket } from "../../socket"
 
-const CALL_ITEMS = ["기본안주 주세용", "숟가락 주세용", "젓가락 주세용", "종이컵 주세용", "앞접시 주세용", "물티슈 주세용", "직원만\n와주세용", "이것 좀 치워주세용"];
+const CALL_ITEMS = ["기본안주 주세용", "숟가락 주세용", "젓가락 주세용", "종이컵 주세용", "앞접시 주세용", "물티슈 주세용", "직원만\n와주세용", "이것 좀 치워주세용", "이벤트 참여\n할래용", "이벤트 설명\n해줘용"];
 
 export default function CallPage() {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -17,10 +17,6 @@ export default function CallPage() {
   const { tableNumber } = useParams();
 
   useEffect(() => {
-    socket.connect();
-    return () => {
-      socket.disconnect();
-    };
   }, []);
 
   const handleItemClick = (itemText) => {

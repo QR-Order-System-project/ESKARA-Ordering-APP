@@ -3,7 +3,7 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import styles from "./ManagerCallTab.module.scss";
 import { Modal } from "../../components/popups/Modal";
 import { CompactToastModal } from "../../components/popups/CompactToastModal";
-import axios from "axios";
+import client from "../../api/client";
 import { socket } from "../../socket";
 
 export const ManagerCallTab = ({ onCallsChange }) => {
@@ -15,7 +15,7 @@ export const ManagerCallTab = ({ onCallsChange }) => {
 
   const fetchCall = useCallback(async () => {
     try {
-      const res = await axios.get("/api/employee/calls");
+      const res = await client.get("/api/employee/calls");
       const list = Array.isArray(res.data) ? res.data : [];
       setCalls(list);
       onCallsChange?.(list);
@@ -29,7 +29,7 @@ export const ManagerCallTab = ({ onCallsChange }) => {
 
   const completeCall = useCallback(async (selected) => {
     try {
-      await axios.post("/api/employee/complete", {
+      await client.post("/api/employee/complete", {
         tableNumber: selected.tableNumber,
         items: selected.items,
       });
@@ -44,7 +44,6 @@ export const ManagerCallTab = ({ onCallsChange }) => {
 
   useEffect(() => {
     fetchCall();
-    socket.connect();
 
     const handleCallUpdate = () => {
       console.log("[실시간] 직원 호출 목록 갱신!");
@@ -54,7 +53,6 @@ export const ManagerCallTab = ({ onCallsChange }) => {
     socket.on("employeeCallUpdated", handleCallUpdate);
     return () => {
       socket.off("employeeCallUpdated", handleCallUpdate);
-      socket.disconnect();
     };
   }, [fetchCall]);
 

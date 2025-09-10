@@ -5,8 +5,20 @@ import CallPage from "./pages/User/CallPage";
 import OrdersPage from "./pages/User/OrdersPage";
 import CartPage from "./pages/User/CartPage";
 import { CartProvider } from "./pages/User/data/CartContext";
+import { useEffect } from "react";
+import { socket } from "./socket";
 
 function App() {
+  useEffect(() => {
+    socket.connect();              // 앱 시작 시 연결
+    console.log("✅ Socket connected");
+
+    return () => {
+      socket.disconnect();         // 앱 종료 시 해제
+      console.log("❌ Socket disconnected");
+    };
+  }, []);
+
   return (
     <CartProvider>
       <BrowserRouter>
