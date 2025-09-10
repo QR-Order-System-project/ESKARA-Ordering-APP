@@ -10,6 +10,7 @@ import { PageTitle } from "../../components/PageTitle";
 import { BsCurrencyDollar } from "react-icons/bs";
 import client from "../../api/client";
 import { requestFcmToken, listenToMessages } from "../../fcm";
+import { socket } from "../../socket";
 
 export const ManagerMain = () => {
   const [active, setActive] = useState("TABLE");
@@ -56,12 +57,30 @@ export const ManagerMain = () => {
   }, []);
 
   useEffect(() => {
-    requestFcmToken("server");
+  // 기존 FCM 관련 로직
+  requestFcmToken("server");
+  listenToMessages(() => {
+    fetchCall(); // 알림 오면 호출 배지 갱신
+  });
 
-    listenToMessages(() => {
-      fetchCall(); // 알림 오면 호출 배지 갱신
-    });
-  }, [fetchCall]);
+  // 🔥 소켓으로 실시간 직원호출 감지 → 빨간점 즉시 업데이트
+  const handleCallUpdate = async () => {
+    console.log("[실시간] 직원호출 발생 - 배지 갱신!");
+    try {
+      const res = await client.get("/api/employee/calls");
+      const list = Array.isArray(res.data) ? res.data : [];
+      setHasCall(list.length > 0);
+    } catch (err) {
+      console.error("직원호출 갱신 실패:", err);
+    }
+  };
+
+  socket.on("employeeCallUpdated", handleCallUpdate);
+
+  return () => {
+    socket.off("employeeCallUpdated", handleCallUpdate);
+  };
+}, [fetchCall]);
 
   const [toast, setToast] = useState(null);
 
