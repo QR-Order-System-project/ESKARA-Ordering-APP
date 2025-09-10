@@ -77,7 +77,7 @@ export default function OrderPage() {
     }
 
     try {
-      await navigator.clipboard.writeText("3333-32-4717865 카카오뱅크");
+      await navigator.clipboard.writeText("3333-18-9086733 카카오뱅크");
       setToast({
         message: "계좌번호가 성공적으로 복사되었습니다!",
         variant: "success",

@@ -35,12 +35,18 @@ export default function MenuCard({id, name, price, desc, img, isEvent = false })
         </div>
 
         <div className={styles.Actions}>
-          <div className={styles.Counter}>
-            <button onClick={() => handleCountChange(-1)}>-</button>
-            <span>{count}</span>
-            <button onClick={() => handleCountChange(1)}>+</button>
-          </div>
-          <button className={styles.Add} onClick={handleAddClick}>메뉴담기</button>
+          {!isEvent && (
+            <>
+              <div className={styles.Counter}>
+                <button onClick={() => handleCountChange(-1)}>-</button>
+                <span>{count}</span>
+                <button onClick={() => handleCountChange(1)}>+</button>
+              </div>
+              <button className={styles.Add} onClick={handleAddClick}>
+                메뉴담기
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
