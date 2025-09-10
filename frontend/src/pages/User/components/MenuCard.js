@@ -3,15 +3,21 @@ import styles from "./MenuCard.module.scss";
 import { CompactToastModal } from "../../../components/popups/CompactToastModal";
 import { useCart } from "../data/CartContext";
 
-export default function MenuCard({id, name, price, desc, img }) {
+export default function MenuCard({id, name, price, desc, img, isEvent = false }) {
   const { addToCart } = useCart();
   const [count, setCount] = useState(1);
   const [toast, setToast] = useState(null);
 
   const handleAddClick = () => {
+    if (isEvent) return;
     addToCart({ id, name, price: Number(price), qty: count });
     setCount(1);
     setToast({ message: `선택한 메뉴가 장바구니에 담겼습니다.`, variant: "success" });
+  };
+
+  const handleCountChange = (delta) => {
+    if (isEvent) return;
+    setCount(Math.max(1, count + delta));
   };
 
   return (
@@ -30,9 +36,9 @@ export default function MenuCard({id, name, price, desc, img }) {
 
         <div className={styles.Actions}>
           <div className={styles.Counter}>
-            <button onClick={() => setCount(Math.max(1, count - 1))}>-</button>
+            <button onClick={() => handleCountChange(-1)}>-</button>
             <span>{count}</span>
-            <button onClick={() => setCount(count + 1)}>+</button>
+            <button onClick={() => handleCountChange(1)}>+</button>
           </div>
           <button className={styles.Add} onClick={handleAddClick}>메뉴담기</button>
         </div>

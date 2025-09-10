@@ -18,7 +18,7 @@ export default function MenuSections({ refs, data, onAdd }) {
           </div>
           <div className={styles.SectionContent}>
             {items.map((menu) => (
-              <MenuCard key={menu.id} {...menu} onAdd={onAdd} />
+              <MenuCard key={menu.id} {...menu} onAdd={onAdd} isEvent={key === "event"}/>
             ))}
           </div>
         </section>

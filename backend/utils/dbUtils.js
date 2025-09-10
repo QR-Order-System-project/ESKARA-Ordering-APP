@@ -1,15 +1,23 @@
+const db = require("../firebase");
+
 const getTimeSlot = () => {
   const now = new Date();
-  const yyyy = now.getFullYear();
-  const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const dd = String(now.getDate()).padStart(2, '0');
+  const kstNow = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+
+  const yyyy = kstNow.getUTCFullYear();
+  const mm = String(kstNow.getUTCMonth() + 1).padStart(2, "0");
+  const dd = String(kstNow.getUTCDate()).padStart(2, "0");
   return `${yyyy}${mm}${dd}`;
+};
+
+const getKSTString = () => {
+  return new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
 };
 
 // orders 에 추가 
 const addOrderToOrdersDB = async ({ tableNumber, items }) => {
   const timeSlot = getTimeSlot();
-  const now = new Date().toISOString();
+  const now = getKSTString();
 
   // 주문 참조 
   const orderRef = db.collection('orders')
@@ -87,7 +95,7 @@ const deleteOrdersFromMenuQueueDB = async ({ tableNumber, menu }) => {
 // items 이랑 updateAt 만 변경
 const discountCountFromOrders = async({tableNumber, menu}) => {
   const timeSlot = getTimeSlot();
-  const now = new Date().toISOString();
+  const now = getKSTString();
 
   // 주문 참조 
   const orderRef = db.collection('orders')
