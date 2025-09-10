@@ -46,7 +46,6 @@ export const ManagerTableDetail = ({ tableNum }) => {
 
   useEffect(() => {
     fetchTableDetail();
-    socket.connect();
 
     socket.on("menuQueueUpdated", (newOrder) => {
       if (newOrder.tableNumber === tableNum) {
@@ -73,7 +72,6 @@ export const ManagerTableDetail = ({ tableNum }) => {
       socket.off("menuQueueUpdated");
       socket.off("orderCancellationUpdated");
       socket.off("refreshTableStatus");
-      socket.disconnect();
     };
   }, [fetchTableDetail, tableNum]);
 

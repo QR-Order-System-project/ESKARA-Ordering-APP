@@ -57,7 +57,6 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
 
     fetchTableData();
     fetchInitialData();
-    socket.connect();
 
     const refreshTables = (data) => {
       console.log("[실시간] 테이블 목록 갱신 신호 수신!", data);
@@ -79,7 +78,6 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
       socket.off("orderCancellationUpdated", refreshTables);
       socket.off("refreshTableStatus", refreshTables);
       socket.off("globalPaymentStatusChanged", handleGlobalPaymentStatusChange);
-      socket.disconnect();
     };
   }, [fetchTableData]);
 
@@ -226,7 +224,7 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
               className={styles.payOnOffButton}
               onClick={showToggleDialog}
             >
-              {`결제 ${isPaymentActive ? "비활성화" : "활성화"}`}
+              {`결제 ${isPaymentActive ? "비활성화하기" : "활성화하기"}`}
             </button>
           </div>
         </>

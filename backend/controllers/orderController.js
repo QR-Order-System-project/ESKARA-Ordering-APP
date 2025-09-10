@@ -55,23 +55,48 @@ const finishMenu = async (req, res) => {
 };
 
 
+// 메뉴큐 채우기 (초기화용, 필요시 사용) (e.g., POST /api/menu/fillMenuQueue)
+const fillMenuQueue = async () => {
+    const allMenuNames = [
+        "불가마 짬뽕탕",
+        "참숯가마 버팔로윙",
+        "황토방 두부김치",
+        "찜질베개 토스트",
+        "소프트 아이스크림과 뻥튀기",
+        "도리토스 타코",
+        "모듬 후르츠",
+        "주전자 미숫가루",
+        "시원한 물 1L",
+        "찜질방 식혜"
+    ];
+
+    const menuQueuedict = {};
+
+    allMenuNames.forEach((menuName) => {
+      menuQueuedict[menuName] = [];
+    });
+
+    const docRef = db.collection('queues').doc('menuQueue');
+    if (!docRef.exists){
+        await docRef.set(menuQueuedict);
+    }
+}
+
 
 // 메뉴큐 보여주기 (e.g., POST /api/menu/showMenuQueue)
 const showMenuQueue = async (req, res) => {
   try {
     const allMenuNames = [
-      "두근두근, 사랑은 계란을 타고...",
-      "주점 인증샷 한잔해",
-      "불가마 어묵탕",
-      "참숯가마 버팔로윙",
-      "황토방 두부김치",
-      "찜질베개 토스트(안 딱딱함)",
-      "소프트아이스크림과 뻥튀기",
-      "도리도리토스뱅크 타코",
-      "모듬 후르츄베릅",
-      "밥알 낭낭한 찜질방 식혜",
-      "세빠지게 섞은 주전자 미숫가루",
-      "에비앙..은 아니고 삼다수",
+        "불가마 짬뽕탕",
+        "참숯가마 버팔로윙",
+        "황토방 두부김치",
+        "찜질베개 토스트",
+        "소프트 아이스크림과 뻥튀기",
+        "도리토스 타코",
+        "모듬 후르츠",
+        "주전자 미숫가루",
+        "시원한 물 1L",
+        "찜질방 식혜"
     ];
 
     const menuQueuedict = {};
@@ -108,5 +133,6 @@ module.exports = {
     createOrder,
     cancelOrder,
     finishMenu, 
-    showMenuQueue
+    showMenuQueue,
+    fillMenuQueue
 };
