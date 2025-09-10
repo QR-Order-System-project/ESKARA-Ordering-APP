@@ -21,8 +21,8 @@ const getAllTableStatus = async (req, res) => {
       existingOrders[data.tableNumber] = data.items || {};
     });
 
-    // 전체 테이블(1~32) 순회하며 결제 상태 계산
-    const totalTables = 32;
+    // 전체 테이블(1~24) 순회하며 결제 상태 계산
+    const totalTables = 24;
     const statusList = [];
 
     for (let i = 1; i <= totalTables; i++) {

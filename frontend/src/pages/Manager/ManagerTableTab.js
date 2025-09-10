@@ -226,7 +226,7 @@ export const ManagerTableTab = ({ changeTitle, resetSignal }) => {
               className={styles.payOnOffButton}
               onClick={showToggleDialog}
             >
-              {`결제 ${isPaymentActive ? "비활성화" : "활성화"}`}
+              {`결제 ${isPaymentActive ? "비활성화하기" : "활성화하기"}`}
             </button>
           </div>
         </>
