@@ -12,6 +12,7 @@ const fcmRoutes = require('./routes/fcmRoutes');
 const socketHandler = require('./sockets/socketHandler');
 const db = require('./firebase');
 const { fillMenuQueue } = require('./controllers/orderController');
+const { initMenuQueueWatcher } = require("./controllers/queueWatcher");
 
 const app = express();
 const server = http.createServer(app);
@@ -29,6 +30,7 @@ app.use('/api/employee', employeeCallRoutes);
 app.use("/api/fcm", fcmRoutes);
 
 socketHandler(io);
+initMenuQueueWatcher();
 
 (async () => {
   try {

@@ -39,8 +39,11 @@ export const ManagerOrderTab = () => {
 
   useEffect(() => {
     fetchMenuQueue();
-    socket.connect();
-    socket.on("menuQueueUpdated", fetchMenuQueue);
+    
+    socket.on("menuQueueUpdated", (data) => {
+      console.log("[클라 수신] menuQueueUpdated:", data);
+      setMenuQueue(data);
+    });
     socket.on("orderCancellationUpdated", fetchMenuQueue);
     socket.on("menuQueuePopped", fetchMenuQueue);
 
@@ -48,7 +51,6 @@ export const ManagerOrderTab = () => {
       socket.off("menuQueueUpdated");
       socket.off("orderCancellationUpdated");
       socket.off("menuQueuePopped");
-      socket.disconnect();
     };
   }, [fetchMenuQueue]);
 

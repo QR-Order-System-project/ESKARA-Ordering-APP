@@ -44,7 +44,6 @@ export const ManagerCallTab = ({ onCallsChange }) => {
 
   useEffect(() => {
     fetchCall();
-    socket.connect();
 
     const handleCallUpdate = () => {
       console.log("[실시간] 직원 호출 목록 갱신!");
@@ -54,7 +53,6 @@ export const ManagerCallTab = ({ onCallsChange }) => {
     socket.on("employeeCallUpdated", handleCallUpdate);
     return () => {
       socket.off("employeeCallUpdated", handleCallUpdate);
-      socket.disconnect();
     };
   }, [fetchCall]);
 

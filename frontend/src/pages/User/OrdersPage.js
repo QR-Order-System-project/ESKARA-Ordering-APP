@@ -42,7 +42,6 @@ export default function OrderPage() {
 
   useEffect(() => {
     fetchOrderDetails();
-    socket.connect();
 
     socket.on("refreshTableStatus", () => {
       console.log("refreshTableStatus 이벤트 감지 → 주문내역 갱신");
@@ -65,7 +64,6 @@ export default function OrderPage() {
       socket.off("refreshTableStatus");
       socket.off("globalPaymentStatusChanged", handleGlobalPaymentChange);
       socket.off("orderCancellationUpdated");
-      socket.disconnect();
     };
   }, [tableNumber]);
 

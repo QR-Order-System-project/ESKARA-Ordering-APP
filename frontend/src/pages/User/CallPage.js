@@ -17,10 +17,6 @@ export default function CallPage() {
   const { tableNumber } = useParams();
 
   useEffect(() => {
-    socket.connect();
-    return () => {
-      socket.disconnect();
-    };
   }, []);
 
   const handleItemClick = (itemText) => {
